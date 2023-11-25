@@ -1,0 +1,111 @@
+<div class="content">
+    <mat-card-header>
+        <mat-card-title style="font-size: 30px"> Tasks </mat-card-title>
+    </mat-card-header>
+    <div style="margin-top: 20px;">
+        <div class="col-md-6" style="padding: 5px 15px 10px 0">
+            <button class="col-sm-4" large mat-raised-button color="primary" style="width: 100px" (click)="addTask()"
+                name="createBtn">
+                <mat-icon>add</mat-icon> New
+            </button>
+        </div>
+        <form [formGroup]="taskForm" style="margin-top: 10px;"> 
+            <mat-form-field style="width: 250px" appearance="outline">
+                <mat-label for="type">Type</mat-label>
+                <mat-select id="type" formControlName="type" (selectionChange)="onchangeType()">
+                    <mat-option *ngFor="let type of this.typeList" [value]="type">
+                        {{ type }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field style="width: 250px" class="example-full-width" appearance="outline">
+                <mat-label for="status">Status</mat-label>
+                <mat-select id="status" formControlName="status" (selectionChange)="onchangeStatus()">
+                    <mat-option *ngFor="let status of this.statusList" [value]="status">
+                        {{ status }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field style="width: 250px" class="example-full-width" appearance="outline">
+                <mat-label for="priority">Request Type</mat-label>
+                <mat-select id="priority" formControlName="priority" (selectionChange)="onchangePriority()">
+                    <mat-option *ngFor="let priority of this.priorityList" [value]="priority"
+                        onchange="onchangeType()">
+                        {{ priority }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width: 570px; margin-left: 10px;">
+                <mat-icon style="color: #9e9e9e" matPrefix>search</mat-icon>
+                <mat-label>Search by keyword</mat-label>
+                <input matInput formControlName="keyword" (keyup.enter)="searchOrFilter()" />
+            </mat-form-field>
+            &nbsp; &nbsp; &nbsp;
+        </form>
+    </div>
+    &nbsp; &nbsp; &nbsp;
+    <table mat-table matSort (matSortChange)="sortData($event)" class="mat-elevation-z8" [dataSource]="dataSource">
+        <ng-container matColumnDef="no">
+            <th mat-header-cell *matHeaderCellDef>No.</th>
+            <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+            <th mat-header-cell mat-sort-header="name" *matHeaderCellDef>
+                Name
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+            <th mat-header-cell mat-sort-header="description" *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+        </ng-container>
+        <ng-container matColumnDef="taskType">
+            <th mat-header-cell mat-sort-header="taskType" *matHeaderCellDef>
+                Type
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.taskType }}</td>
+        </ng-container>
+        <ng-container matColumnDef="taskStatus">
+            <th mat-header-cell mat-sort-header="taskStatus" *matHeaderCellDef>
+                Status
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.taskStatus }}</td>
+        </ng-container>
+        <ng-container matColumnDef="priorityType">
+            <th mat-header-cell mat-sort-header="priorityType" *matHeaderCellDef>Priority</th>
+            <td mat-cell *matCellDef="let element">{{ element.priorityType }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element">
+                <section>
+                    <button mat-mini-fab [matMenuTriggerFor]="menu" color="primary"
+                        aria-label="Example icon button with a menu icon">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="editTask(element)">
+                            <mat-icon>edit</mat-icon>
+                            <span>Edit task</span>
+                        </button>
+                        <button mat-menu-item (click)="delete(element)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Delete</span>
+                        </button>
+                    </mat-menu>
+                </section>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons [pageSize]="pageSize" [pageIndex]="pageNumber"
+        [length]="totalElements" (page)="loadPage($event)" aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>
+
+<div mat-dialog-actions style="float: right; margin-top: 20px">
+    <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
+    <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+</div>

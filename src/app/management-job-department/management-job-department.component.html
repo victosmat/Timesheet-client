@@ -1,0 +1,79 @@
+<div class="content">
+    <mat-card-header style="border-bottom: 1px solid silver;">
+        <mat-card-title style="font-size: 30px"> Job department </mat-card-title>
+    </mat-card-header>
+    <div style="display: flex; margin-top: 20px;">
+        <div style="padding: 5px 15px 10px 0; width: 50%;">
+            <button large mat-raised-button color="primary" style="width: 100px" (click)="addJobDepartment()"
+                name="createBtn">
+                <mat-icon>add</mat-icon> New
+            </button>
+        </div>
+        <mat-form-field appearance="outline" style="width: 50%;">
+            <mat-icon style="color: #9e9e9e" matPrefix>search</mat-icon>
+            <mat-label>Search by keyword</mat-label>
+            <input matInput [(ngModel)]="keyword" name="keyword" (keyup.enter)="searchOrFilter()" />
+        </mat-form-field>
+    </div>
+    &nbsp; &nbsp; &nbsp;
+    <table mat-table matSort (matSortChange)="sortData($event)" class="mat-elevation-z8" [dataSource]="dataSource">
+        <ng-container matColumnDef="no">
+            <th mat-header-cell *matHeaderCellDef style="width: 5%;">No.</th>
+            <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Code">
+            <th mat-header-cell mat-sort-header="Code" *matHeaderCellDef style="width: 5%;">
+                Code
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.jobDepartment }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Name">
+            <th mat-header-cell mat-sort-header="Name" *matHeaderCellDef style="width: 10%;">
+                Name
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Description">
+            <th mat-header-cell mat-sort-header="Description" *matHeaderCellDef style="width: 60%;">
+                Description
+            </th>
+            <td style="padding-right: 30px;" mat-cell *matCellDef="let element">{{ element.description }}</td>
+        </ng-container>
+        <ng-container matColumnDef="Salary range">
+            <th mat-header-cell mat-sort-header="Salary range" *matHeaderCellDef style="width: 10%;">
+                Salary range
+            </th>
+            <td mat-cell *matCellDef="let element" style="padding-right: 10px;">{{ element.salaryRange }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element">
+                <div style="display: flex;">
+                    <section>
+                        <button mat-mini-fab [matMenuTriggerFor]="menu" color="primary"
+                            aria-label="Example icon button with a menu icon">
+                            <mat-icon>menu</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="edit(element)">
+                                <mat-icon>edit</mat-icon>
+                                <span>Edit</span>
+                            </button>
+    
+                            <button mat-menu-item (click)="delete(element)">
+                                <mat-icon>delete</mat-icon>
+                                <span>Delete</span>
+                            </button>
+                        </mat-menu>
+                    </section>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons [pageSize]="pageSize" [pageIndex]="pageNumber"
+        [length]="totalElements" (page)="loadPage($event)" aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>

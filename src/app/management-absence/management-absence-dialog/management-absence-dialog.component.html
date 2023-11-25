@@ -1,0 +1,86 @@
+<div style="width: 1000px; justify-content: center">
+    <div style="display: flex; justify-content: space-between">
+        <h1 mat-dialog-title>
+            List user leave/onsite on {{ this.data.date | date : "dd-MM-yyyy" }}
+        </h1>
+        <mat-icon (click)="onNoClick()">close</mat-icon>
+    </div>
+    <mat-dialog-content>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Request</th>
+                    <th scope="col">Note</th>
+                    <th scope="col">Time off</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">is punishment</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let item of absenceViewDto; let i = index">
+                    <tr>
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td scope="row">
+                            <div>
+                                <div>{{ item.fullName }}</div>
+                                <div>{{ item.email }}</div>
+                            </div>
+                        </td>
+                        <td scope="row">{{ item.departmentName }}</td>
+                        <td scope="row">
+                            <span>{{ item.absenceType }}</span>
+                            &nbsp;
+                            <span *ngIf="
+                  item.typeTimeOff !== 'COME_LATE' &&
+                  item.typeTimeOff !== 'WENT_SOON'
+                ">{{ item.typeTimeOff }}</span>
+                            <span *ngIf="
+                  item.typeTimeOff === 'COME_LATE' ||
+                  item.typeTimeOff === 'WENT_SOON'
+                ">{{ item.typeTimeOff }}</span>
+                        </td>
+                        <td scope="row">{{ item.reason }}</td>
+                        <td scope="row">{{ item.timeOff }}</td>
+                        <td scope="row">{{ item.status }}</td>
+                        <td scope="row">
+                            <span *ngIf="item.punishmentStatus === false">
+                                <i class="material-icons" *ngIf="item.punishmentStatus === true"
+                                    style="color: green">check_circle</i>
+                                <i class="material-icons" *ngIf="item.punishmentStatus === false"
+                                    style="color: red">error</i>
+                            </span>
+                        </td>
+                        <td scope="row">
+                            <ng-container>
+                                <section>
+                                    <button mat-mini-fab [matMenuTriggerFor]="menu" color="primary"
+                                        aria-label="Example icon button with a menu icon">
+                                        <mat-icon>menu</mat-icon>
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="approvedAbsenceRequest(item.id, item.status)">
+                                            <mat-icon>check_circle</mat-icon>
+                                            <span>Approved</span>
+                                        </button>
+                                        <button mat-menu-item
+                                            (click)="updateStatusPunishment(item.id, item.absenceType)">
+                                            <mat-icon>edit</mat-icon>
+                                            <span>Update punishment status</span>
+                                        </button>
+                                        <button mat-menu-item (click)="RejectAbsenceRequest(item.id, item.status)">
+                                            <mat-icon>error</mat-icon>
+                                            <span>Reject</span>
+                                        </button>
+                                    </mat-menu>
+                                </section>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </mat-dialog-content>
+</div>

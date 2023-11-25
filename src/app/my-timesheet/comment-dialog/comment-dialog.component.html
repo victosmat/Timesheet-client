@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>{{ this.noteCommentViewDto.pmName }} sent you a review !</h1>
+<div mat-dialog-content>
+    <p>{{ this.noteCommentViewDto.comment }}</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="true" cdkFocusInitial (click)="confirm()">Confirm</button>
+  </div>

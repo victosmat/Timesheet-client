@@ -1,0 +1,59 @@
+<div class="content">
+    <ng-container *ngFor="let item of dataSource | keyvalue">
+        <h1>{{item.key}}</h1>
+        <table mat-table [dataSource]="item.value" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="no">
+              <th mat-header-cell *matHeaderCellDef> No. </th>
+              <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="absenceType">
+              <th mat-header-cell *matHeaderCellDef> Absence Type </th>
+              <td mat-cell *matCellDef="let element"> {{element.absenceType}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="absenceTypeOff">
+              <th mat-header-cell *matHeaderCellDef> Absence Type Off </th>
+              <td mat-cell *matCellDef="let element"> {{element.absenceTypeOff}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="reason" style="max-width: 100px;">
+              <th mat-header-cell *matHeaderCellDef> Reason </th>
+              <td mat-cell *matCellDef="let element">
+                <textarea class="m-1" disabled name="" id="" cols="30" rows="2">{{element.reason}}</textarea>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateRequest">
+                <th mat-header-cell *matHeaderCellDef> Date Request </th>
+                <td mat-cell *matCellDef="let element"> {{getDateRequest(element.dateRequest) | date: "dd-MM-yyyy"}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="timeOff">
+                <th mat-header-cell *matHeaderCellDef> Time Off </th>
+                <td mat-cell *matCellDef="let element"> {{element.timeOff}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="typeTimeOff">
+                <th mat-header-cell *matHeaderCellDef> Type Time Off </th>
+                <td mat-cell *matCellDef="let element"> {{element.typeTimeOff}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let element">
+                    <button *ngIf="element.status === absenceStatus.PENDING || element.status === absenceStatus.REJECTED" mat-raised-button color="primary" (click)="updateAbsenceStatus(element.id, absenceStatus.APPROVED)">Approve</button>
+                    &nbsp;
+                    <button *ngIf="element.status === absenceStatus.PENDING || element.status === absenceStatus.APPROVED" mat-raised-button color="warn" (click)="updateAbsenceStatus(element.id, absenceStatus.REJECTED)">Reject</button>
+                </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <br>
+          <br>
+          <br>
+    </ng-container>
+</div>

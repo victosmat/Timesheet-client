@@ -1,0 +1,36 @@
+.profile {
+  background-image: linear-gradient(
+    45deg,
+    #c21b1b 25%,
+    #f54500 25%,
+    #f54500 50%,
+    #c21b1b 50%,
+    #c21b1b 75%,
+    #f54500 75%,
+    #f54500 100%
+  );
+  color: white;
+  font-weight: 500;
+}
+
+.profile-content {
+  padding: 16px;
+  display: flex;
+}
+
+.is-active {
+  background-color: gray;
+}
+
+mat-sidenav-container {
+  background-color: lightgray;
+  height: calc(100vh - 65px);
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.mat-mdc-form-field + .mat-mdc-form-field {
+  margin-left: 8px;
+}

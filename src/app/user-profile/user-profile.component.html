@@ -1,0 +1,133 @@
+<form [formGroup]="profileFrom" (submit)="submitFrom()" class="example-form" style="display: flex">
+  <mat-card class="content mat-elevation-z4" style="width: 100%">
+    <mat-card-header style="border-bottom: 1px solid silver; padding: 10px;">
+      <mat-card-title style="font-size: 30px"> My profile </mat-card-title>
+      <div>
+        <button mat-raised-button style="margin-right: 15px; height: 55px" (click)="changePassword()">
+          Change password
+        </button>
+        <button mat-raised-button color="primary" style="margin-right: 15px; height: 55px" (click)="changeInfo()">
+          Change infomation
+        </button>
+      </div>
+    </mat-card-header>
+    &nbsp; &nbsp; &nbsp;
+    <mat-card-content class="submit-week-tabs">
+      <div style="display: flex">
+        <div>
+          <div>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label for="firstName">First name</mat-label>
+              <input matInput formControlName="firstName" />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Gender</mat-label>
+              <mat-select formControlName="gender">
+                <mat-option value="MALE">MALE</mat-option>
+                <mat-option value="FEMALE">FEMALE</mat-option>
+                <mat-option value="TRANSGENDER">TRANSGENDER</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label for="email">Email</mat-label>
+              <input matInput formControlName="email" />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field class="example-full-width" appearance="outline" style="display: flex">
+              <mat-label>Birthday</mat-label>
+              <div style="display: flex;">
+                <input matInput [matDatepicker]="picker" formControlName="birthday" />
+                <div>
+                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </div>
+              </div>
+              <mat-hint>MM/DD/YYYY</mat-hint>
+
+            </mat-form-field>
+          </div>
+        </div>
+        <div style="margin-left: 100px;">
+          <div>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label for="lastName">Last name</mat-label>
+              <input matInput formControlName="lastName" />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label for="bankName">Bank name</mat-label>
+              <input matInput formControlName="bankName" />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label for="bankNumber">Bank number</mat-label>
+              <input matInput formControlName="bankNumber" />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card style="margin-right: 30px;" class="content mat-elevation-z4">
+    <mat-card-header style="border-bottom: 1px solid silver; padding-bottom: 30px; margin-top: 10px;">
+      <mat-card-title style="font-size: 30px"> My position </mat-card-title>
+    </mat-card-header>
+    &nbsp; &nbsp; &nbsp;
+    <mat-card-content class="submit-week-tabs" style="display: flex">
+      <div>
+        <div>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label for="hiringDate">Hiring date</mat-label>
+            <input matInput formControlName="hiringDate" readonly (click)="notify()" />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label for="buddyName">Buddy name</mat-label>
+            <input matInput formControlName="buddyName" readonly (click)="notify()" />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label for="departmentName">Department name</mat-label>
+            <input matInput formControlName="departmentName" readonly (click)="notify()" />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label for="username">Username</mat-label>
+            <input matInput formControlName="username" readonly (click)="notify()" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div style="margin-left: 100px;">
+        <div>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label for="jobDepartment">Role</mat-label>
+            <input matInput formControlName="jobDepartment" readonly (click)="notify()" />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label for="salary">Salary range</mat-label>
+            <input matInput formControlName="salary" readonly (click)="notify()" />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label for="level">Level</mat-label>
+            <input matInput formControlName="level" readonly (click)="notify()" />
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</form>

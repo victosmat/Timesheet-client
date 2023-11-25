@@ -1,0 +1,66 @@
+<div class="content">
+    <div class="p-3" style="border-bottom: 1px solid silver">
+        <div class="row text-center">
+            <div class="col-md-6">
+                <mat-card-title style="font-size: 30px; float: left">
+                    Manage team working calendar
+                </mat-card-title>
+            </div>
+            <div class="col-md-2">
+                <mat-card>{{
+                    viewDate | calendarDate : view + "ViewTitle" : "en"
+                    }}</mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-button-toggle>
+                    <mat-form-field>
+                        <input [(ngModel)]="this.viewDate" matInput [matDatepicker]="picker" readonly="true"
+                            [defaultValue]="this.viewDate" (ngModelChange)="this.updateCalendar(this.viewDate)" />
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </mat-button-toggle>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            </div>
+        </div>
+    </div>
+    <br />
+    <form [formGroup]="absenceForm" class="example-form" style="display: flex;">
+        <mat-form-field style="width: 250px" class="example-full-width" appearance="outline">
+            <mat-label for="status">Status</mat-label>
+            <mat-select id="status" formControlName="status" (selectionChange)="onchangeStatus()">
+                <mat-option *ngFor="let status of this.dayAbsentStatusList" [value]="status">
+                    {{ status }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field style="width: 250px" class="example-full-width" appearance="outline">
+            <mat-label for="absentDayType">Request Type</mat-label>
+            <mat-select id="absentDayType" formControlName="absentDayType" (selectionChange)="onchangeType()">
+                <mat-option *ngFor="let absentDayType of this.dayAbsentTypeList" [value]="absentDayType"
+                    onchange="onchangeType()">
+                    {{ absentDayType }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline" style="width: 100%;">
+            <mat-label>Search by email</mat-label>
+            <input name="searchText" matInput [(ngModel)]="searchText" (keyup.enter)="refreshData()" />
+        </mat-form-field>
+        &nbsp; &nbsp; &nbsp;
+    </form>
+    <br />
+    <ng-template #loading>
+        <div class="text-center">
+            <i class="fas fa-spin fa-spinner fa-5x"></i> <br />
+            Loading events...
+        </div>
+    </ng-template>
+    &nbsp; &nbsp; &nbsp;
+    <div *ngIf="events$ | async; else loading; let events">
+        <div class="calendar-body">
+            <mwl-calendar-month-view [viewDate]="viewDate" [events]="events" [viewDate]="viewDate" [events]="events"
+                (dayClicked)="dayClicked($event.day)" [refresh]="refresh">
+            </mwl-calendar-month-view>
+        </div>
+    </div>
+</div>

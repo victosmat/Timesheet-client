@@ -1,0 +1,54 @@
+<div style="width: 350px;">
+  <h1 mat-dialog-title *ngIf="this.data.noteId !== undefined">Edit Timesheet</h1>
+  <h1 mat-dialog-title *ngIf="this.data.noteId === undefined">New Timesheet</h1>
+  <form [formGroup]="timesheetForm" (submit)="submitForm()" class="example-form">
+    <mat-dialog-content style="flex-direction: column;">
+      <div>
+        <mat-form-field class="example-full-width">
+          <mat-label for="project">Project</mat-label>
+          <mat-select id="project" formControlName="projectId" (selectionChange)="getTaskForFormBasedOnProjectId($event.value)">
+            <mat-option *ngFor="let project of this.projectSelectDtoList" [value]="project.id">
+              {{project.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="example-full-width">
+          <mat-label for="task">Task</mat-label>
+          <mat-select id="task" formControlName="taskId">
+            <mat-option *ngFor="let task of this.taskSelectDtoList" [value]="task.id">
+              {{task.des}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="example-full-width">
+          <mat-label for="note">Note</mat-label>
+          <textarea id="note" matInput placeholder="Note Timesheet" formControlName="note"></textarea>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="example-full-width">
+          <mat-label for="workTime">Working Time</mat-label>
+          <input id="workTime" matInput type="number" step="1" formControlName="workingTime">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="example-full-width">
+          <mat-label for="workType">Working Type</mat-label>
+          <mat-select id="workType" formControlName="workingType">
+            <mat-option *ngFor="let workingType of workingTypes | keyvalue" [value]="workingType.value">
+              {{workingType.key}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+    <div mat-dialog-actions style="float: right;">
+      <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
+      <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,134 @@
+<div class="content">
+    <mat-card-header style="border-bottom: 1px solid silver;">
+        <mat-card-title style="font-size: 30px"> User </mat-card-title>
+    </mat-card-header>
+
+    <div style="display: flex; margin-top: 10px;">
+        <mat-form-field appearance="outline">
+            <mat-label>month</mat-label>
+            <mat-select [(value)]="month" (valueChange)="findMonth()">
+                <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="i">{{i}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>status</mat-label>
+            <mat-select [(value)]="year" (valueChange)="findYear()">
+                <mat-option *ngFor="let i of [2018,2019, 2020,2021,2022,2023]" [value]="i">{{i}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>status</mat-label>
+            <mat-select [(value)]="paymentStatusUser" (valueChange)="findStatus()">
+                <mat-option *ngFor="let i of ['ALL', 'PAID', 'UNPAID']" [value]="i">{{i}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Level</mat-label>
+            <mat-select [(value)]="levelUser" (valueChange)="findLevel()">
+                <mat-option *ngFor="let i of ['ALL', 'INTERN', 'FRESHER', 'JUNIOR', 'MIDDLE', 'SENIOR']"
+                    [value]="i">{{i}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Branch</mat-label>
+            <mat-select [(value)]="branchUser" (valueChange)="findBranch()">
+                <mat-option *ngFor="let i of ['ALL', 'HN1', 'HN2', 'HN3', 'ĐN', 'SG']" [value]="i">{{i}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline" style="width: 100%;">
+            <mat-icon style="color: #9e9e9e" matPrefix>search</mat-icon>
+            <mat-label>Search by keyword</mat-label>
+            <input matInput [value]="keyword" (keyup.enter)="searchOrFilter()" />
+        </mat-form-field>
+    </div>
+    &nbsp; &nbsp; &nbsp;
+    <table mat-table matSort (matSortChange)="sortData($event)" class="mat-elevation-z8" [dataSource]="dataSource">
+        <ng-container matColumnDef="no">
+            <th mat-header-cell *matHeaderCellDef>No.</th>
+            <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="fullName">
+            <th mat-header-cell mat-sort-header="fullName" *matHeaderCellDef>
+                Full Name
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+            <th mat-header-cell mat-sort-header="email" *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+        </ng-container>
+        <ng-container matColumnDef="departmentName">
+            <th mat-header-cell mat-sort-header="departmentName" *matHeaderCellDef>
+                Department
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.departmentName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="departmentLevelStatus">
+            <th mat-header-cell mat-sort-header="departmentLevelStatus" *matHeaderCellDef>
+                Level
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.departmentLevelStatus }}</td>
+        </ng-container>
+        <ng-container matColumnDef="payDay">
+            <th mat-header-cell mat-sort-header="payDay" *matHeaderCellDef>Payroll day</th>
+            <td mat-cell *matCellDef="let element">{{ element.payDay }}</td>
+        </ng-container>
+        <ng-container matColumnDef="totalSalary">
+            <th mat-header-cell mat-sort-header="totalSalary" *matHeaderCellDef>Salary</th>
+            <td mat-cell *matCellDef="let element">{{ element.totalSalary }}</td>
+        </ng-container>
+        <ng-container matColumnDef="paymentStatus">
+            <th mat-header-cell mat-sort-header="paymentStatus" *matHeaderCellDef>
+                IsEnabled
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <i class="material-icons" *ngIf="element.paymentStatus === true" style="color:green;">check_circle</i>
+                <i class="material-icons" *ngIf="element.paymentStatus === false" style="color:red;">error</i>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element">
+                <section>
+                    <button mat-mini-fab [matMenuTriggerFor]="menu" color="primary"
+                        aria-label="Example icon button with a menu icon">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="viewPunishmentCheckin(element)">
+                            <mat-icon>streetview</mat-icon>
+                            <span>Edit User</span>
+                        </button>
+
+                        <button mat-menu-item (click)="viewAbsence(element)">
+                            <mat-icon>streetview</mat-icon>
+                            <span>Edit Roles</span>
+                        </button>
+
+                        <button mat-menu-item (click)="viewBonus(element)">
+                            <mat-icon>streetview</mat-icon>
+                            <span>Edit Roles</span>
+                        </button>
+
+                        <button *ngIf="element.paymentStatus === true" mat-menu-item
+                            (click)="updateStatus(element, false)">
+                            <mat-icon>block</mat-icon>
+                            <span>Deactivate</span>
+                        </button>
+                        <button *ngIf="element.paymentStatus === false" mat-menu-item
+                            (click)="updateStatus(element, true)">
+                            <mat-icon>done_outline</mat-icon>
+                            <span>Activate</span>
+                        </button>
+                    </mat-menu>
+                </section>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons [pageSize]="pageSize" [pageIndex]="pageNumber"
+        [length]="totalElements" (page)="loadPage($event)" aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>

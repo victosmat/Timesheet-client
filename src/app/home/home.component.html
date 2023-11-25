@@ -1,0 +1,87 @@
+<mat-toolbar color="primary">
+  <span>Timesheet</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="example-icon" aria-label="Logout button" matTooltip="Logout" (click)="logout()">
+    <mat-icon (click)="logout()">logout</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened="true">
+    <div class="profile">
+      <div class="profile-content">
+        <div class="avatar">
+          <img src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+            alt="avatar" style="width: 60px;" class="rounded-circle">
+        </div>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        <div class="basic-info">
+          <p>{{fullname}}</p>
+          <p>{{email}}</p>
+        </div>
+      </div>
+    </div>
+    <mat-accordion *ngIf="this.authService.roleMatch(['INTERN', 'STAFF', 'PM', 'HR'])">
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Persional timesheet
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a style="font-size: 15px;" mat-list-item routerLink="profile"><mat-icon aria-hidden="false"
+              aria-label="Profile" fontIcon="icon">account_box</mat-icon>&nbsp;My Profile</a>
+          <a style="font-size: 15px;" mat-list-item routerLink="timesheet"><mat-icon aria-hidden="false"
+              aria-label="Timesheet" fontIcon="icon">alarm</mat-icon>&nbsp;My Timesheets</a>
+          <a style="font-size: 15px;" mat-list-item routerLink="absence"><mat-icon aria-hidden="false"
+              aria-label="Absence Day" fontIcon="icon">event_busy</mat-icon>&nbsp;My Request off/Remote/Onsite</a>
+        </mat-nav-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion *ngIf="this.authService.roleMatch(['PM'])">
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Admin
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a style="font-size: 15px;" mat-list-item routerLink="admin_user"><mat-icon aria-hidden="false"
+              aria-label="Admin" fontIcon="icon">account_box</mat-icon>&nbsp;Users</a>
+          <a style="font-size: 15px;" mat-list-item routerLink="admin_project"><mat-icon aria-hidden="false"
+              aria-label="Admin" fontIcon="icon">assessment</mat-icon>&nbsp;Projects</a>
+          <a style="font-size: 15px;" mat-list-item routerLink="admin_department"><mat-icon aria-hidden="false"
+              aria-label="Admin" fontIcon="icon">apartment</mat-icon>&nbsp;Departments</a>
+          <a style="font-size: 15px;" mat-list-item routerLink="admin_job_department"><mat-icon aria-hidden="false"
+              aria-label="Admin" fontIcon="icon">description</mat-icon>&nbsp;Job department</a>
+          <a style="font-size: 15px;" mat-list-item routerLink="admin_bonus"><mat-icon aria-hidden="false"
+              aria-label="Admin" fontIcon="icon">attach_money</mat-icon>&nbsp;Bonus</a>
+        </mat-nav-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <mat-accordion *ngIf="this.authService.roleMatch(['PM', 'HR'])">
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Management
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a style="font-size: 15px;" mat-list-item routerLink="manage_absence"><mat-icon aria-hidden="false"
+              aria-label="Absence Day" fontIcon="icon">rule</mat-icon>&nbsp;Request off/Remote/Onsite</a>
+          <a style="font-size: 15px;" mat-list-item routerLink="manage_timesheet"><mat-icon aria-hidden="false"
+              aria-label="Manage Employee Timesheet" fontIcon="icon">alarm</mat-icon>&nbsp;Timesheet</a>
+          <a style="font-size: 15px;" mat-list-item routerLink="manage_monitoring"><mat-icon aria-hidden="false"
+              aria-label="Manage Employee Timesheet" fontIcon="icon">supervised_user_circle</mat-icon>&nbsp;Timesheet
+            monitoring</a>
+          <a style="font-size: 15px;" mat-list-item routerLink="manage_Tardiness"><mat-icon aria-hidden="false"
+              aria-label="Manage Employee Timesheet" fontIcon="icon">wysiwyg</mat-icon>&nbsp;Tardiness</a>
+        </mat-nav-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

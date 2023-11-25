@@ -1,0 +1,23 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { ManageTimesheetComponent } from './manage-timesheet.component';
+
+describe('ManageTimesheetComponent', () => {
+  let component: ManageTimesheetComponent;
+  let fixture: ComponentFixture<ManageTimesheetComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ ManageTimesheetComponent ]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(ManageTimesheetComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

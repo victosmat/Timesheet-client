@@ -1,0 +1,55 @@
+<div class="content">
+  <div>Le Tuan Minh</div>
+    <ng-container *ngFor="let item of dataSource | keyvalue">
+        <h1>{{item.key}}</h1>
+        <table mat-table [dataSource]="item.value" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="no">
+              <th mat-header-cell *matHeaderCellDef> No. </th>
+              <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="projectName">
+              <th mat-header-cell *matHeaderCellDef> Project Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.projectName}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="taskName">
+              <th mat-header-cell *matHeaderCellDef> Task Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.taskName}} </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="noteDescription" style="max-width: 100px;">
+              <th mat-header-cell *matHeaderCellDef> Note Description </th>
+              <td mat-cell *matCellDef="let element">
+                <textarea class="m-1" disabled name="" id="" cols="30" rows="5">{{element.noteDescription}}</textarea>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateSubmit">
+                <th mat-header-cell *matHeaderCellDef> Date Submit </th>
+                <td mat-cell *matCellDef="let element"> {{getDateSubmit(element.dateSubmit) | date: "dd-MM-yyyy"}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="workingTime">
+                <th mat-header-cell *matHeaderCellDef> Working Time </th>
+                <td mat-cell *matCellDef="let element"> {{element.workingTime}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let element">
+                    <button *ngIf="element.status === timesheetStatus.PENDING || element.status === timesheetStatus.REJECT" mat-raised-button color="primary" (click)="updateTimesheetStatus(element.id, timesheetStatus.APPROVED)">Approve</button>
+                    &nbsp;
+                    <button *ngIf="element.status === timesheetStatus.PENDING || element.status === timesheetStatus.APPROVED" mat-raised-button color="warn" (click)="updateTimesheetStatus(element.id, timesheetStatus.REJECT)">Reject</button>
+                </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <br>
+          <br>
+          <br>
+    </ng-container>
+</div>

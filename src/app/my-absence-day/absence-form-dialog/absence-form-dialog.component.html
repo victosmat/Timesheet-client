@@ -1,0 +1,49 @@
+<div style="width: 400px; justify-content: center; height: 100%;">
+    <div mat-dialog-title>Request {{this.data.type}}</div>
+    <mat-dialog-content style="height: auto;">
+        <form [formGroup]="absenceForm" (ngSubmit)="submitForm()">
+            <div>
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Reason</mat-label>
+                    <textarea matInput type="text" name="" formControlName="reason"></textarea>
+                </mat-form-field>
+            </div>
+            <div *ngIf="this.data.type === 'OFF'">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Absence Type</mat-label>
+                    <input matInput type="text" name="" formControlName="absenceType">
+                </mat-form-field>
+            </div>
+
+            <div *ngIf="this.data.type !== 'COME_LATE' && this.data.type !== 'WENT_SOON'">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Type Off</mat-label>
+                    <mat-select formControlName="typeTimeOff">
+                        <mat-option *ngFor="let typeTimeOff of typesTimeOff | keyvalue" [value]="typeTimeOff.value">
+                            {{typeTimeOff.value}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div *ngIf="this.data.type === 'COME_LATE' || this.data.type === 'WENT_SOON'">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Time Off</mat-label>
+                    <input matInput type="number" step="0.5" name="" formControlName="timeOff">
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Date Request</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="dateRequest">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker" style="float: right;"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions style="float: right;">
+        <button mat-raised-button type="reset" color="warn" (click)="close()">Cancel</button>
+        <button mat-raised-button type="submit" color="primary">Ok</button>
+    </mat-dialog-actions>
+</div>

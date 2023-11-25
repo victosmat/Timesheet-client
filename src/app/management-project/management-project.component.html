@@ -1,0 +1,102 @@
+<div class="content">
+    <mat-card-header style="border-bottom: 1px solid silver;">
+        <mat-card-title style="font-size: 30px"> Project </mat-card-title>
+    </mat-card-header>
+    <div style="display: flex; margin-top: 20px;">
+        <div class="col-md-6" style="padding: 5px 15px 10px 0">
+            <button class="col-sm-4" large mat-raised-button color="primary" style="width: 100px" (click)="saveProject()"
+                name="createBtn">
+                <mat-icon>add</mat-icon> New
+            </button>
+        </div>
+        <mat-form-field class="example-full-width" appearance="outline" style="margin-right: 10px;">
+            <mat-label for="level">Status</mat-label>
+            <mat-select id="level" [(value)]="status" (valueChange)="updateStatus(status)"> 
+                <mat-option *ngFor="let status of ['ALL', 'ACTIVE', 'INACTIVE']" [value]="status">
+                    {{status}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-md-7" appearance="outline" style="width: 35.4%;">
+            <mat-icon style="color: #9e9e9e" matPrefix>search</mat-icon>
+            <mat-label>Search by keyword</mat-label>
+            <input matInput [(ngModel)]="keyword" name="keyword" (keyup.enter)="searchOrFilter()" />
+        </mat-form-field>
+    </div>
+    &nbsp; &nbsp; &nbsp;
+    <table mat-table matSort (matSortChange)="sortData($event)" class="mat-elevation-z8" [dataSource]="dataSource">
+        <ng-container matColumnDef="no">
+            <th mat-header-cell *matHeaderCellDef>No.</th>
+            <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="code">
+            <th mat-header-cell mat-sort-header="code" *matHeaderCellDef>
+                Code
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.code }}</td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+            <th mat-header-cell mat-sort-header="name" *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+            <th mat-header-cell mat-sort-header="description" *matHeaderCellDef>
+                Description
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+        </ng-container>
+        <ng-container matColumnDef="pmName">
+            <th mat-header-cell mat-sort-header="pmName" *matHeaderCellDef>
+                PM name
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.pmName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="totalEmployee">
+            <th mat-header-cell mat-sort-header="totalEmployee" *matHeaderCellDef>Total members</th>
+            <td mat-cell *matCellDef="let element">{{ element.totalEmployee }}</td>
+        </ng-container>
+        <ng-container matColumnDef="startDate">
+            <th mat-header-cell mat-sort-header="startDate" *matHeaderCellDef>
+                Start date
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.startDate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="endDate">
+            <th mat-header-cell mat-sort-header="endDate" *matHeaderCellDef>
+                End date
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.endDate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element">
+                <section>
+                    <button mat-mini-fab [matMenuTriggerFor]="menu" color="primary"
+                        aria-label="Example icon button with a menu icon">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="editProject(element)">
+                            <mat-icon>edit</mat-icon>
+                            <span>Edit Project</span>
+                        </button>
+                        <button mat-menu-item (click)="viewTask(element)">
+                            <mat-icon>speaker_notes</mat-icon>
+                            <span>View task</span>
+                        </button>
+                        <button mat-menu-item (click)="delete(element)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Delete</span>
+                        </button>
+                    </mat-menu>
+                </section>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons [pageSize]="pageSize" [pageIndex]="pageNumber"
+        [length]="totalElements" (page)="loadPage($event)" aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>

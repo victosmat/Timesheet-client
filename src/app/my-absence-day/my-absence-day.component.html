@@ -1,0 +1,57 @@
+<div class="content">
+    <div class="p-4">
+        <div class="row text-center">
+            <div class="col-md-6">
+                <div>
+                    <button mat-raised-button color="warn" (click)="openAbsenceForm('OFF')">Request Off</button>
+                    &nbsp;
+                    &nbsp;
+                    <button mat-raised-button color="accent" (click)="openAbsenceForm('REMOTE')">Request Remote</button>
+                    &nbsp;
+                    &nbsp;
+                    <button mat-raised-button color="primary" (click)="openAbsenceForm('ONSITE')">Request Onsite</button>
+                </div>
+                <br>
+                <div>
+                    <button mat-raised-button color="warn" (click)="openAbsenceForm('WENT_SOON')">Request Went Soon</button>
+                    &nbsp;
+                    &nbsp;
+                    <button mat-raised-button color="accent" (click)="openAbsenceForm('COME_LATE')">Request Come Late</button>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <mat-card>{{ viewDate | calendarDate:(view + 'ViewTitle') : 'en' }}</mat-card>
+            </div>
+            <div class="col-md-4">
+                <mat-button-toggle>
+                    <mat-form-field>
+                        <input [(ngModel)]="this.viewDate" matInput [matDatepicker]="picker" readonly="true"
+                            [defaultValue]="this.viewDate"
+                            (ngModelChange)="this.updateCalendar(this.viewDate)"
+                            style="text-align: center;">
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </mat-button-toggle>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <ng-template #loading>
+        <div class="text-center">
+          <i class="fas fa-spin fa-spinner fa-5x"></i> <br />
+          Loading events...
+        </div>
+      </ng-template>
+    <div *ngIf="events$ | async; else loading; let events">
+        <div class="calendar-body">
+            <mwl-calendar-month-view
+                [viewDate]="viewDate"
+                [events]="events"
+                (dayClicked)="dayClicked($event.day)"
+                [refresh]="refresh"
+            >
+            </mwl-calendar-month-view>
+        </div>
+    </div>
+</div>

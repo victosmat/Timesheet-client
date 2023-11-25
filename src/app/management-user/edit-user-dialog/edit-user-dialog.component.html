@@ -1,0 +1,53 @@
+<div style="width: 410px;">
+    <h1 mat-dialog-title>Edit user</h1>
+    <form [formGroup]="profileFrom" (submit)="submitForm()" class="example-form">
+        <mat-card-content class="submit-week-tabs">
+            <div>
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label for="buddy">Buddy name</mat-label>
+                    <mat-select id="buddy" formControlName="buddyName">
+                      <mat-option *ngFor="let pm of pmDto" [value]="pm.name">
+                        {{pm.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label for="buddy">Department name</mat-label>
+                    <mat-select id="buddy" formControlName="departmentName">
+                      <mat-option *ngFor="let department of departments" [value]="department.name">
+                        {{department.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label for="level">Level</mat-label>
+                    <mat-select id="level" formControlName="level">
+                        <mat-option *ngFor="let level of ['INTERN', 'FRESHER', 'JUNIOR', 'MIDDLE', 'SENIOR']" [value]="level">
+                          {{level}}
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Hiring date</mat-label>
+                    <div style="display: flex;"><input matInput [matDatepicker]="hiringDate" formControlName="hiringDate">
+                        <div>
+                            <mat-datepicker-toggle matIconSuffix [for]="hiringDate"></mat-datepicker-toggle>
+                            <mat-datepicker #hiringDate></mat-datepicker>
+                        </div>
+                    </div>
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                </mat-form-field>
+            </div>
+        </mat-card-content>
+        <div mat-dialog-actions style="float: right;">
+            <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
+            <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+        </div>
+    </form>
+</div>

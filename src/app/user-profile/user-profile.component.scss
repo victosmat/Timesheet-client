@@ -1,0 +1,65 @@
+.content {
+    background-color: white;
+    min-height: 200px;
+    margin-top: 16px;
+    margin-left: 10px;
+    padding: 30px;
+  }
+  
+  .submit-week-utilities {
+    display: flex;
+  }
+  
+  .submit-week-utilities p {
+    font-size: 2rem;
+  }
+  
+  mat-card-header {
+    justify-content: space-between;
+  }
+  table {
+    width: 100%;
+  }
+  table,
+  tr,
+  th,
+  td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  
+  td {
+    min-width: 40px;
+  }
+  
+  ::ng-deep.mat-tab-label {
+    min-width: 10px !important;
+    padding: 30px !important;
+  }
+  
+  .mat-tab-label-content {
+    background-color: green; 
+  }
+  
+  .mat-tab-label-content {
+    background-color: red;
+  }
+  
+  
+  table {
+    margin: 0 auto;
+  }
+  
+  th,
+  td {
+    text-align: center;
+  }
+  
+  th[colspan="2"] {
+    text-align: center;
+  }
+  
+  .button-container {
+    text-align: center;
+  }
+  

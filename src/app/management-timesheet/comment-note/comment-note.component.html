@@ -1,0 +1,16 @@
+<div>
+    <h1 mat-dialog-title *ngIf="this.data.comment != null">Edit comment</h1>
+    <h1 mat-dialog-title *ngIf="this.data.comment == undefined">New comment</h1>
+    <form [formGroup]="commentFrom" (submit)="submitForm()" class="example-form">
+      <mat-dialog-content style="height: 140px;">
+          <mat-form-field class="example-full-width" style="width: 100%;">
+            <mat-label for="comment">Comment</mat-label>
+            <textarea id="comment" matInput formControlName="comment"></textarea>
+          </mat-form-field>
+        <div mat-dialog-actions style="float: right;">
+            <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
+            <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+          </div>
+      </mat-dialog-content>
+    </form>
+  </div>

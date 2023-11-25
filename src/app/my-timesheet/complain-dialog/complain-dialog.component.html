@@ -1,0 +1,16 @@
+<div style="width: 350px;">
+    <h1 mat-dialog-title *ngIf="this.data.note.complain != null">Edit complain</h1>
+    <h1 mat-dialog-title *ngIf="this.data.note.complain == undefined">New complain</h1>
+    <form [formGroup]="complainFrom" (submit)="submitForm()" class="example-form">
+      <mat-dialog-content style="flex-direction: column; height: 140px;">
+          <mat-form-field class="example-full-width" style="width: 100%;">
+            <mat-label for="complain">Note</mat-label>
+            <textarea id="complain" matInput formControlName="complain"></textarea>
+          </mat-form-field>
+        <div mat-dialog-actions style="float: right;">
+            <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
+            <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+          </div>
+      </mat-dialog-content>
+    </form>
+  </div>

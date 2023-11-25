@@ -1,0 +1,228 @@
+<mat-card class="content mat-elevation-z4">
+    <mat-card-header>
+        <mat-card-title style="font-size: 30px;"> {{selectedDate | date: "dd-MM-yyyy"}} </mat-card-title>
+        <div>
+            <button mat-raised-button style="margin-right: 15px; height: 55px;" (click)="saveCheckpointTime()">Check In/Out</button>
+            <button mat-raised-button color="primary" style="margin-right: 15px; height: 55px;" (click)="refresh()">Refresh</button>
+            <button mat-raised-button style="margin-right: 15px; background-color: green; color: white; height: 55px;"
+                (click)="returnCurrentDay()">
+                Today
+            </button>
+            <mat-button-toggle-group>
+                <mat-button-toggle (change)="minusOneDay()"><mat-icon>keyboard_arrow_left</mat-icon></mat-button-toggle>
+                <mat-button-toggle>
+                    <mat-form-field>
+                        <input [(ngModel)]="this.selectedDate" matInput [matDatepicker]="picker" readonly="true"
+                            [defaultValue]="this.selectedDate"
+                            (ngModelChange)="getWeekNumberAndUpdateDay(this.selectedDate)" style="text-align: center;">
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </mat-button-toggle>
+                <mat-button-toggle (change)="plusOneDay()"><mat-icon>keyboard_arrow_right</mat-icon></mat-button-toggle>
+            </mat-button-toggle-group>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        </div>
+    </mat-card-header>
+    &nbsp;
+    &nbsp;
+    &nbsp;
+    <mat-card-content class="submit-week-tabs">
+        <mat-tab-group [selectedIndex]="selectedDayIndex" (focusChange)="returnSelectedDate($event)"
+            class="custom-tab-group">
+            <div *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]">
+                <mat-tab label="{{daysArray[i].label}}" style="justify-content: space-between;">
+                    <br>
+                    <ng-container *ngIf="getNotesPerDay(i) === null; else templateShow">
+
+                    </ng-container>
+                    <ng-template #templateShow style="display: flex; justify-content: space-between;">
+                        <mat-card *ngFor="let item of getNotesPerDay(i)?.lst" style="background-color: #f9f9f9;" class="m-3">
+                            <ng-container *ngIf="item !== null">
+                                <mat-card-content style="font-weight: 700;">[{{item.projectCode}}]&nbsp;[{{item.taskName}}]</mat-card-content>
+                                <mat-card-content style="display: flex; justify-content: space-between;">
+                                    <textarea style="width: 80%; border: none; outline: none;" [disabled]="true">{{item.noteDescription}}</textarea>
+                                    <div>
+                                        <ng-container *ngIf="item.status === 'NEW'">
+                                            <span class="badge bg-info">{{item.status}}</span>
+                                        </ng-container>
+                                        <ng-container *ngIf="item.status === 'PENDING'">
+                                            <span class="badge bg-primary">{{item.status}}</span>
+                                        </ng-container>
+                                        <ng-container *ngIf="item.status === 'REJECT'">
+                                            <span class="badge bg-danger">{{item.status}}</span>
+                                        </ng-container>
+                                        <ng-container *ngIf="item.status === 'APPROVED'">
+                                            <span class="badge bg-success">{{item.status}}</span>
+                                        </ng-container>
+                                        
+                                        <ng-container *ngIf="item.status === 'NEW' || item.status === 'PENDING'">
+                                            <button mat-button color="primary"><mat-icon aria-hidden="false" aria-label="Edit" (click)="showTimesheetForm(item.id)">edit</mat-icon></button>
+                                            <button mat-button color="warn"><mat-icon aria-hidden="false" aria-label="Delete" (click)="showDeleteNotify(item.id)">delete</mat-icon></button>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="item.status === 'APPROVED' || item.status === 'REJECT'">
+                                            <button matBadge="1" matBadgeColor="accent" [matBadgeHidden]="hidden" mat-button color="accent" *ngIf="item.comment"><mat-icon aria-hidden="false" aria-label="Comment" (click)="showComment(item)">comment</mat-icon></button>
+                                        </ng-container>
+                                    </div>
+                                </mat-card-content>
+                            </ng-container>
+                        </mat-card>
+                    </ng-template>
+                    <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                        <button mat-raised-button color="primary"
+                            (click)="showTimesheetForm(undefined)"><mat-icon>add</mat-icon></button>
+                        <button mat-raised-button color="primary" (click)="submitWeekForApproved()">Submit week for approved</button>
+                    </div>
+                </mat-tab>
+            </div>
+                <mat-tab label="Total"></mat-tab>
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>
+<mat-card class="content mat-elevation-z4">
+    <mat-card-header>
+        <mat-card-title>Summary</mat-card-title>
+        <div>
+            <mat-form-field>
+                <span>Status</span>
+                <mat-select [(value)]="statusSummary" (valueChange)="findSummary('STATUS')">
+                    <mat-option
+                        *ngFor="let i of ['ALL', 'New', 'Pending', 'Approved', 'Rejected']"
+                        [value]="i">{{i}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <mat-form-field>
+                <span>Year</span>
+                <mat-select [(value)]="yearSummary" (valueChange)="findSummary('YEAR')">
+                    <mat-option *ngFor="let i of [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]"
+                        [value]="i">{{i}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <mat-form-field>
+                <span>Month</span>
+                <mat-select [(value)]="monthSummary"  (valueChange)="findSummary('MONTH')">
+                    <mat-option *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]"
+                        [value]="i">{{monthsArray[i]}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </mat-card-header>
+    <mat-card-content style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th style="text-align: center;">Total</th>
+                    <ng-container *ngFor="let date of dates">
+                        <th style="z-index: -1; text-align: center;">
+                            {{getDate(date.date)}}
+                            <br>
+                            {{daysArraySummary[getDay(date.date)]}}
+                        </th>
+                    </ng-container>
+                </tr>
+            </thead>
+            <tbody>
+                <td style="text-align: center">{{totalHours}}</td>
+                <ng-container *ngFor="let date of dates">
+                    <td style="text-align: center; z-index: -1;">
+                        <ng-container *ngIf="date.noteSummaryDto !== null; else NOTENULL">
+                            <p>{{date.noteSummaryDto.totalHours}}</p>
+                        </ng-container>
+                        <ng-template #NOTENULL>
+                            <p>0</p>
+                        </ng-template>
+                        <br>
+                        <ng-container *ngIf="date.checkInDto !== null; else CHECKINNULL">
+                            <span style="display: block;">{{date.checkInDto.checkInTime[3]}}:{{date.checkInDto.checkInTime[4]}}</span>
+                            <span style="display: block;">{{date.checkInDto.checkOutTime[3]}}:{{date.checkInDto.checkOutTime[4]}}</span>
+                        </ng-container>
+                        <ng-template #CHECKINNULL>
+                            <span style="display: block;">--:--</span>
+                            <span style="display: block;">--:--</span>
+                        </ng-template>
+                    </td>
+                </ng-container>
+            </tbody>
+        </table>
+    </mat-card-content>
+</mat-card>
+<mat-card class="content mat-elevation-z4">
+    <mat-card-header>
+        <mat-card-title>Check in punishments</mat-card-title>
+        <mat-form-field>
+            <span>Status</span>
+            <mat-select [(value)]="statusPunishment" (valueChange)="findPunishment('STATUS')">
+                <mat-option
+                    *ngFor="let i of ['ALL', 'PENDING', 'APPROVED', 'REJECTED']"
+                    [value]="i">{{i}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        <mat-form-field>
+            <span>Year</span>
+            <mat-select [(value)]="yearPunishment" (valueChange)="findPunishment('YEAR')">
+                <mat-option *ngFor="let i of [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]"
+                    [value]="i">{{i}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        <mat-form-field>
+            <span>Month</span>
+            <mat-select [(value)]="monthPunishment"  (valueChange)="findPunishment('MONTH')">
+                <mat-option *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]"
+                    [value]="i">{{monthsArray[i]}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <p>Click vào button Complain và nhập nội dung khiếu nại nếu bạn thấy không đúng.</p>
+    </mat-card-header>
+    <mat-card-content>
+        <table>
+            <thead>
+                <tr>
+                    <th rowspan="2">Date</th>
+                    <th colspan="2">Working time</th>
+                    <th colspan="2">Checking time</th>
+                    <th rowspan="2">Status</th>
+                    <th rowspan="2">Punishment description</th>
+                    <th rowspan="2">Punishment Money</th>
+                    <th rowspan="2" style="width: 230px;">Complain</th>
+                    <th rowspan="2" style="width: 230px;">Complain Reply</th>
+                    <th rowspan="2">Action</th>
+                </tr>
+                <tr>
+                    <th>Check in</th>
+                    <th>Check out</th>
+                    <th>Check in</th>
+                    <th>Check out</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of checkinPunishmentDto">
+                    <td>{{item.date}}</td>
+                    <td>08:00</td>
+                    <td>17:00</td>
+                    <td>{{item.timeCheckin}}</td>
+                    <td>{{item.timeCheckout}}</td>
+                    <td>{{item.status}}</td>
+                    <td>{{item.punishmentTypeDes}}</td>
+                    <td>{{item.punishmentMoney}}</td>
+                    <td>{{item.complain}}</td>
+                    <td>{{item.complainReply}}</td>
+                    <td>
+                        <button mat-raised-button color="primary" style="margin: 15px; height: 55px;" (click)="showDialogNotComment(item)">Complain</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </mat-card-content>    
+</mat-card>

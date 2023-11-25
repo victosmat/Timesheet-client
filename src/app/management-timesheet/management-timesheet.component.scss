@@ -1,0 +1,67 @@
+.example-section {
+  margin: 12px 0;
+}
+
+.example-margin {
+  margin: 0 12px;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 4px;
+  padding-left: 0px;
+}
+.mat-mdc-form-field + .mat-mdc-form-field {
+  margin-left: 8px;
+}
+.content {
+  background-color: white;
+  min-height: 200px;
+  margin: 16px;
+}
+
+.submit-week-utilities {
+  display: flex;
+}
+
+.submit-week-utilities p {
+  font-size: 2rem;
+}
+
+mat-card-header {
+  justify-content: space-between;
+}
+table {
+  width: 100%;
+}
+table,
+tr,
+th,
+td {
+  border-collapse: collapse;
+}
+th {
+  background-color: cadetblue;
+  color: white;
+}
+
+td {
+  min-width: 40px;
+}
+
+::ng-deep.mat-tab-label {
+  min-width: 10px !important;
+  padding: 30px !important;
+}
+
+.mat-icon.done {
+  color: green; 
+}
+
+.mat-icon.clear {
+  color: red;
+}
+
+.mat-icon.hourglass_empty {
+  color: orange; 
+}
