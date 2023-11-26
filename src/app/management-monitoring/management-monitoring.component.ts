@@ -35,7 +35,6 @@ export class ManagementMonitoringComponent implements OnInit {
   keyword: string = '';
   levelUser: string = 'ALL';
   paymentStatusUser: string = 'ALL';
-  typeUser: string = 'ALL';
   branchUser: string = 'ALL';
   month: number = this.selectedDate.getMonth();
   year: number = this.selectedDate.getFullYear();
@@ -87,7 +86,6 @@ export class ManagementMonitoringComponent implements OnInit {
     }
   
     const level = this.levelUser === 'ALL' ? '' : this.levelUser;
-    const type = this.typeUser === 'ALL' ? '' : this.typeUser;
     const branch = this.branchUser === 'ALL' ? '' : this.branchUser;
     
     this.employeeService
@@ -95,7 +93,6 @@ export class ManagementMonitoringComponent implements OnInit {
         this.keyword,
         payStatus,
         level,
-        type,
         branch,
         this.month,
         this.year,
@@ -103,17 +100,14 @@ export class ManagementMonitoringComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           console.log(response);
-          if (response.content.length === 0) {
+          if (response.length === 0) {
             this.snackBar.open('No data', 'Close', {
               duration: 2000,
               panelClass: ['error-snackbar'],
             });
             return;
           }
-          this.dataSource = new MatTableDataSource(response.content);
-          this.pageSize = response.pageable.pageSize;
-          this.pageNumber = response.pageable.pageNumber;
-          this.totalElements = response.totalElements;
+          this.dataSource = new MatTableDataSource(response);
         },
         error: (error: any) => {
           console.log(error);

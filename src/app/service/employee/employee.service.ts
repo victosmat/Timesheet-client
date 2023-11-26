@@ -34,17 +34,16 @@ export class EmployeeService {
       .pipe();
   }
 
-  public getAllPaySlip(keyword: string, paymentStatus: string, level: string, type: string, branch: string, month: number, year: number): Observable<any> {
+  public getAllPaySlip(keyword: string, paymentStatus: string, level: string, branch: string, month: number, year: number): Observable<any> {
     let params: HttpParams = new HttpParams();
     params = params.append('keyword', keyword);
     params = params.append('paymentStatus', paymentStatus);
     params = params.append('level', level);
-    params = params.append('type', type);
     params = params.append('branch', branch);
     params = params.append('month', month);
     params = params.append('year', year);
     return this.httpClient
-      .get(this.base_url + 'employees/view_payslip', { params: params })
+      .get(this.base_url + 'pay_slip/view_payslip', { params: params })
       .pipe();
   }
 

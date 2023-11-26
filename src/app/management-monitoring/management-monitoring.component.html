@@ -1,22 +1,22 @@
 <div class="content">
     <mat-card-header style="border-bottom: 1px solid silver;">
-        <mat-card-title style="font-size: 30px"> User </mat-card-title>
+        <mat-card-title style="font-size: 30px"> Monitoring </mat-card-title>
     </mat-card-header>
 
     <div style="display: flex; margin-top: 10px;">
-        <mat-form-field appearance="outline">
+        <mat-form-field class="example-full-width" appearance="outline">
             <mat-label>month</mat-label>
             <mat-select [(value)]="month" (valueChange)="findMonth()">
                 <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="i">{{i}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>status</mat-label>
+        <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Year</mat-label>
             <mat-select [(value)]="year" (valueChange)="findYear()">
                 <mat-option *ngFor="let i of [2018,2019, 2020,2021,2022,2023]" [value]="i">{{i}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field class="example-full-width" appearance="outline">
             <mat-label>status</mat-label>
             <mat-select [(value)]="paymentStatusUser" (valueChange)="findStatus()">
                 <mat-option *ngFor="let i of ['ALL', 'PAID', 'UNPAID']" [value]="i">{{i}}</mat-option>
