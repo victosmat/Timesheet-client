@@ -118,7 +118,7 @@ export class MyAbsenceDayComponent implements OnInit {
 
   getAbsenceDaysListOfParticularMonth(date: Date) {
     this.events$ = this.absenceService
-      .getAbsenceDaysListOfParticularMonth(
+      .getAbsenceDaysListOfParticularMonth(1, 300, 'id', 'asc',
         date.getMonth(),
         date.getFullYear(),
         Number(this.cookieService.get('TimesheetAppEmployeeId'))
@@ -178,7 +178,7 @@ export class MyAbsenceDayComponent implements OnInit {
           this.viewDate = date;
           this.currentMonth = this.viewDate.getMonth();
           this.events$ = this.absenceService
-            .getAbsenceDaysListOfParticularMonth(
+            .getAbsenceDaysListOfParticularMonth(1, 300, 'id', 'asc',
               response.getMonth(),
               response.getFullYear(),
               Number(this.cookieService.get('TimesheetAppEmployeeId'))

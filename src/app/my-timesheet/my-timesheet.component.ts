@@ -138,7 +138,7 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
       .subscribe({
         next: (response: any) => {
           this.notesPerDayDtos = response;
-                  },
+        },
         error: (error) => {
           console.log(error);
         },
@@ -374,11 +374,11 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
     const year = this.yearPunishment;
     const employeeId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
     this.timesheetService
-      .getCheckinOfEmployeeAndPunishment(employeeId, status, month, year, null)
+      .getCheckinOfEmployeeAndPunishment(1, 300, 'id', 'asc', employeeId, status, month, year, null)
       .subscribe({
         next: (response) => {
-          console.log(response);
-                    this.checkinPunishmentDto = response;
+          console.log(response.content);
+          this.checkinPunishmentDto = response.content;
         },
         error: (error) => {
           console.log(error);
@@ -442,7 +442,7 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
       .subscribe({
         next: (response) => {
           this.checkInDtoList = response;
-                    this.checkInDtoList.forEach((entry) => {
+          this.checkInDtoList.forEach((entry) => {
             const date = new Date(
               entry.checkInTime[0],
               entry.checkInTime[1],
@@ -462,7 +462,7 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
       .subscribe({
         next: (response) => {
           this.noteSummaryDtoList = response;
-                    this.noteSummaryDtoList.forEach((entry) => {
+          this.noteSummaryDtoList.forEach((entry) => {
             this.totalHours += entry.totalHours;
             const date = new Date(
               entry.date[0],
@@ -480,7 +480,7 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
       .getNumberOfEmployeeOpenTalks(this.checkInRequestDto)
       .subscribe({
         next: (response) => {
-                    this.totalOpentalks = response;
+          this.totalOpentalks = response;
         },
         error: (error) => { },
         complete: () => { },

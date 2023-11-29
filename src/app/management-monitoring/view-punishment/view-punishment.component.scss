@@ -1,0 +1,38 @@
+.content {
+    background-color: white;
+    min-height: 200px;
+    height: 100vh;
+    margin: 16px;
+    margin-left: 30px;
+    padding: 30px;
+}
+
+.content table {
+    width: 100%;
+}
+
+img {
+    width: 100px;
+    padding: 3px;
+}
+
+.example-full-width {
+    padding-left: 10px;
+}
+
+.mat-cell {
+    border-right: 1px solid #ccc;
+    text-align: center;
+}
+
+.mat-header-cell {
+    text-align: center;
+}
+
+.mat-row {
+    text-align: center !important;
+}
+
+.mat-header-row {
+    text-align: center !important;
+}

@@ -115,20 +115,20 @@ export class ManagementTardinessComponent implements OnInit {
     const departmentName = this.branchUser === 'ALL' ? '' : this.branchUser;
     const keyword = this.keyword;
     this.employeeService
-      .getAllCheckinAndPunishment(
+      .getAllCheckinAndPunishment(this.pageNumber, this.pageSize, this.sortField, this.sortOrder,
         keyword, month, year, departmentName,
       )
       .subscribe({
         next: (response: any) => {
           console.log(response);
-          if (response.length === 0) {
+          if (response.content.length === 0) {
             this.snackBar.open('No data', 'Close', {
               duration: 2000,
               panelClass: ['error-snackbar'],
             });
             return;
           }
-          this.dataSource = new MatTableDataSource(response);
+          this.dataSource = new MatTableDataSource(response.content);
         },
         error: (error: any) => {
           console.log(error);
@@ -158,7 +158,11 @@ export class ManagementTardinessComponent implements OnInit {
     this.getCheckinOfEmployeeAndPunishment();
   }
 
-  getCheckinOfEmployeeAndPunishment() { 
+  getCheckinOfEmployeeAndPunishment() {
+    this.pageNumber = 1;
+    this.pageSize = 10;
+    this.sortField = 'id';
+    this.sortOrder = 'asc';
     const status = this.statusPunishment === 'ALL' ? '' : this.statusPunishment;
     const month = this.month - 1;
     const year = this.year;
@@ -172,12 +176,10 @@ export class ManagementTardinessComponent implements OnInit {
       isComplain = false;
     }
     this.timesheetService
-      .getCheckinOfEmployeeAndPunishment(employeeId, status, month, year, isComplain)
+      .getCheckinOfEmployeeAndPunishment(this.pageNumber, this.pageSize, this.sortField, this.sortOrder, employeeId, status, month, year, isComplain)
       .subscribe({
         next: (response) => {
-          this.checkinPunishmentDto = response;
-          this.dataSourceDetail = new MatTableDataSource(response);
-          console.log(this.dataSourceDetail);
+          this.dataSourceDetail = new MatTableDataSource(response.content);
         },
         error: (error) => {
           console.log(error);
@@ -191,7 +193,7 @@ export class ManagementTardinessComponent implements OnInit {
   }
 
   showDialogNotComment(item: any) { }
-  replyComment(item: any) { 
+  replyComment(item: any) {
     this.dialog.open(ReplyCommentComponent, {
       data: item,
     }).afterClosed().subscribe({
@@ -200,24 +202,24 @@ export class ManagementTardinessComponent implements OnInit {
       },
     });
   }
-  updateCancelPunishment(item: any) { 
+  updateCancelPunishment(item: any) {
     this.dialog.open(UpdateIsDeletedComponent, {
       data: {
         item: item,
         checkIsDeleted: 1
-      }  
+      }
     }).afterClosed().subscribe({
       complete: () => {
         this.getCheckinOfEmployeeAndPunishment();
       },
     });
   }
-  updatePunishment(item: any) { 
+  updatePunishment(item: any) {
     this.dialog.open(UpdateIsDeletedComponent, {
       data: {
         item: item,
         checkIsDeleted: 2
-      }  
+      }
     }).afterClosed().subscribe({
       complete: () => {
         this.getCheckinOfEmployeeAndPunishment();
@@ -226,10 +228,10 @@ export class ManagementTardinessComponent implements OnInit {
   }
   updateReject(item: any) { }
   updateCheckPoint(item: any) { }
-  findStatus(){
+  findStatus() {
     this.getCheckinOfEmployeeAndPunishment();
   }
-  findComplain(){
+  findComplain() {
     this.getCheckinOfEmployeeAndPunishment();
   }
 }

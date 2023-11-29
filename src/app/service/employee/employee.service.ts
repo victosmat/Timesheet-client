@@ -34,8 +34,15 @@ export class EmployeeService {
       .pipe();
   }
 
-  public getAllPaySlip(keyword: string, paymentStatus: string, level: string, branch: string, month: number, year: number): Observable<any> {
+  public getAllPaySlip(pageNumber: number,
+    pageSize: number,
+    sortField: string,
+    sortOrder: string, keyword: string, paymentStatus: string, level: string, branch: string, month: number, year: number): Observable<any> {
     let params: HttpParams = new HttpParams();
+    params = params.append('pageNum', pageNumber);
+    params = params.append('pageSize', pageSize);
+    params = params.append('sortField', sortField);
+    params = params.append('sortDir', sortOrder);
     params = params.append('keyword', keyword);
     params = params.append('paymentStatus', paymentStatus);
     params = params.append('level', level);
@@ -78,8 +85,15 @@ export class EmployeeService {
       .pipe();
   }
 
-  public getAllCheckinAndPunishment(keyword: string, month: number, year: number, department: string): Observable<any> {
+  public getAllCheckinAndPunishment(pageNumber: number,
+    pageSize: number,
+    sortField: string,
+    sortOrder: string, keyword: string, month: number, year: number, department: string): Observable<any> {
     let params: HttpParams = new HttpParams();
+    params = params.append('pageNum', pageNumber);
+    params = params.append('pageSize', pageSize);
+    params = params.append('sortField', sortField);
+    params = params.append('sortDir', sortOrder);
     params = params.append('keyword', keyword);
     params = params.append('month', month);
     params = params.append('year', year);

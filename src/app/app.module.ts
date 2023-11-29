@@ -60,6 +60,8 @@ import { ManagementBonusComponent } from './management-bonus/management-bonus.co
 import { SaveBonusComponent } from './management-bonus/save-bonus/save-bonus.component';
 import { DeleteBonusComponent } from './management-bonus/delete-bonus/delete-bonus.component';
 import { ManagementMonitoringComponent } from './management-monitoring/management-monitoring.component';
+import { ViewPunishmentComponent } from './management-monitoring/view-punishment/view-punishment.component';
+import { ViewAbsenceComponent } from './management-monitoring/view-absence/view-absence.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -111,6 +113,8 @@ import { ManagementMonitoringComponent } from './management-monitoring/managemen
     SaveBonusComponent,
     DeleteBonusComponent,
     ManagementMonitoringComponent,
+    ViewPunishmentComponent,
+    ViewAbsenceComponent,
   ],
   imports: [
     BrowserModule,

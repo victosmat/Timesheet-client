@@ -109,13 +109,21 @@ export class TimesheetService {
   }
 
   public getCheckinOfEmployeeAndPunishment(
+    pageNumber: number,
+    pageSize: number,
+    sortField: string,
+    sortOrder: string,
     employeeId: number,
     status: string,
     month: number,
     year: number,
     isComplain: Boolean | null
-  ): Observable<CheckinPunishmentDto[]> {
+  ): Observable<any> {
     let params: HttpParams = new HttpParams();
+    params = params.append('pageNum', pageNumber);
+    params = params.append('pageSize', pageSize);
+    params = params.append('sortField', sortField);
+    params = params.append('sortDir', sortOrder);
     params = params.append('employeeId', employeeId);
     params = params.append('status', status);
     params = params.append('month', month + 1);

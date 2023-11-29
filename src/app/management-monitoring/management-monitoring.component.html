@@ -97,17 +97,17 @@
                     <mat-menu #menu="matMenu">
                         <button mat-menu-item (click)="viewPunishmentCheckin(element)">
                             <mat-icon>streetview</mat-icon>
-                            <span>Edit User</span>
+                            <span>View punishment</span>
                         </button>
 
                         <button mat-menu-item (click)="viewAbsence(element)">
                             <mat-icon>streetview</mat-icon>
-                            <span>Edit Roles</span>
+                            <span>View Absence</span>
                         </button>
 
                         <button mat-menu-item (click)="viewBonus(element)">
                             <mat-icon>streetview</mat-icon>
-                            <span>Edit Roles</span>
+                            <span>View bonus</span>
                         </button>
 
                         <button *ngIf="element.paymentStatus === true" mat-menu-item

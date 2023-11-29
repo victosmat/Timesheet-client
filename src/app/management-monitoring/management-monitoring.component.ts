@@ -6,6 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ViewPunishmentComponent } from './view-punishment/view-punishment.component';
+import { ViewAbsenceComponent } from './view-absence/view-absence.component';
 @Component({
   selector: 'app-management-monitoring',
   templateUrl: './management-monitoring.component.html',
@@ -69,7 +71,7 @@ export class ManagementMonitoringComponent implements OnInit {
     this.getAllUser();
   }
 
-  findYear() {  
+  findYear() {
     this.getAllUser();
   }
 
@@ -84,12 +86,13 @@ export class ManagementMonitoringComponent implements OnInit {
     } else if (this.paymentStatusUser === 'UNPAID') {
       payStatus = "false";
     }
-  
+
     const level = this.levelUser === 'ALL' ? '' : this.levelUser;
     const branch = this.branchUser === 'ALL' ? '' : this.branchUser;
-    
+
     this.employeeService
       .getAllPaySlip(
+        this.pageNumber, this.pageSize, this.sortField, this.sortOrder,
         this.keyword,
         payStatus,
         level,
@@ -107,7 +110,7 @@ export class ManagementMonitoringComponent implements OnInit {
             });
             return;
           }
-          this.dataSource = new MatTableDataSource(response);
+          this.dataSource = new MatTableDataSource(response.content);
         },
         error: (error: any) => {
           console.log(error);
@@ -133,7 +136,43 @@ export class ManagementMonitoringComponent implements OnInit {
   }
 
   updateStatus(id: number, status: boolean) { }
-  viewPunishmentCheckin(element: any) { }
-  viewAbsence(element: any) { }
+  viewPunishmentCheckin(element: any) {
+    this.dialog.open(ViewPunishmentComponent, {
+      data: {
+        id: element.id,
+        fullName: element.fullName,
+        email: element.email,
+        departmentName: element.departmentName,
+        departmentLevelStatus: element.departmentLevelStatus,
+        payDay: element.payDay,
+        totalSalary: element.totalSalary,
+        paymentStatus: element.paymentStatus,
+      },
+      width: '1400px',
+    }).afterClosed().subscribe({
+      next: () => {
+        this.renderPage();
+      },
+    });
+  }
+  viewAbsence(element: any) {
+    this.dialog.open(ViewAbsenceComponent, {
+      data: {
+        id: element.id,
+        fullName: element.fullName,
+        email: element.email,
+        departmentName: element.departmentName,
+        departmentLevelStatus: element.departmentLevelStatus,
+        payDay: element.payDay,
+        totalSalary: element.totalSalary,
+        paymentStatus: element.paymentStatus,
+      },
+      width: '1400px',
+    }).afterClosed().subscribe({
+      next: () => {
+        this.renderPage();
+      },
+    });
+  }
   viewBonus(element: any) { }
 }

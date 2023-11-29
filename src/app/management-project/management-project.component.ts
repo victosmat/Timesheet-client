@@ -47,29 +47,14 @@ export class ManagementProjectComponent implements OnInit {
     private cookieService: CookieService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.renderPage();
   }
 
   renderPage() {
-    this.projectService.getAllProject(this.status, this.keyword).subscribe({
-      next: (response: any) => {
-        console.log(response);
-        if (response.length === 0) {
-          this.snackBar.open('No data', 'Close', {
-            duration: 2000,
-            panelClass: ['error-snackbar'],
-          });
-          return;
-        }
-        this.dataSource = new MatTableDataSource(response);
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-    });
+    this.getAllProject();
   }
   editProject(element: any) {
     this.dialog
@@ -85,27 +70,11 @@ export class ManagementProjectComponent implements OnInit {
       });
   }
 
-  updateStatus(status: string){
-    console.log(status);
-    this.projectService.getAllProject(status, this.keyword).subscribe({
-      next: (response: any) => {
-        console.log(response);
-        if (response.length === 0) {
-          this.snackBar.open('No data', 'Close', {
-            duration: 2000,
-            panelClass: ['error-snackbar'],
-          });
-          return;
-        }
-        this.dataSource = new MatTableDataSource(response);
-      },
-      error: (error: any) => {
-        console.log(error);
-      },
-    });
+  updateStatus(status: string) {
+   this.getAllProject();
   }
 
-  delete(element: any) {}
+  delete(element: any) { }
   viewTask(element: any) {
     this.dialog
       .open(ViewTaskComponent, {
@@ -148,8 +117,12 @@ export class ManagementProjectComponent implements OnInit {
         },
       });
   }
-  searchOrFilter() {
-    this.projectService.getAllProject(this.status, this.keyword).subscribe({
+  getAllProject() {
+    this.pageNumber = 1;
+    this.pageSize = 10;
+    this.sortField = 'id';
+    this.sortOrder = 'asc';
+    this.projectService.getAllProject(this.pageNumber, this.pageSize, this.sortField, this.sortOrder, this.status, this.keyword).subscribe({
       next: (response: any) => {
         console.log(response);
         if (response.length === 0) {
@@ -165,5 +138,8 @@ export class ManagementProjectComponent implements OnInit {
         console.log(error);
       },
     });
+  }
+  searchOrFilter() {
+   this.getAllProject();
   }
 }

@@ -10,8 +10,15 @@ export class ProjectService {
   private base_url = 'http://localhost:8081/Timesheet/app/';
   constructor(private httpClient: HttpClient) { }
 
-  public getAllProject(status: string, keyword: string) : Observable<ProjectViewManageDto[]> {
+  public getAllProject(pageNumber: number,
+    pageSize: number,
+    sortField: string,
+    sortOrder: string,status: string, keyword: string) : Observable<ProjectViewManageDto[]> {
     let params: HttpParams = new HttpParams();
+    params = params.append('pageNum', pageNumber);
+    params = params.append('pageSize', pageSize);
+    params = params.append('sortField', sortField);
+    params = params.append('sortDir', sortOrder);
     params = params.append('status', status);
     params = params.append('nameKey', keyword);
     return this.httpClient.get<ProjectViewManageDto[]>(this.base_url + 'projects/get_all', { params: params }).pipe();
