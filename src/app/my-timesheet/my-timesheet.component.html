@@ -183,10 +183,10 @@
                     [value]="i">{{monthsArray[i]}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <p>Click vào button Complain và nhập nội dung khiếu nại nếu bạn thấy không đúng.</p>
+        <p style="color: red;">Click vào button Complain và nhập nội dung khiếu nại nếu bạn thấy không đúng.</p>
     </mat-card-header>
     <mat-card-content>
-        <table>
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th rowspan="2">Date</th>
@@ -219,7 +219,7 @@
                     <td>{{item.complain}}</td>
                     <td>{{item.complainReply}}</td>
                     <td>
-                        <button mat-raised-button color="primary" style="margin: 15px; height: 55px;" (click)="showDialogNotComment(item)">Complain</button>
+                        <button mat-raised-button color="primary" style="height: 35px;" (click)="showDialogNotComment(item)">Complain</button>
                     </td>
                 </tr>
             </tbody>

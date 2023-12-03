@@ -71,7 +71,24 @@ export class ManagementProjectComponent implements OnInit {
   }
 
   updateStatus(status: string) {
-   this.getAllProject();
+    this.pageNumber = 1;
+    this.pageSize = 10;
+    this.sortField = 'id';
+    this.sortOrder = 'asc';
+    this.projectService.getAllProject(this.pageNumber, this.pageSize, this.sortField, this.sortOrder, status, this.keyword).subscribe({
+      next: (response: any) => {
+        if (response.content.length === 0) {
+          this.snackBar.open('No data', 'Close', {
+            duration: 2000,
+            panelClass: ['error-snackbar'],
+          });
+        }
+        this.dataSource = new MatTableDataSource(response.content);
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+    });
   }
 
   delete(element: any) { }
@@ -124,15 +141,14 @@ export class ManagementProjectComponent implements OnInit {
     this.sortOrder = 'asc';
     this.projectService.getAllProject(this.pageNumber, this.pageSize, this.sortField, this.sortOrder, this.status, this.keyword).subscribe({
       next: (response: any) => {
-        console.log(response);
-        if (response.length === 0) {
+        if (response.content.length === 0) {
           this.snackBar.open('No data', 'Close', {
             duration: 2000,
             panelClass: ['error-snackbar'],
           });
           return;
         }
-        this.dataSource = new MatTableDataSource(response);
+        this.dataSource = new MatTableDataSource(response.content);
       },
       error: (error: any) => {
         console.log(error);
@@ -140,6 +156,6 @@ export class ManagementProjectComponent implements OnInit {
     });
   }
   searchOrFilter() {
-   this.getAllProject();
+    this.getAllProject();
   }
 }

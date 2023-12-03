@@ -13,6 +13,7 @@ import { MatInput } from '@angular/material/input';
 import { SaveTaskComponent } from './save-task/save-task.component';
 import { TaskDetailDto } from 'src/app/model/task-detail-dto';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-view-task',
   templateUrl: './view-task.component.html',
@@ -48,8 +49,9 @@ export class ViewTaskComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private projectService: ProjectService,
     private cookieService: CookieService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit() {
     this.renderPage();
@@ -83,6 +85,11 @@ export class ViewTaskComponent implements OnInit {
   }
 
   getAllTask() {
+    this.pageNumber = 1;
+    this.pageSize = 5;
+    this.sortField = 'id';
+    this.sortOrder = 'asc';
+
     const keyword = this.taskForm.value.keyword;
     const type =
       this.taskForm.value.type === 'ALL' ? '' : this.taskForm.value.type;
@@ -99,10 +106,19 @@ export class ViewTaskComponent implements OnInit {
     console.log('priority: ' + priority);
 
     this.projectService
-      .getTaskDetails(this.data.id, keyword, type, status, priority)
+      .getTaskDetails(this.pageNumber, this.pageSize, this.sortField, this.sortOrder,
+        this.data.id, keyword, type, status, priority)
       .subscribe({
         next: (response: any) => {
-          this.dataSource = new MatTableDataSource(response);
+          console.log(response);
+          if (response.content.length === 0) {
+            this.snackBar.open('No data', 'Close', {
+              duration: 2000,
+              panelClass: ['error-snackbar'],
+            });
+            this.dialogRef.close();
+          }
+          this.dataSource = new MatTableDataSource(response.content);
         },
         error: (error: any) => {
           console.log(error);
@@ -123,10 +139,10 @@ export class ViewTaskComponent implements OnInit {
         },
       });
   }
-  updateStatus(element: any) {}
-  delete(element: any) {}
-  deactivateUser(element: any) {}
-  activateUser(element: any) {}
+  updateStatus(element: any) { }
+  delete(element: any) { }
+  deactivateUser(element: any) { }
+  activateUser(element: any) { }
 
   loadPage($event: PageEvent) {
     console.log($event.pageSize);

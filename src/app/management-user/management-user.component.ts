@@ -101,7 +101,6 @@ export class ManagementUserComponent implements OnInit {
               duration: 2000,
               panelClass: ['error-snackbar'],
             });
-            return;
           }
           this.dataSource = new MatTableDataSource(response.content);
           this.pageSize = response.pageable.pageSize;

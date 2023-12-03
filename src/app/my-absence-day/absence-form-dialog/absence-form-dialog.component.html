@@ -1,7 +1,7 @@
-<div style="width: 400px; justify-content: center; height: 100%;">
+<div style="width: 400px; justify-content: center;">
     <div mat-dialog-title>Request {{this.data.type}}</div>
-    <mat-dialog-content style="height: auto;">
-        <form [formGroup]="absenceForm" (ngSubmit)="submitForm()">
+    <mat-dialog-content>
+        <form [formGroup]="absenceForm" (click)="submitForm()">
             <div>
                 <mat-form-field class="example-full-width" appearance="outline">
                     <mat-label>Reason</mat-label>
@@ -40,10 +40,10 @@
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
             </div>
+            <mat-dialog-actions style="float: right;">
+                <button mat-raised-button type="reset" color="warn" (click)="close()">Cancel</button>
+                <button mat-raised-button type="submit" color="primary">Ok</button>
+            </mat-dialog-actions>
         </form>
     </mat-dialog-content>
-    <mat-dialog-actions style="float: right;">
-        <button mat-raised-button type="reset" color="warn" (click)="close()">Cancel</button>
-        <button mat-raised-button type="submit" color="primary">Ok</button>
-    </mat-dialog-actions>
 </div>

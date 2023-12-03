@@ -126,6 +126,7 @@ export class ManagementTimesheetComponent implements OnInit {
     if (this.status !== 'ALL') status === this.status;
     this.timesheetService.getAllNote(status, null, null, this.emailKeyword).subscribe({
       next: (response: any) => {
+        console.log(response);
         this.noteDetailDtoList = response;
         if(response.length === 0) {
           this.snackBar.open('No data', 'Close', {
@@ -376,4 +377,6 @@ export class ManagementTimesheetComponent implements OnInit {
       });
     }
   }
+
+  updateTaskStatus(noteView: NoteDetailViewDto) {}
 }

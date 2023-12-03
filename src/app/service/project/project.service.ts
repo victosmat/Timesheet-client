@@ -13,7 +13,7 @@ export class ProjectService {
   public getAllProject(pageNumber: number,
     pageSize: number,
     sortField: string,
-    sortOrder: string,status: string, keyword: string) : Observable<ProjectViewManageDto[]> {
+    sortOrder: string, status: string, keyword: string): Observable<ProjectViewManageDto[]> {
     let params: HttpParams = new HttpParams();
     params = params.append('pageNum', pageNumber);
     params = params.append('pageSize', pageSize);
@@ -24,20 +24,27 @@ export class ProjectService {
     return this.httpClient.get<ProjectViewManageDto[]>(this.base_url + 'projects/get_all', { params: params }).pipe();
   }
 
-  public getProjectDetails(id: number) : Observable<ProjectViewManageDto> {
+  public getProjectDetails(id: number): Observable<ProjectViewManageDto> {
     let params: HttpParams = new HttpParams();
     params = params.append('projectId', id);
     return this.httpClient.get<ProjectViewManageDto>(this.base_url + 'projects/get_details', { params: params }).pipe();
   }
 
-  public getTaskDetails(id: number, keyword: string, type: string, status: string, priority: string) : Observable<any> {
+  public getTaskDetails(pageNumber: number,
+    pageSize: number,
+    sortField: string,
+    sortOrder: string, id: number, keyword: string, type: string, status: string, priority: string): Observable<any> {
     let params: HttpParams = new HttpParams();
+    params = params.append('pageNum', pageNumber);
+    params = params.append('pageSize', pageSize);
+    params = params.append('sortField', sortField);
+    params = params.append('sortDir', sortOrder);
     params = params.append('projectId', id);
     params = params.append('keyword', keyword);
     params = params.append('Type', type);
     params = params.append('status', status);
     params = params.append('priority', priority);
-  
+
     return this.httpClient.get<any>(this.base_url + 'tasks/get_task_detail_by_project', { params: params }).pipe();
   }
 }

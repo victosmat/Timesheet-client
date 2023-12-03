@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { CheckInDto } from 'src/app/model/check-in-dto';
 import { CheckInRequestDto } from 'src/app/model/check-in-request-dto';
@@ -23,7 +24,8 @@ export class TimesheetService {
   }
   private base_url = 'http://localhost:8081/Timesheet/app/';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient,
+    private cookieService: CookieService) { }
 
   public getTimesheetByWeek(
     employeeId: number,
@@ -64,14 +66,14 @@ export class TimesheetService {
     };
 
     console.log(noteCommentDto);
-  
+
     return this.httpClient
       .post(this.base_url + 'note_comments/save', noteCommentDto)
       .pipe();
   }
-  
 
-  public updateTimesheetStatus(noteId: number, status:string): Observable<any> {
+
+  public updateTimesheetStatus(noteId: number, status: string): Observable<any> {
     let params: HttpParams = new HttpParams();
     params = params.append('noteId', noteId);
     params = params.append('status', status);
@@ -147,6 +149,8 @@ export class TimesheetService {
     emailKeyword: string | null
   ): Observable<NoteDetailDto[]> {
     let params: HttpParams = new HttpParams();
+    const employeeId = this.cookieService.get('TimesheetAppEmployeeId');
+    params = params.append('pmId', employeeId);
     if (status !== null) {
       params = params.append('status', status);
     }

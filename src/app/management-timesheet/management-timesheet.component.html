@@ -36,8 +36,8 @@
         <mat-icon style="color: #9e9e9e" matPrefix>search</mat-icon>
         <mat-label>Search by email</mat-label>
         <input matInput [(ngModel)]="emailKeyword" name="keyword" (keyup.enter)="searchEmailKeyword()" />
-    </mat-form-field>
-      
+      </mat-form-field>
+
       &nbsp; &nbsp; &nbsp;
       <div style="margin-top: 10px; margin-left: 50px">
         <button style="width: 250px; height: 40px" mat-raised-button type="reset" color="warn" (click)="approve()">
@@ -82,7 +82,8 @@
                         ">
                         {{ employeeView.employeeName }}
                         <div style="font-size: 12px;" class="badge bg-primary">{{employeeView.employeeLevel}}</div>
-                        <div style="font-size: 12px; margin-left: 5px;" class="badge bg-primary">{{employeeView.employeeDepartment}}</div>
+                        <div style="font-size: 12px; margin-left: 5px;" class="badge bg-primary">
+                          {{employeeView.employeeDepartment}}</div>
                       </mat-checkbox>
                     </mat-expansion-panel-header>
                     <ul *ngFor="let noteView of employeeView.noteDetailViewDtos">
@@ -93,6 +94,10 @@
                               <mat-checkbox [(ngModel)]="noteView.completed"
                                 (ngModelChange)="updateAllCompleteNote(noteView)">
                                 {{ noteView.dateSubmit | date : "yyyy - MM - dd" }}
+                                <div style="font-size: 12px;" class="badge bg-info">{{noteView.taskCode}}
+                                </div>
+                                <div style="font-size: 12px; margin-left: 5px;" class="badge bg-info">
+                                  {{noteView.taskStatus}}</div>
                               </mat-checkbox>
                             </mat-expansion-panel-header>
                             <table class="table table-hover">
@@ -117,16 +122,35 @@
                                   <td>{{noteView.workingType}}</td>
                                   <td>
                                     {{noteView.comment}}
-                                    <span *ngIf="noteView.comment == null" class="badge badge-danger"><mat-icon style="color: orange;">hourglass_empty</mat-icon></span>
+                                    <span *ngIf="noteView.comment == null" class="badge badge-danger"><mat-icon
+                                        style="color: orange;">hourglass_empty</mat-icon></span>
                                   </td>
                                   <td>
-                                    <span *ngIf="noteView.readed === true" class="badge badge-success"><mat-icon style="color: green;">done</mat-icon></span>
-                                    <span *ngIf="noteView.readed === false" class="badge badge-danger"><mat-icon style="color: red;">clear</mat-icon></span>
-                                    <span *ngIf="noteView.readed === null" class="badge badge-warning"><mat-icon style="color: orange;">hourglass_empty</mat-icon></span>
+                                    <span *ngIf="noteView.readed === true" class="badge badge-success"><mat-icon
+                                        style="color: green;">done</mat-icon></span>
+                                    <span *ngIf="noteView.readed === false" class="badge badge-danger"><mat-icon
+                                        style="color: red;">clear</mat-icon></span>
+                                    <span *ngIf="noteView.readed === null" class="badge badge-warning"><mat-icon
+                                        style="color: orange;">hourglass_empty</mat-icon></span>
                                   </td>
-                                  <td><button mat-raised-button color="primary" (click)="showDialogComment(noteView)">
-                                      Comment
-                                    </button></td>
+                                  <td>
+                                    <section>
+                                      <button mat-mini-fab [matMenuTriggerFor]="menu" color="primary"
+                                        aria-label="Example icon button with a menu icon">
+                                        <mat-icon>menu</mat-icon>
+                                      </button>
+                                      <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="showDialogComment(noteView)">
+                                          <mat-icon>note_add</mat-icon>
+                                          <span>Comment</span>
+                                        </button>
+                                        <button mat-menu-item (click)="updateTaskStatus(noteView)">
+                                          <mat-icon>speaker_notes</mat-icon>
+                                          <span>Update status task</span>
+                                        </button>
+                                      </mat-menu>
+                                    </section>
+                                  </td>
                                 </tr>
                               </tbody>
                             </table>
