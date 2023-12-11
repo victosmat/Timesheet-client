@@ -92,15 +92,16 @@ export class ManagementAbsenceComponent implements OnInit {
     private absenceService: AbsenceService,
     private snackBar: MatSnackBar,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.absenceForm = new FormGroup({
       status: new FormControl('ALL'),
       absentDayType: new FormControl('ALL'),
+      searchText: new FormControl(''),
     });
     const date = this.viewDate;
-    const email = this.searchText;
+    const email = this.absenceForm.value.searchText;
     const status = this.absenceForm.value.status;
     const type = this.absenceForm.value.absentDayType;
     this.getAbsenceDaysListOfParticularMonth(
@@ -113,7 +114,7 @@ export class ManagementAbsenceComponent implements OnInit {
 
   refreshData() {
     const date = this.viewDate;
-    const email = this.searchText;
+    const email = this.absenceForm.value.searchText;
     const status = this.absenceForm.value.status;
     const type = this.absenceForm.value.absentDayType;
     this.getAbsenceDaysListOfParticularMonth(
@@ -125,7 +126,7 @@ export class ManagementAbsenceComponent implements OnInit {
   }
   onchangeStatus() {
     const date = this.viewDate;
-    const email = this.searchText;
+    const email = this.absenceForm.value.searchText;
     const status = this.absenceForm.value.status;
     const type = this.absenceForm.value.absentDayType;
     this.getAbsenceDaysListOfParticularMonth(
@@ -138,7 +139,7 @@ export class ManagementAbsenceComponent implements OnInit {
 
   onchangeType() {
     const date = this.viewDate;
-    const email = this.searchText;
+    const email = this.absenceForm.value.searchText;
     const status = this.absenceForm.value.status;
     const type = this.absenceForm.value.absentDayType;
     this.getAbsenceDaysListOfParticularMonth(
@@ -189,7 +190,7 @@ export class ManagementAbsenceComponent implements OnInit {
     this.viewDate = date;
     if (this.viewDate.getMonth() !== this.currentMonth) {
       this.currentMonth = this.viewDate.getMonth();
-      const email = this.searchText;
+      const email = this.absenceForm.value.searchText;
       const status = this.absenceForm.value.status;
       const type = this.absenceForm.value.absentDayType;
       this.getAbsenceDaysListOfParticularMonth(
@@ -212,7 +213,7 @@ export class ManagementAbsenceComponent implements OnInit {
     const dialogRef = this.dialog.open(ManagementAbsenceDialogComponent, {
       data: {
         date: date,
-        email: this.searchText,
+        email: this.absenceForm.value.searchText,
         status: this.absenceForm.value.status,
         type: this.absenceForm.value.absentDayType,
       },
@@ -221,7 +222,7 @@ export class ManagementAbsenceComponent implements OnInit {
     dialogRef.afterClosed().subscribe({
       next: (response) => {
         const date = this.viewDate;
-        const email = this.searchText;
+        const email = this.absenceForm.value.searchText;
         const status = this.absenceForm.value.status;
         const type = this.absenceForm.value.absentDayType;
         this.getAbsenceDaysListOfParticularMonth(

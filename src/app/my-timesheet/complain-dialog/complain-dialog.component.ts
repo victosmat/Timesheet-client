@@ -39,7 +39,7 @@ export class ComplainDialogComponent implements OnInit {
   }
 
   submitForm(){
-    const complain = this.complainFrom.controls['note'].value;
+    const complain = this.complainFrom.value.complain;
     const checkinId = this.data.note.id;
     this.timesheetService.saveComplain(checkinId, complain).subscribe({
       next: (response: any) => {

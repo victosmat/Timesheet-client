@@ -44,7 +44,7 @@
         </mat-form-field>
         <mat-form-field class="example-full-width" appearance="outline" style="width: 100%;">
             <mat-label>Search by email</mat-label>
-            <input name="searchText" matInput [(ngModel)]="searchText" (keyup.enter)="refreshData()" />
+            <input name="searchText" matInput formControlName="searchText" (keyup.enter)="refreshData()" />
         </mat-form-field>
         &nbsp; &nbsp; &nbsp;
     </form>

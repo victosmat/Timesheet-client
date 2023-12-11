@@ -46,7 +46,7 @@
                         <td scope="row">{{ item.timeOff }}</td>
                         <td scope="row">{{ item.status }}</td>
                         <td scope="row">
-                            <span *ngIf="item.punishmentStatus === false">
+                            <span>
                                 <i class="material-icons" *ngIf="item.punishmentStatus === true"
                                     style="color: green">check_circle</i>
                                 <i class="material-icons" *ngIf="item.punishmentStatus === false"
@@ -61,16 +61,16 @@
                                         <mat-icon>menu</mat-icon>
                                     </button>
                                     <mat-menu #menu="matMenu">
-                                        <button mat-menu-item (click)="approvedAbsenceRequest(item.id, item.status)">
+                                        <button *ngIf="item.status === 'PENDING' || item.status === 'REJECTED'" mat-menu-item (click)="approvedAbsenceRequest(item.id, item.status)">
                                             <mat-icon>check_circle</mat-icon>
                                             <span>Approved</span>
                                         </button>
                                         <button mat-menu-item
-                                            (click)="updateStatusPunishment(item.id, item.absenceType)">
+                                            (click)="updateStatusPunishment(item.id, item.punishmentStatus)">
                                             <mat-icon>edit</mat-icon>
                                             <span>Update punishment status</span>
                                         </button>
-                                        <button mat-menu-item (click)="RejectAbsenceRequest(item.id, item.status)">
+                                        <button *ngIf="item.status === 'PENDING' || item.status === 'APPROVED'" mat-menu-item (click)="RejectAbsenceRequest(item.id, item.status)">
                                             <mat-icon>error</mat-icon>
                                             <span>Reject</span>
                                         </button>

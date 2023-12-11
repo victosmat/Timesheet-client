@@ -78,15 +78,7 @@
                             <mat-expansion-panel (opened)="panelMember = true" (closed)="panelMember = false">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title> Selected member </mat-panel-title>
-                                </mat-expansion-panel-header>
-                                <div style="display: flex; justify-content: space-between;">
-                                    <mat-form-field class="col-md-7" appearance="outline">
-                                        <mat-icon style="color: #9e9e9e" matPrefix>search</mat-icon>
-                                        <mat-label>Search by keyword</mat-label>
-                                        <input matInput formControlName="keyword" name="keyword"
-                                            (keyup.enter)="searchOrFilterUser()" />
-                                    </mat-form-field>
-                                    <div style="float: right;">
+                                    <div style="float: right; margin-right: 20px;">
                                         <div *ngIf="this.checkAddMember === false" class="col-md-6">
                                             <button class="col-sm-4" large mat-raised-button color="primary"
                                                 style="width: 150px" (click)="addUser()" name="createBtn">
@@ -100,7 +92,17 @@
                                             </button>
                                         </div>
                                     </div>
-
+                                </mat-expansion-panel-header>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <mat-form-field style="width: 100%; margin-right: 10px;" appearance="outline">
+                                        <mat-icon style="color: #9e9e9e" matPrefix>search</mat-icon>
+                                        <mat-label>Search by keyword</mat-label>
+                                        <input matInput formControlName="keywordSelected" name="keywordSelected" />
+                                    </mat-form-field>
+                                    <button style="margin-top: 10px;" mat-icon-button mat-raised-button color="primary"
+                                        (click)="filterSelected()">
+                                        <mat-icon>filter_list</mat-icon>
+                                    </button>
                                 </div>
                                 <div formArrayName="employeeSelectedList">
                                     <ul *ngFor="let employee of employeeSelectedList.controls; let i = index">
@@ -118,7 +120,8 @@
                                             </div>
                                             <div>
                                                 <mat-form-field class="example-full-width" appearance="outline">
-                                                    <mat-select formControlName="roleProjectType" (selectionChange)="updateRole(employee, i)">
+                                                    <mat-select formControlName="roleProjectType"
+                                                        (selectionChange)="updateRole(employee, i)">
                                                         <mat-option value="PM">PM</mat-option>
                                                         <mat-option value="MEMBER">MEMBER</mat-option>
                                                         <mat-option value="SHADOW">SHADOW</mat-option>
@@ -133,17 +136,23 @@
                                 </div>
                             </mat-expansion-panel>
                         </mat-accordion>
-                        <mat-accordion *ngIf="this.checkAddMember === true" class="mat-accordion" style="width: 45%;">
+                        <mat-accordion *ngIf="this.checkAddMember === true" class="mat-accordion"
+                            style="width: 45%; max-height: 600px;">
                             <mat-expansion-panel (opened)="panelTeamMember = true" (closed)="panelTeamMember = false">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title> Select team member </mat-panel-title>
                                 </mat-expansion-panel-header>
-                                <mat-form-field class="col-md-7" appearance="outline">
-                                    <mat-icon style="color: #9e9e9e" matPrefix>search</mat-icon>
-                                    <mat-label>Search by keyword</mat-label>
-                                    <input matInput formControlName="keyword" name="keyword"
-                                        (keyup.enter)="searchOrFilterUser()" />
-                                </mat-form-field>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <mat-form-field style="width: 100%; margin-right: 10px;" appearance="outline">
+                                        <mat-icon style="color: #9e9e9e" matPrefix>search</mat-icon>
+                                        <mat-label>Search by keyword</mat-label>
+                                        <input matInput formControlName="keyword" />
+                                    </mat-form-field>
+                                    <button style="margin-top: 10px;" mat-icon-button mat-raised-button color="primary"
+                                        (click)="filter()">
+                                        <mat-icon>filter_list</mat-icon>
+                                    </button>
+                                </div>
                                 <div>
                                     <ul *ngFor="let employee of employeeView">
                                         <mat-card style="display: flex; justify-content: space-between">

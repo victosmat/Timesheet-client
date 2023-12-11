@@ -174,7 +174,7 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
 
     dialogRef.afterClosed().subscribe({
       complete: () => {
-        this.getCheckinOfEmployeeAndPunishment();
+        this.ngOnInit();
       },
     });
   }

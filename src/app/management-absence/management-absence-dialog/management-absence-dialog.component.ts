@@ -11,9 +11,11 @@ import {
   MAT_DIALOG_DATA,
   MatDialog,
 } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie-service';
 import { AbsenceManageViewDto } from 'src/app/model/absence-manage-view-dto';
 import { AbsenceService } from 'src/app/service/absence/absence.service';
+import { UpdateStatusPunismentComponent } from '../update-status-punisment/update-status-punisment.component';
 
 @Component({
   selector: 'app-management-absence-dialog',
@@ -30,8 +32,9 @@ export class ManagementAbsenceDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private cookieService: CookieService,
     private absenceService: AbsenceService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit(): void {
     const date = this.data.date as Date;
@@ -56,38 +59,44 @@ export class ManagementAbsenceDialogComponent implements OnInit {
       });
   }
 
-  updateStatusPunishment(id: number | null, type: string | null) {
-    // console.log(type);
-    // const dialogRef = this.dialog.open(AbsenceFormDialogComponent, {
-    //   data: {
-    //     employeeId: this.cookieService.get('TimesheetAppEmployeeId'),
-    //     absenceId: id,
-    //     type: type,
-    //   },
-    // });
-    // dialogRef.afterClosed().subscribe((response) => {
-    //   const date = this.data.date as Date;
-    //   this.listAllAbsenceRequestInThisDateOfEmployee(
-    //     date,
-    //     Number(this.cookieService.get('TimesheetAppEmployeeId'))
-    //   );
-    // });
+  updateStatusPunishment(id: number | null, punishmentStatus: Boolean | null) {
+    this.dialog.open(UpdateStatusPunismentComponent, {
+      data: {
+        absenceId: id,
+        punishmentStatus: punishmentStatus,
+      },
+    }).afterClosed().subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.ngOnInit();
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+    });
+
   }
   approvedAbsenceRequest(id: number | null, status: string | null) {
-    // if (status) {
-    //   if (status === 'PENDING') {
-    //     const dialogRef = this.dialog.open(AbsenceConfirmDialogComponent, {
-    //       data: { absenceId: id },
-    //     });
-    //     dialogRef.afterClosed().subscribe((response) => {
-    //       const date = this.data.date as Date;
-    //       this.listAllAbsenceRequestInThisDateOfEmployee(
-    //         date,
-    //         Number(this.cookieService.get('TimesheetAppEmployeeId'))
-    //       );
-    //     });
-    //   }
-    // }
+    if (status) {
+      if (id)
+        this.absenceService.approvedAbsenceRequest(id).subscribe({
+          next: (response: any) => {
+            console.log(response);
+            this.ngOnInit();
+            this.snackBar.open('Approved successfully!', 'Close', {
+              duration: 2000,
+              panelClass: ['green-snackbar'],
+            });
+          },
+          error: (error: any) => {
+            console.log(error);
+            this.snackBar.open('Approved failed!', 'Close', {
+              duration: 2000,
+              panelClass: ['error-snackbar'],
+            });
+          },
+        });
+    }
   }
 
   onNoClick(): void {
@@ -95,19 +104,25 @@ export class ManagementAbsenceDialogComponent implements OnInit {
   }
 
   RejectAbsenceRequest(id: number | null, status: string | null) {
-    // if (status) {
-    //   if (status === 'PENDING') {
-    //     const dialogRef = this.dialog.open(AbsenceConfirmDialogComponent, {
-    //       data: { absenceId: id },
-    //     });
-    //     dialogRef.afterClosed().subscribe((response) => {
-    //       const date = this.data.date as Date;
-    //       this.listAllAbsenceRequestInThisDateOfEmployee(
-    //         date,
-    //         Number(this.cookieService.get('TimesheetAppEmployeeId'))
-    //       );
-    //     });
-    //   }
-    // }
+    if (status) {
+      if (id)
+        this.absenceService.RejectAbsenceRequest(id).subscribe({
+          next: (response: any) => {
+            console.log(response);
+            this.ngOnInit();
+            this.snackBar.open('Rejected successfully!', 'Close', {
+              duration: 2000,
+              panelClass: ['green-snackbar'],
+            });
+          },
+          error: (error: any) => {
+            console.log(error);
+            this.snackBar.open('Rejected failed!', 'Close', {
+              duration: 2000,
+              panelClass: ['error-snackbar'],
+            });
+          },
+        });
+    }
   }
 }

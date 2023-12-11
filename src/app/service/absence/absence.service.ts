@@ -29,6 +29,27 @@ export class AbsenceService {
     return this.httpClient.get(this.base_url + "absence/get_absence_of_month", { params: params }).pipe();
   }
 
+  public updateStatusPunishment(id: number, punishmentStatus: Boolean): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append("absenceId", id);
+    params = params.append("punishmentStatus", punishmentStatus.toString());
+    return this.httpClient.put(this.base_url + "absence/update_punishment", null, { params: params }).pipe();
+  }
+
+  public approvedAbsenceRequest(absenceId: number): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append("absenceId", absenceId);
+    params = params.append("status", "APPROVED");
+    return this.httpClient.put(this.base_url + "absence/update_staff_absence_status", null, { params: params }).pipe();
+  }
+
+  public RejectAbsenceRequest(absenceId: number): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append("absenceId", absenceId);
+    params = params.append("status", "REJECTED");
+    return this.httpClient.put(this.base_url + "absence/update_staff_absence_status", null, { params: params }).pipe();
+  }
+
   public findAllByAbsenceTypeName(absenceTypeName: string): Observable<any> {
     let params: HttpParams = new HttpParams();
     params = params.append("absenceTypeName", absenceTypeName);

@@ -5,6 +5,7 @@ import { EmployeeDetailDto } from 'src/app/model/employee-detail-dto';
 import { PmDto } from 'src/app/model/pm-dto';
 import { DepartmentDto } from 'src/app/model/department-dto';
 import { RoleDto } from 'src/app/model/role-dto';
+import { ro } from 'date-fns/locale';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,24 @@ export class EmployeeService {
     params = params.append('sortOrder', sortOrder);
     return this.httpClient
       .get(this.base_url + 'employees/view_staff', { params: params })
+      .pipe();
+  }
+
+  public deactivateUser(employeeId: number, isEnable: boolean): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append('id', employeeId);
+    params = params.append('isEnable', isEnable);
+    return this.httpClient
+      .put<any>(this.base_url + 'employees/update_isEnable', null, { params: params })
+      .pipe();
+  }
+
+  public activateUser(employeeId: number, isEnable: boolean): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append('id', employeeId);
+    params = params.append('isEnable', isEnable);
+    return this.httpClient
+      .put<any>(this.base_url + 'employees/update_isEnable', null, { params: params })
       .pipe();
   }
 
@@ -195,6 +214,15 @@ export class EmployeeService {
       .get<EmployeeDetailDto>(this.base_url + 'employees/get_by_id', {
         params: params,
       })
+      .pipe();
+  }
+
+  public editRole(employeeId: number, roleIdList: string): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append('id', employeeId);
+    params = params.append('list_role_id', roleIdList);
+    return this.httpClient
+      .put<any>(this.base_url + 'employees/update_role', null, { params: params })
       .pipe();
   }
 

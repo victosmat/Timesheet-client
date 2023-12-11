@@ -61,6 +61,7 @@ export class ManagementProjectComponent implements OnInit {
       .open(SaveProjectComponent, {
         data: element,
         width: '1400px',
+        maxHeight: '600px',
       })
       .afterClosed()
       .subscribe({

@@ -56,6 +56,7 @@ export class SaveProjectComponent implements OnInit {
       start: new FormControl(null, Validators.required),
       end: new FormControl(null, Validators.required),
       keyword: new FormControl(null),
+      keywordSelected: new FormControl(null),
       employeeSelectedList: this.formBuilder.array([]),
     });
 
@@ -172,36 +173,13 @@ export class SaveProjectComponent implements OnInit {
   exitAdd() {
     this.checkAddMember = false;
   }
-  searchOrFilterUser() {
-    const keyword = this.projectFrom.get('keyword')?.value;
-    this.pageNumber = 1;
-    this.pageSize = 100;
-    this.sortField = 'id';
-    this.sortOrder = 'asc';
-    this.employeeService
-      .getEmployees(
-        this.pageNumber,
-        this.pageSize,
-        this.sortField,
-        this.sortOrder,
-        keyword,
-        '',
-        '',
-        '',
-        ''
-      )
-      .subscribe({
-        next: (response: any) => {
-          this.employeeView = response.content;
-          this.pageSize = response.pageable.pageSize;
-          this.pageNumber = response.pageable.pageNumber;
-          this.totalElements = response.totalElements;
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
+  searchOrFilterSelectedUser() {
   }
+
+  searchOrFilterUser(){
+    
+  }
+
   addUserToTeam(employee: EmployeeViews) {
     let check = false;
     this.employeeSelectedList.controls.forEach((element: any) => {
@@ -233,5 +211,43 @@ export class SaveProjectComponent implements OnInit {
         roleProjectType: new FormControl('MEMBER', Validators.required),
       })
     );
+  }
+
+  filter(){
+    console.log("sscsccs");
+    console.log(this.projectFrom.value.keyword);
+    const keyword = this.projectFrom.value.keyword;
+    this.pageNumber = 1;
+    this.pageSize = 100;
+    this.sortField = 'id';
+    this.sortOrder = 'asc';
+    this.employeeService
+      .getEmployees(
+        this.pageNumber,
+        this.pageSize,
+        this.sortField,
+        this.sortOrder,
+        keyword,
+        '',
+        '',
+        '',
+        ''
+      )
+      .subscribe({
+        next: (response: any) => {
+          this.employeeView = response.content;
+          this.pageSize = response.pageable.pageSize;
+          this.pageNumber = response.pageable.pageNumber;
+          this.totalElements = response.totalElements;
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+      this.panelTeamMember = true;
+  }
+
+  filterSelected(){
+    console.log(this.employeeSelectedList.value.keywordSelected);
   }
 }

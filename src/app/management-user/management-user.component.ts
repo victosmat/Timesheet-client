@@ -9,6 +9,7 @@ import { Sort } from '@angular/material/sort';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
 import { AddUserDialogComponent } from './add-user-dialog/add-user-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EditRoleDialogComponent } from './edit-role-dialog/edit-role-dialog.component';
 
 @Component({
   selector: 'app-management-user',
@@ -49,7 +50,7 @@ export class ManagementUserComponent implements OnInit {
     private cookieService: CookieService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.renderPage();
@@ -73,6 +74,7 @@ export class ManagementUserComponent implements OnInit {
   }
 
   getAllUser() {
+    console.log(this.keyword);
     this.pageNumber = 1;
     this.pageSize = 10;
     this.sortField = 'id';
@@ -124,10 +126,61 @@ export class ManagementUserComponent implements OnInit {
       },
     });
   }
-  editRole(element: any) {}
-  delete(element: any) {}
-  deactivateUser(element: any) {}
-  activateUser(element: any) {}
+  editRole(element: any) {
+    const dialogRef = this.dialog.open(EditRoleDialogComponent, {
+      data: element,
+      width: '500px',
+    });
+
+    dialogRef.afterClosed().subscribe({
+      complete: () => {
+        this.renderPage();
+      },
+    });
+  }
+  delete(element: any) { }
+  deactivateUser(element: any) {
+    console.log(element);
+    this.employeeService.deactivateUser(element.id, false).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.snackBar.open('Deactivate user successfully!', 'Close', {
+          duration: 2000,
+          panelClass: ['green-snackbar'],
+        });
+        this.renderPage();
+      },
+      error: (error: any) => {
+        console.log(error.status);
+        this.snackBar.open('Deactivate user failed!', 'Close', {
+          duration: 2000,
+          panelClass: ['red-snackbar'],
+        });
+      },
+      complete: () => { },
+    });
+  }
+  activateUser(element: any) {
+    console.log(element);
+    this.employeeService.activateUser(element.id, true).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.snackBar.open('Deactivate user successfully!', 'Close', {
+          duration: 2000,
+          panelClass: ['green-snackbar'],
+        });
+        this.renderPage();
+      },
+      error: (error: any) => {
+        console.log(error.status);
+        this.snackBar.open('Deactivate user failed!', 'Close', {
+          duration: 2000,
+          panelClass: ['red-snackbar'],
+        });
+      },
+      complete: () => { },
+    });
+  }
 
   loadPage($event: PageEvent) {
     console.log($event.pageSize);

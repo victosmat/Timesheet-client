@@ -129,7 +129,8 @@ export class TimesheetService {
     params = params.append('employeeId', employeeId);
     params = params.append('status', status);
     params = params.append('month', month + 1);
-    params = params.append('year', year);
+    params = params.append('year', year),
+    params = params.append('isManage', 'true');
     if (isComplain !== null) {
       params = params.append('isComplain', isComplain.toString());
     }

@@ -13,6 +13,7 @@ import {
 } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { AbsenceViewDto } from 'src/app/model/absence-view-dto';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AbsenceService } from 'src/app/service/absence/absence.service';
 import { AbsenceFormDialogComponent } from '../absence-form-dialog/absence-form-dialog.component';
 import { AbsenceConfirmDialogComponent } from '../absence-confirm-dialog/absence-confirm-dialog.component';
@@ -31,7 +32,8 @@ export class AbsenceDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private cookieService: CookieService,
     private absenceService: AbsenceService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -87,6 +89,12 @@ export class AbsenceDialogComponent implements OnInit {
             date,
             Number(this.cookieService.get('TimesheetAppEmployeeId'))
           );
+        });
+      }
+      else{
+        this.snackBar.open('Cannot delete this request!', 'Close', {
+          duration: 2000,
+          panelClass: ['error-snackbar'],
         });
       }
     }
