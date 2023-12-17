@@ -10,6 +10,8 @@ import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.com
 import { AddUserDialogComponent } from './add-user-dialog/add-user-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditRoleDialogComponent } from './edit-role-dialog/edit-role-dialog.component';
+import { CustomDataSource } from '../shared/custom-datasource';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-management-user',
@@ -32,9 +34,10 @@ export class ManagementUserComponent implements OnInit {
     'isEnabled',
     'actions',
   ];
-  dataSource: any = new MatTableDataSource();
+  data$: any = Observable<any[]>;
+  dataSource: any;
   buddyId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
-  pageNumber = 1;
+  pageNumber = 0;
   pageSize = 10;
   sortField = 'id';
   sortOrder = 'asc';
@@ -74,18 +77,13 @@ export class ManagementUserComponent implements OnInit {
   }
 
   getAllUser() {
-    console.log(this.keyword);
-    this.pageNumber = 1;
-    this.pageSize = 10;
-    this.sortField = 'id';
-    this.sortOrder = 'asc';
     const isEnable = this.IsEnableUser === 'ALL' ? '' : this.IsEnableUser;
     const level = this.levelUser === 'ALL' ? '' : this.levelUser;
     const type = this.typeUser === 'ALL' ? '' : this.typeUser;
     const branch = this.branchUser === 'ALL' ? '' : this.branchUser;
     this.employeeService
       .getEmployees(
-        this.pageNumber,
+        this.pageNumber + 1,
         this.pageSize,
         this.sortField,
         this.sortOrder,
@@ -104,7 +102,8 @@ export class ManagementUserComponent implements OnInit {
               panelClass: ['error-snackbar'],
             });
           }
-          this.dataSource = new MatTableDataSource(response.content);
+          this.data$ = response.content;
+          this.dataSource = new CustomDataSource(this.data$);
           this.pageSize = response.pageable.pageSize;
           this.pageNumber = response.pageable.pageNumber;
           this.totalElements = response.totalElements;
@@ -183,7 +182,8 @@ export class ManagementUserComponent implements OnInit {
   }
 
   loadPage($event: PageEvent) {
-    console.log($event.pageSize);
+    console.log($event);
+    this.pageNumber = $event.pageIndex;
     this.pageSize = $event.pageSize;
     this.renderPage();
   }

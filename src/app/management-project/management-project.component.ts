@@ -11,6 +11,8 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SaveProjectComponent } from './save-project/save-project.component';
 import { ViewTaskComponent } from './view-task/view-task.component';
+import { Observable } from 'rxjs';
+import { CustomDataSource } from '../shared/custom-datasource';
 
 @Component({
   selector: 'app-management-project',
@@ -31,9 +33,10 @@ export class ManagementProjectComponent implements OnInit {
     'actions',
   ];
 
-  dataSource: any = new MatTableDataSource();
+  data$: any = Observable<any[]>;
+  dataSource: any;
   buddyId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
-  pageNumber = 1;
+  pageNumber = 0;
   pageSize = 10;
   nameSearch = '';
   sortField = 'id';
@@ -73,10 +76,6 @@ export class ManagementProjectComponent implements OnInit {
   }
 
   updateStatus(status: string) {
-    this.pageNumber = 1;
-    this.pageSize = 10;
-    this.sortField = 'id';
-    this.sortOrder = 'asc';
     this.projectService.getAllProject(this.pageNumber, this.pageSize, this.sortField, this.sortOrder, status, this.keyword).subscribe({
       next: (response: any) => {
         if (response.content.length === 0) {
@@ -85,7 +84,11 @@ export class ManagementProjectComponent implements OnInit {
             panelClass: ['error-snackbar'],
           });
         }
-        this.dataSource = new MatTableDataSource(response.content);
+        this.data$ = response.content;
+        this.dataSource = new CustomDataSource(this.data$);
+        this.pageSize = response.pageable.pageSize;
+        this.pageNumber = response.pageable.pageNumber;
+        this.totalElements = response.totalElements;
       },
       error: (error: any) => {
         console.log(error);
@@ -110,8 +113,9 @@ export class ManagementProjectComponent implements OnInit {
   }
 
   loadPage($event: PageEvent) {
-    console.log($event.pageSize);
+    console.log($event);
     this.pageSize = $event.pageSize;
+    this.pageNumber = $event.pageIndex;
     this.renderPage();
   }
 
@@ -137,11 +141,7 @@ export class ManagementProjectComponent implements OnInit {
       });
   }
   getAllProject() {
-    this.pageNumber = 1;
-    this.pageSize = 10;
-    this.sortField = 'id';
-    this.sortOrder = 'asc';
-    this.projectService.getAllProject(this.pageNumber, this.pageSize, this.sortField, this.sortOrder, this.status, this.keyword).subscribe({
+    this.projectService.getAllProject(this.pageNumber + 1, this.pageSize, this.sortField, this.sortOrder, this.status, this.keyword).subscribe({
       next: (response: any) => {
         if (response.content.length === 0) {
           this.snackBar.open('No data', 'Close', {
@@ -150,7 +150,12 @@ export class ManagementProjectComponent implements OnInit {
           });
           return;
         }
-        this.dataSource = new MatTableDataSource(response.content);
+        console.log(response.content);
+        this.data$ = response.content;
+        this.dataSource = new CustomDataSource(this.data$);
+        this.pageSize = response.pageable.pageSize;
+        this.pageNumber = response.pageable.pageNumber;
+        this.totalElements = response.totalElements;
       },
       error: (error: any) => {
         console.log(error);

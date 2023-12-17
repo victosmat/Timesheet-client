@@ -6,9 +6,9 @@ import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CheckinPunishmentDto } from 'src/app/model/checkin-punishment-dto';
-import { EmployeeService } from 'src/app/service/employee/employee.service';
-import { TimesheetService } from 'src/app/service/timesheet/timesheet.service';
 import { AbsenceService } from 'src/app/service/absence/absence.service';
+import { CustomDataSource } from 'src/app/shared/custom-datasource';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-view-absence',
   templateUrl: './view-absence.component.html',
@@ -28,10 +28,11 @@ export class ViewAbsenceComponent implements OnInit {
     'punishmentStatus'
   ];
 
-  dataSource: any = new MatTableDataSource();
+  data$: any = Observable<any[]>;
+  dataSource: any;
   dataSourceDetail: any = new MatTableDataSource();
   buddyId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
-  pageNumber = 1;
+  pageNumber = 0;
   pageSize = 5;
   sortField = 'id';
   sortOrder = 'asc';
@@ -91,10 +92,6 @@ export class ViewAbsenceComponent implements OnInit {
   }
 
   getAbsenceDaysListOfParticularMonth() {
-    this.pageNumber = 1;
-    this.pageSize = 5;
-    this.sortField = 'id';
-    this.sortOrder = 'asc';
     const status = this.statusPunishment === 'ALL' ? '' : this.statusPunishment;
     const month = this.month;
     const year = this.year;
@@ -108,7 +105,7 @@ export class ViewAbsenceComponent implements OnInit {
       isComplain = false;
     }
     this.absenceService
-      .listAllAbsenceRequestInMonthAndYearOfEmployee(this.pageNumber,
+      .listAllAbsenceRequestInMonthAndYearOfEmployee(this.pageNumber + 1,
         this.pageSize,
         this.sortField,
         this.sortOrder, month, year, employeeId)
@@ -124,7 +121,8 @@ export class ViewAbsenceComponent implements OnInit {
             return;
           }
           this.checkinPunishmentDto = response.content;
-          this.dataSourceDetail = new MatTableDataSource(response.content);
+          this.data$ = response.content;
+          this.dataSource = new CustomDataSource(this.data$);
           this.pageSize = response.pageable.pageSize;
           this.pageNumber = response.pageable.pageNumber;
           this.totalElements = response.totalElements;

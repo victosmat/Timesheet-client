@@ -8,6 +8,8 @@ import { Sort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ViewPunishmentComponent } from './view-punishment/view-punishment.component';
 import { ViewAbsenceComponent } from './view-absence/view-absence.component';
+import { Observable } from 'rxjs';
+import { CustomDataSource } from '../shared/custom-datasource';
 @Component({
   selector: 'app-management-monitoring',
   templateUrl: './management-monitoring.component.html',
@@ -27,9 +29,10 @@ export class ManagementMonitoringComponent implements OnInit {
     'actions',
   ];
   selectedDate = new Date();
-  dataSource: any = new MatTableDataSource();
+  data$: any = Observable<any[]>;
+  dataSource: any;
   buddyId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
-  pageNumber = 1;
+  pageNumber = 0;
   pageSize = 10;
   sortField = 'id';
   sortOrder = 'asc';
@@ -76,10 +79,6 @@ export class ManagementMonitoringComponent implements OnInit {
   }
 
   getAllUser() {
-    this.pageNumber = 1;
-    this.pageSize = 10;
-    this.sortField = 'id';
-    this.sortOrder = 'asc';
     let payStatus = '';
     if (this.paymentStatusUser === 'PAID') {
       payStatus = "true";
@@ -92,7 +91,7 @@ export class ManagementMonitoringComponent implements OnInit {
 
     this.employeeService
       .getAllPaySlip(
-        this.pageNumber, this.pageSize, this.sortField, this.sortOrder,
+        this.pageNumber + 1, this.pageSize, this.sortField, this.sortOrder,
         this.keyword,
         payStatus,
         level,
@@ -110,7 +109,11 @@ export class ManagementMonitoringComponent implements OnInit {
             });
             return;
           }
-          this.dataSource = new MatTableDataSource(response.content);
+          this.data$ = response.content;
+          this.dataSource = new CustomDataSource(this.data$);
+          this.pageSize = response.pageable.pageSize;
+          this.pageNumber = response.pageable.pageNumber;
+          this.totalElements = response.totalElements;
         },
         error: (error: any) => {
           console.log(error);
@@ -122,6 +125,7 @@ export class ManagementMonitoringComponent implements OnInit {
   loadPage($event: PageEvent) {
     console.log($event.pageSize);
     this.pageSize = $event.pageSize;
+    this.pageNumber = $event.pageIndex;
     this.renderPage();
   }
 

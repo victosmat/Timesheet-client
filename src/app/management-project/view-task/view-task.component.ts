@@ -14,6 +14,8 @@ import { SaveTaskComponent } from './save-task/save-task.component';
 import { TaskDetailDto } from 'src/app/model/task-detail-dto';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable } from 'rxjs';
+import { CustomDataSource } from 'src/app/shared/custom-datasource';
 @Component({
   selector: 'app-view-task',
   templateUrl: './view-task.component.html',
@@ -29,9 +31,11 @@ export class ViewTaskComponent implements OnInit {
     'priorityType',
     'actions',
   ];
-  dataSource: any = new MatTableDataSource();
+  
+  data$: any = Observable<any[]>;
+  dataSource: any;
   buddyId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
-  pageNumber = 1;
+  pageNumber = 0;
   pageSize = 10;
   nameSearch = '';
   sortField = 'id';
@@ -68,12 +72,6 @@ export class ViewTaskComponent implements OnInit {
   }
 
   renderPage() {
-    this.pageNumber = 1;
-    this.pageSize = 10;
-    this.nameSearch = '';
-    this.sortField = 'id';
-    this.sortOrder = 'asc';
-
     this.taskForm = new FormGroup({
       type: new FormControl('ALL'),
       status: new FormControl('ALL'),
@@ -85,11 +83,6 @@ export class ViewTaskComponent implements OnInit {
   }
 
   getAllTask() {
-    this.pageNumber = 1;
-    this.pageSize = 5;
-    this.sortField = 'id';
-    this.sortOrder = 'asc';
-
     const keyword = this.taskForm.value.keyword;
     const type =
       this.taskForm.value.type === 'ALL' ? '' : this.taskForm.value.type;
@@ -100,13 +93,8 @@ export class ViewTaskComponent implements OnInit {
         ? ''
         : this.taskForm.value.priority;
 
-    console.log('keyword: ' + keyword);
-    console.log('type: ' + type);
-    console.log('status: ' + status);
-    console.log('priority: ' + priority);
-
     this.projectService
-      .getTaskDetails(this.pageNumber, this.pageSize, this.sortField, this.sortOrder,
+      .getTaskDetails(this.pageNumber + 1, this.pageSize, this.sortField, this.sortOrder,
         this.data.id, keyword, type, status, priority)
       .subscribe({
         next: (response: any) => {
@@ -118,7 +106,11 @@ export class ViewTaskComponent implements OnInit {
             });
             this.dialogRef.close();
           }
-          this.dataSource = new MatTableDataSource(response.content);
+          this.data$ = response.content;
+          this.dataSource = new CustomDataSource(this.data$);
+          this.pageSize = response.pageable.pageSize;
+          this.pageNumber = response.pageable.pageNumber;
+          this.totalElements = response.totalElements;
         },
         error: (error: any) => {
           console.log(error);
@@ -147,6 +139,7 @@ export class ViewTaskComponent implements OnInit {
   loadPage($event: PageEvent) {
     console.log($event.pageSize);
     this.pageSize = $event.pageSize;
+    this.pageNumber = $event.pageIndex;
     this.renderPage();
   }
 

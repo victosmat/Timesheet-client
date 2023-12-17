@@ -12,6 +12,8 @@ import { CheckinPunishmentDto } from '../model/checkin-punishment-dto';
 import { TimesheetService } from '../service/timesheet/timesheet.service';
 import { ReplyCommentComponent } from './reply-complain/reply-comment.component';
 import { UpdateIsDeletedComponent } from './update-is-deleted/update-is-deleted.component';
+import { Observable } from 'rxjs';
+import { CustomDataSource } from '../shared/custom-datasource';
 
 @Component({
   selector: 'app-management-tardiness',
@@ -46,10 +48,11 @@ export class ManagementTardinessComponent implements OnInit {
     'actions'
   ];
 
-  dataSource: any = new MatTableDataSource();
+  data$: any = Observable<any[]>;
+  dataSource: any;
   dataSourceDetail: any = new MatTableDataSource();
   buddyId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
-  pageNumber = 1;
+  pageNumber = 0;
   pageSize = 10;
   sortField = 'id';
   sortOrder = 'asc';
@@ -69,9 +72,7 @@ export class ManagementTardinessComponent implements OnInit {
   departmentNameViewDetail: string | undefined;
   checkViewDeital: boolean = false;
   checkinPunishmentDto: CheckinPunishmentDto[] = [];
-
   employeeIdInViewDetail: number = 0;
-
 
   constructor(
     private employeeService: EmployeeService,
@@ -106,16 +107,12 @@ export class ManagementTardinessComponent implements OnInit {
   }
 
   getAllCheckinAndPunishment() {
-    this.pageNumber = 1;
-    this.pageSize = 10;
-    this.sortField = 'id';
-    this.sortOrder = 'asc';
     const month = this.month;
     const year = this.year;
     const departmentName = this.branchUser === 'ALL' ? '' : this.branchUser;
     const keyword = this.keyword;
     this.employeeService
-      .getAllCheckinAndPunishment(this.pageNumber, this.pageSize, this.sortField, this.sortOrder,
+      .getAllCheckinAndPunishment(this.pageNumber + 1, this.pageSize, this.sortField, this.sortOrder,
         keyword, month, year, departmentName,
       )
       .subscribe({
@@ -128,7 +125,11 @@ export class ManagementTardinessComponent implements OnInit {
             });
             return;
           }
-          this.dataSource = new MatTableDataSource(response.content);
+          this.data$ = response.content;
+          this.dataSource = new CustomDataSource(this.data$);
+          this.pageSize = response.pageable.pageSize;
+          this.pageNumber = response.pageable.pageNumber;
+          this.totalElements = response.totalElements;
         },
         error: (error: any) => {
           console.log(error);
@@ -139,6 +140,7 @@ export class ManagementTardinessComponent implements OnInit {
   loadPage($event: PageEvent) {
     console.log($event.pageSize);
     this.pageSize = $event.pageSize;
+    this.pageNumber = $event.pageIndex;
     this.renderPage();
   }
 
@@ -159,10 +161,6 @@ export class ManagementTardinessComponent implements OnInit {
   }
 
   getCheckinOfEmployeeAndPunishment() {
-    this.pageNumber = 1;
-    this.pageSize = 10;
-    this.sortField = 'id';
-    this.sortOrder = 'asc';
     const status = this.statusPunishment === 'ALL' ? '' : this.statusPunishment;
     const month = this.month - 1;
     const year = this.year;
@@ -176,10 +174,14 @@ export class ManagementTardinessComponent implements OnInit {
       isComplain = false;
     }
     this.timesheetService
-      .getCheckinOfEmployeeAndPunishment(this.pageNumber, this.pageSize, this.sortField, this.sortOrder, employeeId, status, month, year, isComplain)
+      .getCheckinOfEmployeeAndPunishment(this.pageNumber + 1, this.pageSize, this.sortField, this.sortOrder, employeeId, status, month, year, isComplain)
       .subscribe({
         next: (response) => {
-          this.dataSourceDetail = new MatTableDataSource(response.content);
+          this.data$ = response.content;
+          this.dataSource = new CustomDataSource(this.data$);
+          this.pageSize = response.pageable.pageSize;
+          this.pageNumber = response.pageable.pageNumber;
+          this.totalElements = response.totalElements;
         },
         error: (error) => {
           console.log(error);
