@@ -35,6 +35,12 @@ export class EmployeeService {
       .pipe();
   }
 
+  public addEmployee(employeeDto: any): Observable<any> {
+    return this.httpClient
+      .post<any>(this.base_url + 'employees/save', employeeDto)
+      .pipe();
+  }
+
   public deactivateUser(employeeId: number, isEnable: boolean): Observable<any> {
     let params: HttpParams = new HttpParams();
     params = params.append('id', employeeId);

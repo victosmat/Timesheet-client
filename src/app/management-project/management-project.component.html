@@ -67,6 +67,16 @@
             </th>
             <td mat-cell *matCellDef="let element">{{ element.endDate }}</td>
         </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell mat-sort-header="status" *matHeaderCellDef>
+                status
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <i class="material-icons" *ngIf="element.projectStatus === 'ACTIVE'" style="color:green;">check_circle</i>
+                <i class="material-icons" *ngIf="element.projectStatus === 'INACTIVE'" style="color:red;">error</i>
+            </td>
+        </ng-container>
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let element">
@@ -83,6 +93,14 @@
                         <button mat-menu-item (click)="viewTask(element)">
                             <mat-icon>speaker_notes</mat-icon>
                             <span>View task</span>
+                        </button>
+                        <button *ngIf="element.projectStatus === 'ACTIVE'" mat-menu-item (click)="deactivateProject(element)">
+                            <mat-icon>block</mat-icon>
+                            <span>Deactivate</span>
+                        </button>
+                        <button *ngIf="element.projectStatus === 'INACTIVE'" mat-menu-item (click)="activateProject(element)">
+                            <mat-icon>done_outline</mat-icon>
+                            <span>Activate</span>
                         </button>
                         <button mat-menu-item (click)="delete(element)">
                             <mat-icon>delete</mat-icon>

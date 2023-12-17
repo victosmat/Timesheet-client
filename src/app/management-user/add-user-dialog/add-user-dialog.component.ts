@@ -32,7 +32,8 @@ export class AddUserDialogComponent implements OnInit {
     public dialog: MatDialog,
     private cookieService: CookieService,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.profileFrom = new FormGroup({
@@ -47,10 +48,23 @@ export class AddUserDialogComponent implements OnInit {
       buddyName: new FormControl(null, Validators.required),
       departmentName: new FormControl(null, Validators.required),
       username: new FormControl(null, Validators.required),
+      password: new FormControl(null, Validators.required),
       jobDepartment: new FormControl(null, Validators.required),
-      salary: new FormControl(null, Validators.required),
       level: new FormControl(null, Validators.required),
     });
+
+    const usernameControl = this.profileFrom.value.username;
+    const passwordControl = this.profileFrom.value.password;
+
+    if (usernameControl && passwordControl) {
+      usernameControl.valueChanges.subscribe((value: string) => {
+        if (value.includes('@')) {
+          passwordControl.disable();
+        } else {
+          passwordControl.enable();
+        }
+      });
+    }
 
     this.getPms();
     this.getDepartments();
@@ -66,7 +80,7 @@ export class AddUserDialogComponent implements OnInit {
       error: (error: any) => {
         console.log(error.status);
       },
-      complete: () => {},
+      complete: () => { },
     });
   }
 
@@ -79,11 +93,11 @@ export class AddUserDialogComponent implements OnInit {
       error: (error: any) => {
         console.log(error.status);
       },
-      complete: () => {},
+      complete: () => { },
     });
   }
 
-  getRoles(){
+  getRoles() {
     this.employeeService.getRoles().subscribe({
       next: (response: any) => {
         this.roles = response;
@@ -92,15 +106,32 @@ export class AddUserDialogComponent implements OnInit {
       error: (error: any) => {
         console.log(error.status);
       },
-      complete: () => {},
+      complete: () => { },
     });
   }
 
-  submitFrom() {}
+  submitFrom() { 
+    this.employeeDetailDto = this.profileFrom.value;
+    console.log(this.employeeDetailDto);
+    this.employeeService.addEmployee(this.employeeDetailDto).subscribe({
+      next: (response: any) => {
+        this.snackBar.open('Add user successfully!', 'Close', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        });
+        this.dialogRef.close();
+      },
+      error: (error: any) => {
+        console.log(error.status);
+      },
+      complete: () => { },
+    });
+  }
   changePassword() {
     this.submitFrom();
   }
-  changeInfo() {}
+  changeInfo() { }
 
   onNoClick(): void {
     this.dialogRef.close();

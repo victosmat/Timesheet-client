@@ -27,6 +27,7 @@ export class ManagementProjectComponent implements OnInit {
     'totalEmployee',
     'startDate',
     'endDate',
+    'status',
     'actions',
   ];
 
@@ -159,4 +160,7 @@ export class ManagementProjectComponent implements OnInit {
   searchOrFilter() {
     this.getAllProject();
   }
+
+  deactivateProject(element: any) {}
+  activateProject(element: any) {}
 }
