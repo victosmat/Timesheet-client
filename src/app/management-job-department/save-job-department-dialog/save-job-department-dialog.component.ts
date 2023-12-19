@@ -33,7 +33,7 @@ export class SaveJobDepartmentDialogComponent implements OnInit {
       description: new FormControl(null, Validators.required),
       salaryRange: new FormControl(0, Validators.required),
     });
-    if (this.data.id !== undefined){
+    if (this.data.id !== undefined) {
       this.employeeService.getJobDepartmentById(this.data.id).subscribe({
         next: (response: any) => {
           this.jobDepartmentDto = response;
@@ -59,38 +59,38 @@ export class SaveJobDepartmentDialogComponent implements OnInit {
 
   submitForm() {
     if (this.jobDepartmentForm.valid) {
-        this.jobDepartmentDto = {
-          id: this.data.id,
-          jobDepartment: this.jobDepartmentForm.value.code,
-          name: this.jobDepartmentForm.value.name,
-          description: this.jobDepartmentForm.value.description,
-          salaryRange: this.jobDepartmentForm.value.salaryRange
-        };
-        console.log(this.jobDepartmentDto);
-        this.employeeService.saveJobDepartment(this.jobDepartmentDto).subscribe({
-          next: (response: any) => {
-            this.dialogRef.close(response);
-            this.snalBar.open('Save successfully', 'OK', {
-              duration: 2000,
-              panelClass: ['success-snackbar']
-            });
-          },
-          error: (error: any) => {
-            console.log(error);
-            this.dialogRef.close();
-            this.snalBar.open('Save failed', 'OK', {
-              duration: 2000,
-              panelClass: ['error-snackbar']
-            });
-          }
-        });
-      }
-      else {
-        this.snalBar.open('Please fill in all fields', 'OK', {
-          duration: 2000,
-          panelClass: ['error-snackbar']
-        });
-      }
+      this.jobDepartmentDto = {
+        id: this.data.id,
+        jobDepartment: this.jobDepartmentForm.value.code,
+        name: this.jobDepartmentForm.value.name,
+        description: this.jobDepartmentForm.value.description,
+        salaryRange: this.jobDepartmentForm.value.salaryRange
+      };
+      console.log(this.jobDepartmentDto);
+      this.employeeService.saveJobDepartment(this.jobDepartmentDto).subscribe({
+        next: (response: any) => {
+          this.dialogRef.close(response);
+          this.snalBar.open('Save successfully', 'OK', {
+            duration: 2000,
+            panelClass: ['success-snackbar']
+          });
+        },
+        error: (error: any) => {
+          console.log(error);
+          this.dialogRef.close();
+          this.snalBar.open('Save failed', 'OK', {
+            duration: 2000,
+            panelClass: ['error-snackbar']
+          });
+        }
+      });
+    }
+    else {
+      this.snalBar.open('Please fill in all required fields', 'OK', {
+        duration: 2000,
+        panelClass: ['error-snackbar']
+      });
+    }
   }
   onNoClick(): void {
     this.dialogRef.close();

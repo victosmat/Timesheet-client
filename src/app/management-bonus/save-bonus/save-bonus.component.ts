@@ -82,9 +82,8 @@ export class SaveBonusComponent implements OnInit {
       });
     }
     else {
-      this.snalBar.open('Please fill in all fields', 'OK', {
+      this.snalBar.open('Please fill in all required fields!', 'OK', {
         duration: 2000,
-        panelClass: ['error-snackbar']
       });
     }
   }

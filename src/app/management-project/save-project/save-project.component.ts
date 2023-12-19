@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { el, tr } from 'date-fns/locale';
 import { EmployeeViews } from 'src/app/model/EmployeeViews';
 import { ProjectDetailDto } from 'src/app/model/project-view-detail';
 import { EmployeeService } from 'src/app/service/employee/employee.service';
@@ -166,7 +167,28 @@ export class SaveProjectComponent implements OnInit {
   onNoClick() {
     this.dialogRef.close();
   }
-  submitFrom() { }
+  submitFrom() {
+    if (this.projectFrom.valid) {
+      // kiểm tra nhân viên có trong dự án chưa
+      let check = false;
+      this.employeeSelectedList.controls.forEach((element: any) => {
+        if (element.value.employeeId == this.data.id) {
+          if (element.value.roleProjectType == 'PM') check = true;
+        }
+      });
+      if (!check) { 
+        this.snackBar.open('Please add PM and members', 'Close', {
+          duration: 2000,
+        });
+        return;
+      }
+    }
+    else {
+      this.snackBar.open('Please fill in all required fields', 'Close', {
+        duration: 2000,
+      });
+    }
+  }
   addUser() {
     this.checkAddMember = true;
   }
@@ -176,11 +198,13 @@ export class SaveProjectComponent implements OnInit {
   searchOrFilterSelectedUser() {
   }
 
-  searchOrFilterUser(){
-    
+  searchOrFilterUser() {
   }
 
   addUserToTeam(employee: EmployeeViews) {
+    console.log(this.panelMember);
+    this.panelMember = true;
+    console.log(this.panelMember);
     let check = false;
     this.employeeSelectedList.controls.forEach((element: any) => {
       if (element.value.employeeId == employee.id) {
@@ -213,7 +237,7 @@ export class SaveProjectComponent implements OnInit {
     );
   }
 
-  filter(){
+  filter() {
     console.log("sscsccs");
     console.log(this.projectFrom.value.keyword);
     const keyword = this.projectFrom.value.keyword;
@@ -244,10 +268,10 @@ export class SaveProjectComponent implements OnInit {
           console.log(error);
         },
       });
-      this.panelTeamMember = true;
+    this.panelTeamMember = true;
   }
 
-  filterSelected(){
+  filterSelected() {
     console.log(this.employeeSelectedList.value.keywordSelected);
   }
 }

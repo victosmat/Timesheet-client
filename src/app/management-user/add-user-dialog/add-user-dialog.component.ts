@@ -113,20 +113,26 @@ export class AddUserDialogComponent implements OnInit {
   submitFrom() { 
     this.employeeDetailDto = this.profileFrom.value;
     console.log(this.employeeDetailDto);
-    this.employeeService.addEmployee(this.employeeDetailDto).subscribe({
-      next: (response: any) => {
-        this.snackBar.open('Add user successfully!', 'Close', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'bottom',
-        });
-        this.dialogRef.close();
-      },
-      error: (error: any) => {
-        console.log(error.status);
-      },
-      complete: () => { },
-    });
+    if(this.profileFrom.valid) {
+      this.employeeService.addEmployee(this.employeeDetailDto).subscribe({
+        next: (response: any) => {
+          this.snackBar.open('Add user successfully!', 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'bottom',
+          });
+          this.dialogRef.close();
+        },
+        error: (error: any) => {
+          console.log(error.status);
+        },
+        complete: () => { },
+      });
+    }else{
+      this.snackBar.open('Please fill in all required fields!', 'Close', {
+        duration: 3000,
+      });
+    }
   }
   changePassword() {
     this.submitFrom();

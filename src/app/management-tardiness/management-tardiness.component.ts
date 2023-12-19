@@ -48,9 +48,8 @@ export class ManagementTardinessComponent implements OnInit {
     'actions'
   ];
 
-  data$: any = Observable<any[]>;
   dataSource: any;
-  dataSourceDetail: any = new MatTableDataSource();
+  dataSourceDetail: any;
   buddyId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
   pageNumber = 0;
   pageSize = 10;
@@ -93,10 +92,10 @@ export class ManagementTardinessComponent implements OnInit {
     this.getAllCheckinAndPunishment();
   }
   findMonthPer() {
-    this.getAllCheckinAndPunishment();
+    this.getCheckinOfEmployeeAndPunishment();
   }
   findYearPer() {
-    this.getAllCheckinAndPunishment();
+    this.getCheckinOfEmployeeAndPunishment();
   }
   findBranch() {
     this.getAllCheckinAndPunishment();
@@ -123,10 +122,8 @@ export class ManagementTardinessComponent implements OnInit {
               duration: 2000,
               panelClass: ['error-snackbar'],
             });
-            return;
           }
-          this.data$ = response.content;
-          this.dataSource = new CustomDataSource(this.data$);
+          this.dataSource = new CustomDataSource(response.content);
           this.pageSize = response.pageable.pageSize;
           this.pageNumber = response.pageable.pageNumber;
           this.totalElements = response.totalElements;
@@ -150,7 +147,7 @@ export class ManagementTardinessComponent implements OnInit {
     this.renderPage();
   }
 
-  searchOrFilter() { }
+  searchOrFilter() {this.getAllCheckinAndPunishment() }
   viewCheckInDetail(element: any) {
     this.checkViewDeital = true;
     this.fullNameViewDetail = element.fullName;
@@ -161,9 +158,10 @@ export class ManagementTardinessComponent implements OnInit {
   }
 
   getCheckinOfEmployeeAndPunishment() {
+    console.log(this.monthPer);
     const status = this.statusPunishment === 'ALL' ? '' : this.statusPunishment;
-    const month = this.month - 1;
-    const year = this.year;
+    const month = this.monthPer - 1;
+    const year = this.yearPer;
     const employeeId = this.employeeIdInViewDetail;
     this.employeeIdInViewDetail = employeeId;
     let isComplain = null;
@@ -177,8 +175,13 @@ export class ManagementTardinessComponent implements OnInit {
       .getCheckinOfEmployeeAndPunishment(this.pageNumber + 1, this.pageSize, this.sortField, this.sortOrder, employeeId, status, month, year, isComplain)
       .subscribe({
         next: (response) => {
-          this.data$ = response.content;
-          this.dataSource = new CustomDataSource(this.data$);
+          if (response.content.length === 0) {
+            this.snackBar.open('No data', 'Close', {
+              duration: 2000,
+              panelClass: ['error-snackbar'],
+            });
+          }
+          this.dataSourceDetail = new CustomDataSource(response.content);
           this.pageSize = response.pageable.pageSize;
           this.pageNumber = response.pageable.pageNumber;
           this.totalElements = response.totalElements;
@@ -186,7 +189,6 @@ export class ManagementTardinessComponent implements OnInit {
         error: (error) => {
           console.log(error);
         },
-        complete: () => { },
       });
   }
 

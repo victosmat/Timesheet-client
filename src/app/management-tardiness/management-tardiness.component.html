@@ -27,7 +27,7 @@
             <mat-form-field class="example-full-width" appearance="outline" style="width: 100%;">
                 <mat-icon style="color: #9e9e9e" matPrefix>search</mat-icon>
                 <mat-label>Search by keyword</mat-label>
-                <input matInput [value]="keyword" (keyup.enter)="searchOrFilter()" />
+                <input matInput [(ngModel)]="keyword" (keyup.enter)="searchOrFilter()" />
             </mat-form-field>
         </div>
         &nbsp; &nbsp; &nbsp;

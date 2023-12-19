@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogConfig, MatDialogContainer, MatDialogModule, 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { CookieService } from 'ngx-cookie-service';
 import { NoteFormDto } from 'src/app/model/note-form-dto';
@@ -14,12 +15,12 @@ import { TaskSelectDto } from 'src/app/model/task-select-dto';
 import { TimesheetService } from 'src/app/service/timesheet/timesheet.service';
 
 export enum WorkingType {
-  ONSITE = "ONSITE" ,
+  ONSITE = "ONSITE",
   REMOTE = "REMOTE",
 }
 
 export enum TimeSheetStatus {
-  NEW = "NEW", 
+  NEW = "NEW",
   PENDING = "PENDING",
   APPROVED = "APPROVED",
   REJECT = "REJECT"
@@ -45,17 +46,18 @@ export class TimesheetDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     private timesheetService: TimesheetService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
     const employeeId = Number(this.cookieService.get("TimesheetAppEmployeeId"));
 
     this.timesheetService.getListProjectForTimesheetForm(employeeId).subscribe({
-      next : (response : any) => {
+      next: (response: any) => {
         this.projectSelectDtoList = response;
       },
-      error : (error) => {
+      error: (error) => {
         this.dialogRef.close();
       },
       complete: () => {
@@ -71,16 +73,16 @@ export class TimesheetDialogComponent implements OnInit {
       workingType: new FormControl(null, Validators.required)
     })
 
-    if(this.data.noteId !== undefined) {
+    if (this.data.noteId !== undefined) {
       this.timesheetService.getTimesheetById(this.data.noteId).subscribe({
-        next: (response : NoteFormDto) => {
+        next: (response: NoteFormDto) => {
           this.getTaskForFormBasedOnProjectId(response.projectId);
           this.noteFormDto = response;
-          this.timesheetForm.patchValue({projectId: response.projectId});
-          this.timesheetForm.patchValue({taskId: response.taskId});
-          this.timesheetForm.patchValue({note: response.noteDescription});
-          this.timesheetForm.patchValue({workingTime: response.workingTime});
-          this.timesheetForm.patchValue({workingType: response.workingType});
+          this.timesheetForm.patchValue({ projectId: response.projectId });
+          this.timesheetForm.patchValue({ taskId: response.taskId });
+          this.timesheetForm.patchValue({ note: response.noteDescription });
+          this.timesheetForm.patchValue({ workingTime: response.workingTime });
+          this.timesheetForm.patchValue({ workingType: response.workingType });
         },
         error: (error) => {
 
@@ -90,20 +92,20 @@ export class TimesheetDialogComponent implements OnInit {
         }
       });
     }
-    
+
   }
 
-  getTaskForFormBasedOnProjectId(projectId : any) {
+  getTaskForFormBasedOnProjectId(projectId: any) {
     this.timesheetService.getListTaskForSelectedProject(projectId).subscribe({
-      next : (response : any) => {
+      next: (response: any) => {
         this.taskSelectDtoList = response;
         console.log(this.taskSelectDtoList);
       },
-      error : (error) => {
-        
+      error: (error) => {
+
       },
       complete: () => {
-        
+
       }
     })
   }
@@ -111,27 +113,30 @@ export class TimesheetDialogComponent implements OnInit {
   onNoClick(): void {
     this.dialogRef.close();
   }
-  
+
   submitForm() {
-    if(this.data.noteId === undefined) {
-      this.noteFormDto.employeeId = this.data.employeeId;
-      this.noteFormDto.dateSubmit = this.data.selectedDate;
-      this.noteFormDto.status = TimeSheetStatus.NEW;
+    if (this.timesheetForm.valid) {
+      this.noteFormDto = {
+        id: this.data.noteId,
+        projectId: this.timesheetForm.value.projectId,
+        taskId: this.timesheetForm.value.taskId,
+        noteDescription: this.timesheetForm.value.note,
+        workingTime: this.timesheetForm.value.workingTime,
+        workingType: this.timesheetForm.value.workingType,
+        status: TimeSheetStatus.NEW
+      };
+      this.timesheetService.saveTimesheet(this.noteFormDto).subscribe({
+        next: (response: any) => {
+          this.dialogRef.close(response);
+        },
+        error: (error: any) => {
+          console.log(error);
+        },
+      });
+    } else {
+      this.snackBar.open('Please fill in all required fields', 'Close', {
+        duration: 2000,
+      });
     }
-    this.noteFormDto.projectId = this.timesheetForm.controls["projectId"].value;
-    this.noteFormDto.taskId = this.timesheetForm.controls["taskId"].value;
-    this.noteFormDto.noteDescription = this.timesheetForm.controls["note"].value;
-    this.noteFormDto.workingTime = this.timesheetForm.controls["workingTime"].value;
-    this.noteFormDto.workingType = this.timesheetForm.controls["workingType"].value;
-    this.noteFormDto.dateModify = new Date();
-    console.log(this.noteFormDto);
-    this.timesheetService.saveTimesheet(this.noteFormDto).subscribe({
-      next : (response) => {
-        console.log(response);
-      },
-      error : (error) => {
-        console.log(error);
-      }
-    });
   }
 }

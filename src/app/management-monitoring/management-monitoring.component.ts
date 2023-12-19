@@ -71,6 +71,7 @@ export class ManagementMonitoringComponent implements OnInit {
     this.getAllUser();
   }
   findMonth() {
+    console.log(this.month);
     this.getAllUser();
   }
 
@@ -136,10 +137,26 @@ export class ManagementMonitoringComponent implements OnInit {
   }
 
   searchOrFilter() {
+    console.log(this.keyword);
     this.getAllUser();
   }
 
-  updateStatus(id: number, status: boolean) { }
+  updateStatus(element: any, status: boolean) { 
+    console.log(element);
+    this.employeeService.updateStatusPaySlip(element.id, status).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.snackBar.open('Update status success', 'Close', {
+          duration: 2000,
+          panelClass: ['success-snackbar'],
+        });
+        this.renderPage();
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+    });
+  }
   viewPunishmentCheckin(element: any) {
     this.dialog.open(ViewPunishmentComponent, {
       data: {

@@ -40,9 +40,8 @@ export class ViewPunishmentComponent implements OnInit {
     'isDeleted'
   ];
 
-  data$: any = Observable<any[]>;
   dataSource: any;
-  dataSourceDetail: any = new MatTableDataSource();
+  dataSourceDetail: any;
   buddyId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
   pageNumber = 0;
   pageSize = 10;
@@ -52,8 +51,6 @@ export class ViewPunishmentComponent implements OnInit {
   keyword: string = '';
   isCheckboxDisabled = true;
   date = new Date();
-  month: number = this.date.getMonth() + 1;
-  year: number = this.date.getFullYear();
   monthPer: number = this.date.getMonth() + 1;
   yearPer: number = this.date.getFullYear();
   branchUser: string = 'ALL';
@@ -78,8 +75,11 @@ export class ViewPunishmentComponent implements OnInit {
     private timesheetService: TimesheetService
   ) { }
 
-  findMonthPer() { }
-  findYear() { }
+  findMonthPer() {
+    console.log(this.monthPer);
+    this.viewCheckInDetail();
+  }
+  findYear() { this.viewCheckInDetail() }
   ngOnInit() {
     console.log(this.data);
     this.viewCheckInDetail();
@@ -96,7 +96,7 @@ export class ViewPunishmentComponent implements OnInit {
     this.sortOrder = $event.direction;
   }
 
-  searchOrFilter() { }
+  searchOrFilter() { this.viewCheckInDetail() }
   viewCheckInDetail() {
     this.checkViewDeital = true;
     this.fullNameViewDetail = this.data.fullName;
@@ -108,8 +108,8 @@ export class ViewPunishmentComponent implements OnInit {
 
   getCheckinOfEmployeeAndPunishment() {
     const status = this.statusPunishment === 'ALL' ? '' : this.statusPunishment;
-    const month = this.month - 1;
-    const year = this.year;
+    const month = this.monthPer - 1;
+    const year = this.yearPer;
     const employeeId = this.employeeIdInViewDetail;
     this.employeeIdInViewDetail = employeeId;
     let isComplain = null;
@@ -123,12 +123,12 @@ export class ViewPunishmentComponent implements OnInit {
       .getCheckinOfEmployeeAndPunishment(this.pageNumber + 1,
         this.pageSize,
         this.sortField,
-        this.sortOrder,employeeId, status, month, year, isComplain)
+        this.sortOrder, employeeId, status, month, year, isComplain)
       .subscribe({
         next: (response) => {
           this.checkinPunishmentDto = response;
-          this.data$ = response.content;
-          this.dataSource = new CustomDataSource(this.data$);
+          console.log(response);
+          this.dataSourceDetail = new CustomDataSource(response.content);
           this.pageSize = response.pageable.pageSize;
           this.pageNumber = response.pageable.pageNumber;
           this.totalElements = response.totalElements;
@@ -147,8 +147,6 @@ export class ViewPunishmentComponent implements OnInit {
 
   showDialogNotComment(item: any) { }
 
-  updateReject(item: any) { }
-  updateCheckPoint(item: any) { }
   findStatus() {
     this.getCheckinOfEmployeeAndPunishment();
   }

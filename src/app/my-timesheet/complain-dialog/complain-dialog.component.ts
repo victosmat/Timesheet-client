@@ -28,7 +28,7 @@ export class ComplainDialogComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.data.note.complain);
     this.complainFrom = this.formBuilder.group({
-      complain: new FormControl(null, Validators.required),
+      complain: new FormControl(null),
     });
     if (this.data.note.complain != null) {
       console.log('not null');

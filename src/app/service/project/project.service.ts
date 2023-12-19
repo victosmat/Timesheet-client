@@ -24,6 +24,13 @@ export class ProjectService {
     return this.httpClient.get<ProjectViewManageDto[]>(this.base_url + 'projects/get_all', { params: params }).pipe();
   }
 
+  public updateStatusProject(id: number, status: string): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append('projectId', id);
+    params = params.append('status', status);
+    return this.httpClient.put<any>(this.base_url + 'projects/update_status', null, { params: params }).pipe();
+  }
+
   public getProjectDetails(id: number): Observable<ProjectViewManageDto> {
     let params: HttpParams = new HttpParams();
     params = params.append('projectId', id);

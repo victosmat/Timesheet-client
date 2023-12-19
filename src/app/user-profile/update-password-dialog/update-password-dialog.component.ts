@@ -34,27 +34,33 @@ export class UpdatePasswordDialogComponent implements OnInit {
     const oldPassword = this.passwordFrom.value.oldPassword;
     const newPassword = this.passwordFrom.value.newPassword;
     const repeatPassword = this.passwordFrom.value.repeatPassword;
-    if (newPassword !== repeatPassword) {
-      this.snackBar.open('New password and repeat password are not the same', 'Close', {
+    if (this.passwordFrom.valid) {
+      if (newPassword !== repeatPassword) {
+        this.snackBar.open('New password and repeat password are not the same', 'Close', {
+          duration: 2000,
+        });
+        return;
+      }
+      else{
+        this.employeeService.updatePassword(employeeId, oldPassword, newPassword).subscribe({
+          next: (response: any) => {
+            console.log(response);
+            this.snackBar.open('Update password successfully', 'Close', {
+              duration: 2000,
+            });
+            this.dialogRef.close();
+          },
+          error: (error: any) => {
+            console.log(error);
+            this.snackBar.open('Update password failed', 'Close', {
+              duration: 2000,
+            });
+          },
+        });
+      }
+    }else{
+      this.snackBar.open('Please fill in all required fields', 'Close', {
         duration: 2000,
-      });
-      return;
-    }
-    else{
-      this.employeeService.updatePassword(employeeId, oldPassword, newPassword).subscribe({
-        next: (response: any) => {
-          console.log(response);
-          this.snackBar.open('Update password successfully', 'Close', {
-            duration: 2000,
-          });
-          this.dialogRef.close();
-        },
-        error: (error: any) => {
-          console.log(error);
-          this.snackBar.open('Update password failed', 'Close', {
-            duration: 2000,
-          });
-        },
       });
     }
   }

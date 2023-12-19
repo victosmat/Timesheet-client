@@ -13,9 +13,7 @@ export class CustomDataSource extends DataSource<any> {
       return this._dataStream;
     }
   
-    disconnect() {
-        this._dataStream.unsubscribe();
-    }
+    disconnect() {}
   
     setData(data: any[]) {
       this._dataStream.next(data);

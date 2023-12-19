@@ -320,6 +320,7 @@ export class ManagementTimesheetComponent implements OnInit {
 
   approve() {
     let noteDetailViewDtoList: NoteDetailViewDto[] = [];
+    let noteIds: number[] = [];
     this.noteDetailDtoList.forEach((noteDetailDto) => {
       noteDetailDto.employeeDtoList?.forEach((employeeDto) => {
         employeeDto.noteDetailViewDtos?.forEach((noteDetailViewDto) => {
@@ -329,8 +330,15 @@ export class ManagementTimesheetComponent implements OnInit {
           ) {
             noteDetailViewDtoList.push(noteDetailViewDto);
             const noteId = noteDetailViewDto.noteId as number;
-            this.timesheetService
-              .updateTimesheetStatus(noteId, TimeSheetStatus.APPROVED)
+            noteIds.push(noteId);
+          }
+        });
+      });
+    });
+
+    const noteIdsString = noteIds.join(',');
+    this.timesheetService
+              .updateTimesheetStatus(noteIdsString, TimeSheetStatus.APPROVED)
               .subscribe({
                 next: (response: any) => {
                   this.snackBar.open('Approve success', 'Close', {
@@ -346,10 +354,6 @@ export class ManagementTimesheetComponent implements OnInit {
                   });
                 },
               });
-          }
-        });
-      });
-    });
   }
 
   reject() {}

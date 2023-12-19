@@ -21,7 +21,7 @@ export enum TypeTimeOff {
 })
 export class AbsenceFormDialogComponent implements OnInit {
 
-  absenceForm! : FormGroup;
+  absenceForm!: FormGroup;
   absenceRequest: AbsenceDto = {
     id: null,
     reason: null,
@@ -34,27 +34,27 @@ export class AbsenceFormDialogComponent implements OnInit {
     absenceTypeId: null
   };
   typesTimeOff = TypeTimeOff;
-  absenceTypeOffSelectList! : AbsenceTypeOffSelect[];
+  absenceTypeOffSelectList!: AbsenceTypeOffSelect[];
 
-  constructor(    
+  constructor(
     private dialogRef: MatDialogRef<AbsenceDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private cookieService : CookieService,
-    private absenceService : AbsenceService,
-    private fb : FormBuilder,
+    private cookieService: CookieService,
+    private absenceService: AbsenceService,
+    private fb: FormBuilder,
     private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
 
-    if(this.data.absenceId) {
+    if (this.data.absenceId) {
       console.log(this.data.absenceId)
       this.absenceService.findAbsenceRequestById(Number(this.data.absenceId)).subscribe({
-        next : (response) => {
+        next: (response) => {
           console.log(response);
           this.patchValueToForm(response);
         },
-        error : (error) => {
+        error: (error) => {
           console.log(error);
         }
       })
@@ -71,65 +71,68 @@ export class AbsenceFormDialogComponent implements OnInit {
     //     }
     //   });
     // }
-    if(this.data.type === 'WENT_SOON' || this.data.type === 'COME_LATE') {
+    if (this.data.type === 'WENT_SOON' || this.data.type === 'COME_LATE') {
       this.absenceForm = this.fb.group({
-        id : new FormControl(null),
-        reason : new FormControl(null, Validators.required),
-        dateRequest : new FormControl(null, Validators.required),
-        timeOff : new FormControl(0, Validators.required),
-        typeTimeOff : new FormControl(this.data.typeTimeOff, Validators.required),
+        id: new FormControl(null),
+        reason: new FormControl(null, Validators.required),
+        dateRequest: new FormControl(null, Validators.required),
+        timeOff: new FormControl(0, Validators.required),
+        typeTimeOff: new FormControl(this.data.typeTimeOff, Validators.required),
       });
-    } else if(this.data.type === 'OFF') {
+    } else if (this.data.type === 'OFF') {
       this.absenceForm = this.fb.group({
-        id : new FormControl(null),
-        reason : new FormControl(null, Validators.required),
-        absenceType : new FormControl({value : this.data.type, disabled : true}),
-        absenceTypeOffId : new FormControl(null),
-        dateRequest : new FormControl(null, Validators.required),
-        typeTimeOff : new FormControl(this.data.typeTimeOff, Validators.required),
+        id: new FormControl(null),
+        reason: new FormControl(null, Validators.required),
+        absenceType: new FormControl({ value: this.data.type, disabled: true }),
+        absenceTypeOffId: new FormControl(null),
+        dateRequest: new FormControl(null, Validators.required),
+        typeTimeOff: new FormControl(this.data.typeTimeOff, Validators.required),
       });
     } else {
       this.absenceForm = this.fb.group({
-        id : new FormControl(null),
-        reason : new FormControl(null, Validators.required),
-        dateRequest : new FormControl(null, Validators.required),
-        typeTimeOff : new FormControl(this.data.typeTimeOff, Validators.required),
+        id: new FormControl(null),
+        reason: new FormControl(null, Validators.required),
+        dateRequest: new FormControl(null, Validators.required),
+        typeTimeOff: new FormControl(this.data.typeTimeOff, Validators.required),
       });
     }
   }
 
-  patchValueToForm(response : any) {
-    if(this.data.type === "OFF") {
+  patchValueToForm(response: any) {
+    if (this.data.type === "OFF") {
       console.log("OFF")
       this.absenceForm = this.fb.group({
-        id : new FormControl(response.id),
-        reason : new FormControl(response.reason, Validators.required),
-        absenceType : new FormControl({value : this.data.type, disabled : true}),
-        absenceTypeOffId : new FormControl(response.absenceTypeOffId),
-        dateRequest : new FormControl(new Date(response.dateRequest[0], response.dateRequest[1] - 1, response.dateRequest[2]), Validators.required),
-        typeTimeOff : new FormControl(response.typeTimeOff, Validators.required),
+        id: new FormControl(response.id),
+        reason: new FormControl(response.reason, Validators.required),
+        absenceType: new FormControl({ value: this.data.type, disabled: true }),
+        absenceTypeOffId: new FormControl(response.absenceTypeOffId),
+        dateRequest: new FormControl(new Date(response.dateRequest[0], response.dateRequest[1] - 1, response.dateRequest[2]), Validators.required),
+        typeTimeOff: new FormControl(response.typeTimeOff, Validators.required),
       });
-    } else if(this.data.type === "WENT_SOON" || this.data.type === "COME_LATE") {
+    } else if (this.data.type === "WENT_SOON" || this.data.type === "COME_LATE") {
       this.absenceForm = this.fb.group({
-        id : new FormControl(response.id),
-        reason : new FormControl(response.reason, Validators.required),
-        dateRequest : new FormControl(new Date(response.dateRequest[0], response.dateRequest[1] - 1, response.dateRequest[2]), Validators.required),
-        timeOff : new FormControl(Number(response.timeOff), Validators.required),
-        typeTimeOff : new FormControl(response.typeTimeOff, Validators.required),
+        id: new FormControl(response.id),
+        reason: new FormControl(response.reason, Validators.required),
+        dateRequest: new FormControl(new Date(response.dateRequest[0], response.dateRequest[1] - 1, response.dateRequest[2]), Validators.required),
+        timeOff: new FormControl(Number(response.timeOff), Validators.required),
+        typeTimeOff: new FormControl(response.typeTimeOff, Validators.required),
       });
     } else {
       this.absenceForm = this.fb.group({
-        id : new FormControl(response.id),
-        reason : new FormControl(response.reason, Validators.required),
-        dateRequest : new FormControl(new Date(response.dateRequest[0], response.dateRequest[1] - 1, response.dateRequest[2]), Validators.required),
-        typeTimeOff : new FormControl(response.typeTimeOff, Validators.required),
+        id: new FormControl(response.id),
+        reason: new FormControl(response.reason, Validators.required),
+        dateRequest: new FormControl(new Date(response.dateRequest[0], response.dateRequest[1] - 1, response.dateRequest[2]), Validators.required),
+        typeTimeOff: new FormControl(response.typeTimeOff, Validators.required),
       });
     }
   }
 
   submitForm() {
-    if(this.absenceForm.invalid) {
+    if (this.absenceForm.invalid) {
       console.log("INVALID!");
+      this.snackBar.open("Please fill in all required fields!", "OK", {
+        duration: 2000,
+      })
       return;
     }
     this.patchValueFromFormToDto();
@@ -142,12 +145,12 @@ export class AbsenceFormDialogComponent implements OnInit {
     this.absenceRequest.employeeId = Number(this.cookieService.get("TimesheetAppEmployeeId"));
     this.absenceRequest.dateSubmit = new Date();
     this.absenceRequest.reason = this.absenceForm.controls["reason"].value;
-    if(this.data.type === 'OFF') {
+    if (this.data.type === 'OFF') {
       this.absenceRequest.absenceTypeOffId = this.absenceForm.controls["absenceTypeOffId"].value;
       this.absenceRequest.typeTimeOff = this.absenceForm.controls["typeTimeOff"].value;
       this.absenceRequest.absenceTypeId = 1;
-    } else if(this.data.type === 'WENT_SOON' || this.data.type === 'COME_LATE') {
-      if(this.data.type === 'WENT_SOON') {
+    } else if (this.data.type === 'WENT_SOON' || this.data.type === 'COME_LATE') {
+      if (this.data.type === 'WENT_SOON') {
         this.absenceRequest.absenceTypeId = 4;
       } else {
         this.absenceRequest.absenceTypeId = 5;
@@ -155,7 +158,7 @@ export class AbsenceFormDialogComponent implements OnInit {
       this.absenceRequest.typeTimeOff = this.absenceForm.controls["typeTimeOff"].value;
       this.absenceRequest.timeOff = this.absenceForm.controls["timeOff"].value;
     } else {
-      if(this.data.type === 'REMOTE') {
+      if (this.data.type === 'REMOTE') {
         this.absenceRequest.absenceTypeId = 2;
       } else {
         this.absenceRequest.absenceTypeId = 3;
@@ -163,8 +166,8 @@ export class AbsenceFormDialogComponent implements OnInit {
       this.absenceRequest.typeTimeOff = this.absenceForm.controls["typeTimeOff"].value;
     }
     this.absenceService.saveAbsenceRequest(this.absenceRequest).subscribe({
-      next : (response) => {
-        if(response === true) {
+      next: (response) => {
+        if (response === true) {
           this.snackBar.open("Save request successfully!", "OK");
           this.dialogRef.close(this.absenceRequest.dateRequest);
         } else {
@@ -172,7 +175,7 @@ export class AbsenceFormDialogComponent implements OnInit {
           this.dialogRef.close(this.absenceRequest.dateRequest);
         }
       },
-      error : (error) => {
+      error: (error) => {
         console.log(error);
         this.dialogRef.close(this.absenceRequest.dateRequest);
       }

@@ -1,18 +1,18 @@
 <div style="width: 450px;">
-    <h1 mat-dialog-title *ngIf="this.data.id !== undefined">Edit department</h1>
-    <h1 mat-dialog-title *ngIf="this.data.id === undefined">New department</h1>
-    <form [formGroup]="departmentForm" (submit)="submitForm()" class="example-form">
-      <mat-dialog-content style="flex-direction: column;">
-        <div>
-          <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label for="name">Name</mat-label>
-            <input style="width: 100%;" id="name" matInput  formControlName="name">
-          </mat-form-field>
-        </div>
-      </mat-dialog-content>
-      <div mat-dialog-actions style="float: right;">
-        <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
-        <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+  <h1 mat-dialog-title *ngIf="this.data.id !== undefined">Edit department</h1>
+  <h1 mat-dialog-title *ngIf="this.data.id === undefined">New department</h1>
+  <form [formGroup]="departmentForm" (submit)="submitForm()" class="example-form">
+    <mat-dialog-content style="flex-direction: column;">
+      <div>
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label for="name">Name</mat-label>
+          <input style="width: 100%;" id="name" matInput formControlName="name">
+        </mat-form-field>
       </div>
-    </form>
-  </div>
+    </mat-dialog-content>
+    <div mat-dialog-actions style="float: right;">
+      <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
+      <button mat-raised-button type="submit" color="primary" cdkFocusInitial>Ok</button>
+    </div>
+  </form>
+</div>

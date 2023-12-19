@@ -94,11 +94,11 @@
                             <mat-icon>speaker_notes</mat-icon>
                             <span>View task</span>
                         </button>
-                        <button *ngIf="element.projectStatus === 'ACTIVE'" mat-menu-item (click)="deactivateProject(element)">
+                        <button *ngIf="element.projectStatus === 'ACTIVE'" mat-menu-item (click)="updateStatusProject(element, 'INACTIVE')">
                             <mat-icon>block</mat-icon>
                             <span>Deactivate</span>
                         </button>
-                        <button *ngIf="element.projectStatus === 'INACTIVE'" mat-menu-item (click)="activateProject(element)">
+                        <button *ngIf="element.projectStatus === 'INACTIVE'" mat-menu-item (click)="updateStatusProject(element, 'ACTIVE')">
                             <mat-icon>done_outline</mat-icon>
                             <span>Activate</span>
                         </button>

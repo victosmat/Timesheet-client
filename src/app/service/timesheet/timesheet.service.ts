@@ -73,7 +73,7 @@ export class TimesheetService {
   }
 
 
-  public updateTimesheetStatus(noteId: number, status: string): Observable<any> {
+  public updateTimesheetStatus(noteId: string, status: string): Observable<any> {
     let params: HttpParams = new HttpParams();
     params = params.append('noteId', noteId);
     params = params.append('status', status);

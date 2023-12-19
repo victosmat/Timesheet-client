@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmployeeDetailDto } from '../model/employee-detail-dto';
 import { UpdatePasswordDialogComponent } from './update-password-dialog/update-password-dialog.component';
+import { el } from 'date-fns/locale';
 
 @Component({
   selector: 'app-user-profile',
@@ -21,7 +22,7 @@ export class UserProfileComponent implements OnInit {
     public dialog: MatDialog,
     private cookieService: CookieService,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   getProfile() {
     const employeeId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
@@ -78,7 +79,7 @@ export class UserProfileComponent implements OnInit {
       error: (error: any) => {
         console.log(error.status);
       },
-      complete: () => {},
+      complete: () => { },
     });
   }
 
@@ -103,7 +104,7 @@ export class UserProfileComponent implements OnInit {
 
     console.log(this.employeeDetailDto);
   }
-  submitFrom() {}
+  submitFrom() { }
   changePassword() {
     this.dialog
       .open(UpdatePasswordDialogComponent, {
@@ -116,7 +117,15 @@ export class UserProfileComponent implements OnInit {
         },
       });
   }
-  changeInfo() {}
+  changeInfo() {
+    if (this.profileFrom.valid) {
+    } else {
+      this.snackBar.open('Please fill in all required fields', 'Close', {
+        duration: 2000,
+        panelClass: ['error-snackbar'],
+      });
+    }
+  }
 
   notify() {
     this.snackBar.open('This field is readonly and cannot be changed.', 'OK');

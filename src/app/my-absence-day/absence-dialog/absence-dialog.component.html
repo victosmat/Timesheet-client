@@ -31,7 +31,7 @@
             <td scope="row">{{item.timeOff}}</td>
             <td scope="row">{{item.status}}</td>
             <td scope="row">
-              <span *ngIf="item.punishmentStatus === false">
+              <span>
                 <i class="material-icons" *ngIf="item.punishmentStatus  === true" style="color: green;">check_circle</i>
                 <i class="material-icons" *ngIf="item.punishmentStatus  === false" style="color: red;">error</i>
               </span>

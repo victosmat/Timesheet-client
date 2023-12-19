@@ -35,6 +35,15 @@ export class EmployeeService {
       .pipe();
   }
 
+  public updateStatusPaySlip(id: number, status: boolean): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append('id', id);
+    params = params.append('paymentStatus', status);
+    return this.httpClient
+      .put<any>(this.base_url + 'pay_slip/update_payslip', null, { params: params })
+      .pipe();
+  }
+
   public addEmployee(employeeDto: any): Observable<any> {
     return this.httpClient
       .post<any>(this.base_url + 'employees/save', employeeDto)

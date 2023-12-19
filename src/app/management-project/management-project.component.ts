@@ -76,7 +76,7 @@ export class ManagementProjectComponent implements OnInit {
   }
 
   updateStatus(status: string) {
-    this.projectService.getAllProject(this.pageNumber, this.pageSize, this.sortField, this.sortOrder, status, this.keyword).subscribe({
+    this.projectService.getAllProject(this.pageNumber + 1, this.pageSize, this.sortField, this.sortOrder, status, this.keyword).subscribe({
       next: (response: any) => {
         if (response.content.length === 0) {
           this.snackBar.open('No data', 'Close', {
@@ -163,9 +163,23 @@ export class ManagementProjectComponent implements OnInit {
     });
   }
   searchOrFilter() {
+    console.log(this.keyword);
     this.getAllProject();
   }
 
-  deactivateProject(element: any) {}
-  activateProject(element: any) {}
+  updateStatusProject(element: any, status:string) {
+    this.projectService.updateStatusProject(element.id, status).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.snackBar.open('Update status success', 'Close', {
+          duration: 2000,
+          panelClass: ['success-snackbar'],
+        });
+        this.renderPage();
+      },
+      error: (error: any) => {
+        console.log(error);
+      },
+    });
+  }
 }
