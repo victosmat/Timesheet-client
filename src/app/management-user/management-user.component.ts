@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeService } from '../service/employee/employee.service';
 import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
@@ -12,6 +10,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { EditRoleDialogComponent } from './edit-role-dialog/edit-role-dialog.component';
 import { CustomDataSource } from '../shared/custom-datasource';
 import { Observable } from 'rxjs';
+import { EditBonusDialogComponent } from './edit-bonus-dialog/edit-bonus-dialog.component';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-management-user',
@@ -76,6 +76,11 @@ export class ManagementUserComponent implements OnInit {
     this.getAllUser();
   }
 
+  formatDate(dateArr: any) {
+    dateArr = dateArr.split('-');
+    return dateArr[2] + '-' + dateArr[1] + '-' + dateArr[0];
+  }
+
   getAllUser() {
     const isEnable = this.IsEnableUser === 'ALL' ? '' : this.IsEnableUser;
     const level = this.levelUser === 'ALL' ? '' : this.levelUser;
@@ -114,6 +119,17 @@ export class ManagementUserComponent implements OnInit {
       });
   }
 
+  addBonus(element: any) {
+    this.dialog.open(EditBonusDialogComponent, {
+      data: element,
+      width: '900px',
+    }).afterClosed().subscribe({
+      complete: () => {
+        this.renderPage();
+      },
+    });
+  }
+
   editUser(element: any) {
     const dialogRef = this.dialog.open(EditUserDialogComponent, {
       data: element,
@@ -137,7 +153,16 @@ export class ManagementUserComponent implements OnInit {
       },
     });
   }
-  delete(element: any) { }
+  delete(element: any) {
+    this.dialog.open(DeleteDialogComponent, {
+      data: element,
+      width: '500px',
+    }).afterClosed().subscribe({
+      complete: () => {
+        this.renderPage();
+      },
+    });
+  }
   deactivateUser(element: any) {
     console.log(element);
     this.employeeService.deactivateUser(element.id, false).subscribe({
@@ -208,4 +233,6 @@ export class ManagementUserComponent implements OnInit {
   searchOrFilter() {
     this.getAllUser();
   }
+
+  viewImage(element: any) { }
 }

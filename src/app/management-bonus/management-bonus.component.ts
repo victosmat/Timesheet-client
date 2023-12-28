@@ -39,7 +39,6 @@ export class ManagementBonusComponent implements OnInit {
 
   constructor(
     private employeeService: EmployeeService,
-    private cookieService: CookieService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) { }

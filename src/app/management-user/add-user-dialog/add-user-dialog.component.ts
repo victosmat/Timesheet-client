@@ -45,11 +45,11 @@ export class AddUserDialogComponent implements OnInit {
       bankName: new FormControl(null),
       bankNumber: new FormControl(null),
       hiringDate: new FormControl(null, Validators.required),
-      buddyName: new FormControl(null, Validators.required),
-      departmentName: new FormControl(null, Validators.required),
+      buddyId: new FormControl(null, Validators.required),
+      departmentId: new FormControl(null, Validators.required),
       username: new FormControl(null, Validators.required),
       password: new FormControl(null, Validators.required),
-      jobDepartment: new FormControl(null, Validators.required),
+      jobDepartmentId: new FormControl(null, Validators.required),
       level: new FormControl(null, Validators.required),
     });
 

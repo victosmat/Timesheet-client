@@ -71,7 +71,7 @@
         </ng-container>
         <ng-container matColumnDef="payDay">
             <th mat-header-cell mat-sort-header="payDay" *matHeaderCellDef>Payroll day</th>
-            <td mat-cell *matCellDef="let element">{{ element.payDay }}</td>
+            <td mat-cell *matCellDef="let element">{{ formatDate(element.payDay) }}</td>
         </ng-container>
         <ng-container matColumnDef="totalSalary">
             <th mat-header-cell mat-sort-header="totalSalary" *matHeaderCellDef>Salary</th>

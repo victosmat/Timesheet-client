@@ -27,45 +27,58 @@ export class EditUserDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    let buddyId: number = 0;
+    let departmentId: number = 0;
+
+    this.profileFrom = new FormGroup({
+      hiringDate: new FormControl(null, Validators.required),
+      buddyId: new FormControl(null),
+      departmentId: new FormControl(null, Validators.required),
+      level: new FormControl(null, Validators.required),
+    });
+
     this.employeeService.getPms().subscribe({
       next: (response: any) => {
         this.pmDto = response;
         console.log(this.pmDto);
+        this.pmDto.forEach(pm => {
+          if (pm.name === this.data.buddyName) {
+            buddyId = pm.id;
+            return;
+          }
+        });
+        this.employeeService.getDepartments("").subscribe({
+          next: (response: any) => {
+            this.departments = response;
+            console.log(this.departments);
+            this.departments.forEach(department => {
+              if (department.name === this.data.departmentName) {
+                departmentId = department.id;
+                return;
+              }
+            });
+
+            console.log(this.data);
+            console.log(buddyId);
+            console.log(departmentId);
+
+            this.profileFrom.patchValue({ hiringDate: this.data.hiringDate });
+            this.profileFrom.patchValue({ buddyId: buddyId });
+            this.profileFrom.patchValue({ departmentId: departmentId });
+            this.profileFrom.patchValue({ level: this.data.levelStatus });
+          },
+          error: (error: any) => {
+            console.log(error.status);
+          },
+        });
       },
       error: (error: any) => {
         console.log(error.status);
       },
-      complete: () => {},
     });
-
-    this.employeeService.getDepartments("").subscribe({
-      next: (response: any) => {
-        this.departments = response;
-        console.log(this.departments);
-      },
-      error: (error: any) => {
-        console.log(error.status);
-      },
-      complete: () => {},
-    });
-
-    this.profileFrom = new FormGroup({
-      hiringDate: new FormControl(null),
-      buddyName: new FormControl(null),
-      departmentName: new FormControl(null),
-      level: new FormControl(null),
-    });
-
-    console.log(this.data);
-
-    this.profileFrom.patchValue({hiringDate: this.data.hiringDate});
-    this.profileFrom.patchValue({buddyName: this.data.buddyName});
-    this.profileFrom.patchValue({departmentName: this.data.departmentName});
-    this.profileFrom.patchValue({level: this.data.roles});
-    this.profileFrom.patchValue({isEnabled: this.data.isEnabled});
   }
 
-  submitForm(){
+  submitForm() {
   }
   onNoClick(): void {
     this.dialogRef.close();

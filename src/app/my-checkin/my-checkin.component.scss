@@ -1,0 +1,42 @@
+.content {
+  background-color: white;
+  min-height: 200px;
+  height: 100vh;
+  margin: 16px;
+  margin-left: 32px;
+  padding: 30px;
+}
+
+.content table {
+  width: 100%;
+}
+
+img {
+  width: 100px;
+  padding: 3px;
+}
+
+.mat-grid-tile:nth-child(1) {
+  height: 10px;
+}
+
+.mat-grid-tile:nth-child(2) {
+  height: 10px;
+}
+
+.image {
+  width: 42%;
+  height: 42%;
+  display: block;
+  margin: 0 auto;
+  padding: 40px 40px 40px 40px;
+  justify-content: center;
+}
+
+.centered-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: -20px;
+}

@@ -6,6 +6,7 @@ import { PmDto } from 'src/app/model/pm-dto';
 import { DepartmentDto } from 'src/app/model/department-dto';
 import { RoleDto } from 'src/app/model/role-dto';
 import { ro } from 'date-fns/locale';
+import { BonusDto } from 'src/app/model/bonus-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,36 @@ export class EmployeeService {
     params = params.append('sortOrder', sortOrder);
     return this.httpClient
       .get(this.base_url + 'employees/view_staff', { params: params })
+      .pipe();
+  }
+
+  public deleteUser(employeeId: number): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append('id', employeeId);
+    return this.httpClient
+      .delete<any>(this.base_url + 'employees/delete', { params: params })
+      .pipe();
+  }
+
+  public deleteBonusForUser(id: number): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append('id', id);
+    return this.httpClient
+      .delete<any>(this.base_url + 'employee_bonus/delete', { params: params })
+      .pipe();
+  }
+
+  public saveBonusToUser(bonusDto: any): Observable<any> {
+    return this.httpClient
+      .post<any>(this.base_url + 'employee_bonus/save', bonusDto)
+      .pipe();
+  }
+
+  public getAllBonusForUser(employeeId: number): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append('employeeId', employeeId);
+    return this.httpClient
+      .get(this.base_url + 'employee_bonus/get_by_employeeId', { params: params })
       .pipe();
   }
 

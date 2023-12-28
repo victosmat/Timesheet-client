@@ -2,10 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from 'src/app/service/employee/employee.service';
-import { PmDto } from 'src/app/model/pm-dto';
-import { DepartmentDto } from 'src/app/model/department-dto';
 import { RoleDto } from 'src/app/model/role-dto';
 @Component({
   selector: 'app-edit-role-dialog',

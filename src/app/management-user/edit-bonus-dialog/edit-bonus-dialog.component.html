@@ -1,0 +1,68 @@
+<div class="content">
+    <mat-card-header style="display: flex; justify-content: space-between;">
+        <mat-card-title style="font-size: 30px"> {{data.fullName}} rewards </mat-card-title>
+        <button class="col-sm-4" large mat-raised-button color="primary" style="width: 100px" (click)="addBonus()"
+            name="createBtn">
+            <mat-icon>add</mat-icon> New
+        </button>
+    </mat-card-header>
+
+    &nbsp; &nbsp; &nbsp;
+    <table mat-table matSort class="mat-elevation-z8" [dataSource]="dataSource">
+        <ng-container matColumnDef="no">
+            <th mat-header-cell *matHeaderCellDef>No.</th>
+            <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+            <th mat-header-cell mat-sort-header="name" *matHeaderCellDef>
+                Name
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="dateBonus">
+            <th mat-header-cell mat-sort-header="dateBonus" *matHeaderCellDef>Date bonus</th>
+            <td mat-cell *matCellDef="let element">{{ formatDate(element.dateBonus) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="reason">
+            <th mat-header-cell mat-sort-header="reason" *matHeaderCellDef>
+                Reason
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.reason }}</td>
+        </ng-container>
+        <ng-container matColumnDef="gratuity">
+            <th mat-header-cell mat-sort-header="gratuity" *matHeaderCellDef>
+                Gratuity
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.gratuity }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element">
+                <section>
+                    <button mat-mini-fab [matMenuTriggerFor]="menu" color="primary"
+                        aria-label="Example icon button with a menu icon">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="editBonus(element)">
+                            <mat-icon>edit</mat-icon>
+                            <span>Edit bonus</span>
+                        </button>
+                        <button mat-menu-item (click)="delete(element)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Delete</span>
+                        </button>
+                    </mat-menu>
+                </section>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+</div>
+
+<div mat-dialog-actions style="float: right; margin-top: 20px">
+    <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
+    <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+</div>

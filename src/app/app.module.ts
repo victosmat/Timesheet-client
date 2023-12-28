@@ -63,6 +63,12 @@ import { ManagementMonitoringComponent } from './management-monitoring/managemen
 import { ViewPunishmentComponent } from './management-monitoring/view-punishment/view-punishment.component';
 import { ViewAbsenceComponent } from './management-monitoring/view-absence/view-absence.component';
 import { UpdateStatusPunismentComponent } from './management-absence/update-status-punisment/update-status-punisment.component';
+import { MyCheckinComponent } from './my-checkin/my-checkin.component';
+import { ManageCheckinComponent } from './manage-checkin/manage-checkin.component';
+import { ConfirmCheckinDialogComponent } from './my-checkin/confirm-checkin-dialog/confirm-checkin-dialog.component';
+import { EditBonusDialogComponent } from './management-user/edit-bonus-dialog/edit-bonus-dialog.component';
+import { SaveBonusToUserDialogComponent } from './management-user/edit-bonus-dialog/save-bonus-to-user-dialog/save-bonus-to-user-dialog.component';
+import { DeleteBonusToUserDialogComponent } from './management-user/edit-bonus-dialog/delete-bonus-to-user-dialog/delete-bonus-to-user-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -117,6 +123,12 @@ import { UpdateStatusPunismentComponent } from './management-absence/update-stat
     ViewPunishmentComponent,
     ViewAbsenceComponent,
     UpdateStatusPunismentComponent,
+    MyCheckinComponent,
+    ManageCheckinComponent,
+    ConfirmCheckinDialogComponent,
+    EditBonusDialogComponent,
+    SaveBonusToUserDialogComponent,
+    DeleteBonusToUserDialogComponent
   ],
   imports: [
     BrowserModule,

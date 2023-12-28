@@ -19,6 +19,8 @@ import { ManagementAbsenceComponent } from './management-absence/management-abse
 import { ManagementTardinessComponent } from './management-tardiness/management-tardiness.component';
 import { ManagementBonusComponent } from './management-bonus/management-bonus.component';
 import { ManagementMonitoringComponent } from './management-monitoring/management-monitoring.component';
+import { MyCheckinComponent } from './my-checkin/my-checkin.component';
+import { ManageCheckinComponent } from './manage-checkin/manage-checkin.component';
 
 const routes: Routes = [
   { path: '', redirectTo: "/login", pathMatch: "full"},
@@ -37,6 +39,8 @@ const routes: Routes = [
       { path: 'manage_absence', component: ManagementAbsenceComponent, canActivate: [AuthGuard], data: { roles: ["PM, HR"] }, },
       { path: 'manage_Tardiness', component: ManagementTardinessComponent, canActivate: [AuthGuard], data: { roles: ["PM, HR"] }, },
       { path: 'admin_bonus', component: ManagementBonusComponent, canActivate: [AuthGuard], data: { roles: ["PM"] }, },
+      { path: 'my_checkin', component: MyCheckinComponent, canActivate: [AuthGuard], data: { roles: ["PM"] }, },
+      { path: 'manage_checkin', component: ManageCheckinComponent, canActivate: [AuthGuard], data: { roles: ["PM"] }, },    
     ]
   },
   { path: 'forbidden', component: ForbiddenComponent }

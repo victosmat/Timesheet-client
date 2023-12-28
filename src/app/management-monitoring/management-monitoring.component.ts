@@ -79,6 +79,10 @@ export class ManagementMonitoringComponent implements OnInit {
     this.getAllUser();
   }
 
+  formatDate(dateList: any) {
+    return dateList[0] + '-' + dateList[1] + '-' + dateList[2];
+  }
+
   getAllUser() {
     let payStatus = '';
     if (this.paymentStatusUser === 'PAID') {

@@ -1,0 +1,31 @@
+<form [formGroup]="bonusForUserForm" (submit)="submitFrom()" class="example-form">
+    <mat-card-title *ngIf="this.data.bonus === undefined" style="font-size: 30px"> Add bonus for {{data.employee.fullName}} </mat-card-title>
+    <mat-card-title *ngIf="this.data.bonus !== undefined" style="font-size: 30px"> Edit bonus for {{data.employee.fullName}} </mat-card-title>
+    <div style="margin-top: 20px;">
+        <mat-card class="content mat-elevation-z4" style="width: 100%">
+            &nbsp; &nbsp; &nbsp;
+            <mat-card-content class="submit-week-tabs">
+                <div>
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label for="id">Bonus</mat-label>
+                        <mat-select id="id" formControlName="id">
+                            <mat-option *ngFor="let bonusDto of this.bonusDtoList" [value]="bonusDto.id">
+                                {{bonusDto.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label for="reason">Reason</mat-label>
+                        <textarea style="height: 100px;" id="reason" matInput placeholder="Reason" formControlName="reason"></textarea>
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div mat-dialog-actions style="float: right; margin-top: 20px">
+        <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
+        <button mat-raised-button type="submit" color="primary" cdkFocusInitial>Ok</button>
+    </div>
+</form>

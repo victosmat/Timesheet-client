@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { NoteCommentViewDto } from 'src/app/model/note-comment-view-dto';
 import { TimesheetService } from 'src/app/service/timesheet/timesheet.service';
 
@@ -14,7 +15,8 @@ export class CommentDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<CommentDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private timesheetService: TimesheetService
+    private timesheetService: TimesheetService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -24,7 +26,8 @@ export class CommentDialogComponent implements OnInit {
         console.log(this.noteCommentViewDto);
       },
       error : (error) => {
-
+        console.log(error);
+        
       }
     });
   }
@@ -34,9 +37,15 @@ export class CommentDialogComponent implements OnInit {
       this.timesheetService.updateIsReaded(this.noteCommentViewDto.id).subscribe({
         next : (response) => {
           this.dialogRef.close();
+          this.snackBar.open('Update isReaded successfully', 'Close', {
+            duration: 2000,
+          });
         },
         error : (error) => {
-  
+          console.log(error);
+          this.snackBar.open('Update isReaded failed', 'Close', {
+            duration: 2000,
+          });
         }
       });
       this.dialogRef.close();

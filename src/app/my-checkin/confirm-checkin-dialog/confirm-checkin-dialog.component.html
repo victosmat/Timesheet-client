@@ -1,0 +1,23 @@
+<mat-card style="width: 370px; height: 150px;" *ngIf="isExactly === false">
+    <h1 mat-dialog-title> Is this information accurate? <i class="material-icons" style="color:red;">error</i>
+    </h1>
+    <mat-card-content style="display: block;">
+        <p> Employee id: {{ employeeId }} </p>
+        <p> Probability: {{ probability }} %</p>
+    </mat-card-content>
+    <div mat-dialog-actions style="float: right; margin-top: 40px;">
+        <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
+        <button mat-raised-button type="submit" color="primary" (click)="checkin()">Confirm</button>
+    </div>
+</mat-card>
+
+<mat-card style="width: 370px; height: 150px;" *ngIf="isExactly === true">
+    <h1 mat-dialog-title> Checkin successfully! <i class="material-icons" style="color:green;">check_circle</i></h1>
+    <mat-card-content style="display: block;">
+        <p> Name: {{ employeeId }} </p>
+        <p> Probability: {{ probability }} %</p>
+    </mat-card-content>
+    <div mat-dialog-actions style="float: right; margin-top: 40px;">
+        <button mat-raised-button type="reset" color="warn" (click)="onNoClickSucces()">Cancel</button>
+    </div>
+</mat-card>

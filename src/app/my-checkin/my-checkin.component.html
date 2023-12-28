@@ -1,0 +1,24 @@
+<div class="content">
+    <mat-card-header style="border-bottom: 1px solid silver; justify-content: space-between; display: flex;">
+        <mat-card-title style="font-size: 30px"> Checkin / checkout 
+            <b style="text-align: center;">{{ currentTime | date: 'HH:mm:ss dd/MM/yyyy' }}</b>
+        </mat-card-title>
+        <div style="padding-bottom: 10px;"><button mat-raised-button color="primary" (click)="checkPermissions()">
+                <mat-icon>videocam</mat-icon>
+            </button></div>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div *ngIf="loading; else content">
+            <mat-spinner class="centered-spinner"></mat-spinner>
+        </div>
+        <ng-template #content>
+            <div>
+                <video #videoElement autoplay class="image"></video>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <button mat-raised-button color="warn" (click)="capture()"> Capture the image </button>
+            </div>
+        </ng-template>
+    </mat-card-content>
+</div>

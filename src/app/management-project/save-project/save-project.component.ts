@@ -168,8 +168,8 @@ export class SaveProjectComponent implements OnInit {
     this.dialogRef.close();
   }
   submitFrom() {
+    console.log("miglee");
     if (this.projectFrom.valid) {
-      // kiểm tra nhân viên có trong dự án chưa
       let check = false;
       this.employeeSelectedList.controls.forEach((element: any) => {
         if (element.value.employeeId == this.data.id) {

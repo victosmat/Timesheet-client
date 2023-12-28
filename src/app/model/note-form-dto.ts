@@ -11,6 +11,7 @@ export interface NoteFormDto {
     dateSubmit?: Date,
     dateModify?: Date,
     status?: TimeSheetStatus,
+    createdDate?: Date,
 }
 
 

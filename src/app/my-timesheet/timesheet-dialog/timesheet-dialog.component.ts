@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
+import { tr } from 'date-fns/locale';
 import { CookieService } from 'ngx-cookie-service';
 import { NoteFormDto } from 'src/app/model/note-form-dto';
 import { ProjectSelectDto } from 'src/app/model/project-select-dto';
@@ -56,12 +57,12 @@ export class TimesheetDialogComponent implements OnInit {
     this.timesheetService.getListProjectForTimesheetForm(employeeId).subscribe({
       next: (response: any) => {
         this.projectSelectDtoList = response;
+        console.log(this.projectSelectDtoList);
       },
       error: (error) => {
         this.dialogRef.close();
       },
       complete: () => {
-
       }
     })
 
@@ -73,11 +74,14 @@ export class TimesheetDialogComponent implements OnInit {
       workingType: new FormControl(null, Validators.required)
     })
 
-    if (this.data.noteId !== undefined) {
+    if (this.data.noteId) {
+      console.log("sdsdsdsd");
       this.timesheetService.getTimesheetById(this.data.noteId).subscribe({
         next: (response: NoteFormDto) => {
           this.getTaskForFormBasedOnProjectId(response.projectId);
+          console.log(response);
           this.noteFormDto = response;
+          console.log("noteFormDto" + this.noteFormDto);
           this.timesheetForm.patchValue({ projectId: response.projectId });
           this.timesheetForm.patchValue({ taskId: response.taskId });
           this.timesheetForm.patchValue({ note: response.noteDescription });
@@ -115,22 +119,39 @@ export class TimesheetDialogComponent implements OnInit {
   }
 
   submitForm() {
+    console.log(this.data.selectedDate);
     if (this.timesheetForm.valid) {
       this.noteFormDto = {
         id: this.data.noteId,
+        employeeId: Number(this.cookieService.get("TimesheetAppEmployeeId")),
         projectId: this.timesheetForm.value.projectId,
         taskId: this.timesheetForm.value.taskId,
         noteDescription: this.timesheetForm.value.note,
         workingTime: this.timesheetForm.value.workingTime,
         workingType: this.timesheetForm.value.workingType,
-        status: TimeSheetStatus.NEW
+        dateSubmit: this.noteFormDto.dateSubmit,
+        dateModify: this.noteFormDto.dateModify,
+        status: TimeSheetStatus.NEW,
+        createdDate: this.data.selectedDate,
       };
       this.timesheetService.saveTimesheet(this.noteFormDto).subscribe({
         next: (response: any) => {
           this.dialogRef.close(response);
+          if (response === true) {
+            this.snackBar.open('Save timesheet successfully', 'Close', {
+              duration: 2000,
+            });
+          } else {
+            this.snackBar.open('Save timesheet failed', 'Close', {
+              duration: 2000,
+            });
+          }
         },
         error: (error: any) => {
           console.log(error);
+          this.snackBar.open('Save timesheet failed', 'Close', {
+            duration: 2000,
+          });
         },
       });
     } else {

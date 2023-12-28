@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { CookieService } from 'ngx-cookie-service';
 import {
   MAT_DIALOG_DATA,
@@ -9,13 +8,13 @@ import {
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { ProjectService } from 'src/app/service/project/project.service';
-import { MatInput } from '@angular/material/input';
 import { SaveTaskComponent } from './save-task/save-task.component';
 import { TaskDetailDto } from 'src/app/model/task-detail-dto';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { CustomDataSource } from 'src/app/shared/custom-datasource';
+import { DeleteTaskComponent } from './delete-task/delete-task.component';
 @Component({
   selector: 'app-view-task',
   templateUrl: './view-task.component.html',
@@ -31,12 +30,12 @@ export class ViewTaskComponent implements OnInit {
     'priorityType',
     'actions',
   ];
-  
+
   data$: any = Observable<any[]>;
   dataSource: any;
   buddyId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
   pageNumber = 0;
-  pageSize = 10;
+  pageSize = 5;
   nameSearch = '';
   sortField = 'id';
   sortOrder = 'asc';
@@ -131,10 +130,19 @@ export class ViewTaskComponent implements OnInit {
         },
       });
   }
-  updateStatus(element: any) { }
-  delete(element: any) { }
-  deactivateUser(element: any) { }
-  activateUser(element: any) { }
+  delete(element: any) {
+    this.dialog
+      .open(DeleteTaskComponent, {
+        data: element,
+        width: '350px',
+      })
+      .afterClosed()
+      .subscribe({
+        next: () => {
+          this.renderPage();
+        },
+      });
+  }
 
   loadPage($event: PageEvent) {
     console.log($event.pageSize);

@@ -1,1 +1,8 @@
-<p>delete-dialog works!</p>
+<h1 mat-dialog-title>Delete employee</h1>
+<div mat-dialog-content>
+  <p>Are you sure you want to delete {{data.fullName}}?</p>
+</div>
+<div mat-dialog-actions style="float: right;">
+    <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
+    <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="" cdkFocusInitial (click)="delete()">Ok</button>
+</div>

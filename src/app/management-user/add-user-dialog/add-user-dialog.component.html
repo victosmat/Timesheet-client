@@ -75,9 +75,9 @@
                 <div>
                     <div>
                         <mat-form-field class="example-full-width" appearance="outline">
-                            <mat-label for="buddy">Buddy name</mat-label>
-                            <mat-select id="buddy" formControlName="buddyName">
-                                <mat-option *ngFor="let pm of pmDto" [value]="pm.name">
+                            <mat-label for="buddyId">Buddy name</mat-label>
+                            <mat-select id="buddyId" formControlName="buddyId">
+                                <mat-option *ngFor="let pm of pmDto" [value]="pm.id">
                                     {{pm.name}}
                                 </mat-option>
                             </mat-select>
@@ -85,9 +85,9 @@
                     </div>
                     <div>
                         <mat-form-field class="example-full-width" appearance="outline">
-                            <mat-label for="buddy">Department name</mat-label>
-                            <mat-select id="buddy" formControlName="departmentName">
-                                <mat-option *ngFor="let department of departments" [value]="department.name">
+                            <mat-label for="departmentId">Department name</mat-label>
+                            <mat-select id="departmentId" formControlName="departmentId">
+                                <mat-option *ngFor="let department of departments" [value]="department.id">
                                     {{department.name}}
                                 </mat-option>
                             </mat-select>
@@ -110,9 +110,9 @@
                 <div style="margin-left: 10px;">
                     <div>
                         <mat-form-field class="example-full-width" appearance="outline">
-                            <mat-label for="jobDepartment">Role</mat-label>
-                            <mat-select id="jobDepartment" formControlName="jobDepartment">
-                                <mat-option *ngFor="let role of roles" [value]="role">
+                            <mat-label for="jobDepartmentId">Position</mat-label>
+                            <mat-select id="jobDepartmentId" formControlName="jobDepartmentId">
+                                <mat-option *ngFor="let role of roles" [value]="role.id">
                                     {{role.name}}
                                 </mat-option>
                             </mat-select>

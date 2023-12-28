@@ -80,6 +80,19 @@
         </mat-nav-list>
       </mat-expansion-panel>
     </mat-accordion>
+    <mat-accordion *ngIf="this.authService.roleMatch(['PM'])">
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Checkin/Checkout
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-nav-list>
+          <a style="font-size: 15px;" mat-list-item routerLink="my_checkin"><mat-icon aria-hidden="false"
+              aria-label="Absence Day" fontIcon="icon">add_a_photo</mat-icon>&nbsp;General</a>
+        </mat-nav-list>
+      </mat-expansion-panel>
+    </mat-accordion>
   </mat-sidenav>
   <mat-sidenav-content>
     <router-outlet></router-outlet>

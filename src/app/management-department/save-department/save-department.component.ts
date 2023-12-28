@@ -17,7 +17,7 @@ import { EmployeeService } from 'src/app/service/employee/employee.service';
 })
 export class SaveDepartmentComponent implements OnInit {
   departmentForm!: FormGroup;
-  departmentDto: DepartmentDto = {};
+  departmentDto!: DepartmentDto;
 
   constructor(
     public dialogRef: MatDialogRef<SaveDepartmentComponent>,

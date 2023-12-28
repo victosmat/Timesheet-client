@@ -12,6 +12,7 @@ import { AuthService } from '../service/auth/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { RefreshTokenDto } from '../model/refresh-token-dto.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -22,34 +23,37 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private authService: AuthService,
     private cookieService: CookieService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if(request.headers.get("No-Auth") === "True") {
+    if (request.headers.get("No-Auth") === "True") {
       return next.handle(request.clone());
     }
     const token = "Bearer " + this.authService.getOriginalToken();
     const headers = new HttpHeaders().set('Authorization', token);
-    const AuthRequest = request.clone({headers: headers});
+    const AuthRequest = request.clone({ headers: headers });
     return next.handle(AuthRequest).pipe(
       catchError(
-          (err: HttpErrorResponse) => {
-              if(err.status === 401) {
-                this.handle401ErrorHappenedByToken(request, next);
-              } else if(err.status === 403){
-                  this.router.navigate(['/forbidden'])
-              } else if(err.status === 404) {
-                  this.router.navigate(['/**'])
-              } else if(err.status === 405) {
-                  
-              } else if(err.status === 500) {
-                
-              } else {
+        (err: HttpErrorResponse) => {
+          if (err.status === 401) {
+            this.handle401ErrorHappenedByToken(request, next);
+          } else if (err.status === 403) {
+            this.snackBar.open("Error! An error occurred. Please try again later", "OK", {
+              duration: 2000,
+            });
+          } else if (err.status === 404) {
+            this.router.navigate(['/**'])
+          } else if (err.status === 405) {
 
-              }
-              return throwError(() => err);
+          } else if (err.status === 500) {
+
+          } else {
+
           }
+          return throwError(() => err);
+        }
       )
     )
   }
@@ -61,9 +65,9 @@ export class AuthInterceptor implements HttpInterceptor {
       this.refreshTokenSubject.next(null);
 
       const refreshToken = this.authService.getOriginalRefreshToken();
-      if(refreshToken) {
+      if (refreshToken) {
         return this.authService.refreshToken(new RefreshTokenDto(refreshToken)).pipe(
-          switchMap((response : any) => {
+          switchMap((response: any) => {
             this.isRefreshing = false;
             this.cookieService.set("TimesheetAppToken", response.accessToken);
             this.cookieService.set("TimesheetAppRefreshToken", response.refreshToken);

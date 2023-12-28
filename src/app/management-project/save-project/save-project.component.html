@@ -99,7 +99,7 @@
                                         <mat-label>Search by keyword</mat-label>
                                         <input matInput formControlName="keywordSelected" name="keywordSelected" />
                                     </mat-form-field>
-                                    <button style="margin-top: 10px;" mat-icon-button mat-raised-button color="primary"
+                                    <button type="button" style="margin-top: 10px;" mat-icon-button mat-raised-button color="primary"
                                         (click)="filterSelected()">
                                         <mat-icon>filter_list</mat-icon>
                                     </button>
@@ -148,7 +148,7 @@
                                         <mat-label>Search by keyword</mat-label>
                                         <input matInput formControlName="keyword" />
                                     </mat-form-field>
-                                    <button style="margin-top: 10px;" mat-icon-button mat-raised-button color="primary"
+                                    <button type="button" style="margin-top: 10px;" mat-icon-button mat-raised-button color="primary"
                                         (click)="filter()">
                                         <mat-icon>filter_list</mat-icon>
                                     </button>
@@ -161,7 +161,7 @@
                                                     {{employee.roles}} </div>
                                                 <div>{{ employee.email }}</div>
                                             </div>
-                                            <button mat-icon-button mat-raised-button color="primary"
+                                            <button type="button" mat-icon-button mat-raised-button color="primary"
                                                 (click)="addUserToTeam(employee)">
                                                 <mat-icon>add</mat-icon>
                                             </button>

@@ -12,7 +12,6 @@ import { EmployeeDetailDto } from 'src/app/model/employee-detail-dto';
 import { PmDto } from 'src/app/model/pm-dto';
 import { RoleDto } from 'src/app/model/role-dto';
 import { TaskDetailDto } from 'src/app/model/task-detail-dto';
-import { EmployeeService } from 'src/app/service/employee/employee.service';
 import { ProjectService } from 'src/app/service/project/project.service';
 
 @Component({

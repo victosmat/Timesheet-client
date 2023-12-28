@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, IterableDiffers, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import {
   DateAdapter,
@@ -22,6 +22,7 @@ import { NoteViewDto } from '../model/note-view-dto';
 import { CommentDialogComponent } from './comment-dialog/comment-dialog.component';
 import { CheckinPunishmentDto } from '../model/checkin-punishment-dto';
 import { ComplainDialogComponent } from './complain-dialog/complain-dialog.component';
+import { tr } from 'date-fns/locale';
 
 const MY_DATE_FORMAT = {
   parse: {
@@ -57,7 +58,7 @@ export enum TimeSheetStatus {
 })
 export class MyTimesheetComponent implements OnInit, OnChanges {
   daysArray = [
-    { label: 'Monday', value: 1 },
+    { label: 'Monday', value: 1, },
     { label: 'Tuesday', value: 2 },
     { label: 'Wednesday', value: 3 },
     { label: 'Thursday', value: 4 },
@@ -65,6 +66,7 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
     { label: 'Saturday', value: 6 },
     { label: 'Sunday', value: 0 },
   ];
+
   daysArraySummary = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   monthsArray = [
     'January',
@@ -89,7 +91,6 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
   checkinPunishmentDto: CheckinPunishmentDto[] = [];
 
   notesPerDayDtos: NotesPerDayDto[] = [];
-  hidden = false;
 
   name: string = 'Quang';
 
@@ -167,7 +168,7 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
     this.findSummary(undefined);
   }
 
-  showDialogNotComment(item: NoteViewDto) {
+  showDialogNotComment(item: CheckinPunishmentDto) {
     const dialogRef = this.dialog.open(ComplainDialogComponent, {
       data: { note: item },
     });
@@ -177,6 +178,57 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
         this.ngOnInit();
       },
     });
+  }
+
+  getTotalWokingTime() {
+    let totalWokingTime = 0;
+    let formattedTime = '00:00';
+    for (let i = 0; i < 7; i++) {
+      let itemList = this.getNotesPerDay(i)?.lst;
+      if (itemList !== undefined) {
+        for (let item of itemList) {
+          if (item.workingTime !== undefined) {
+            totalWokingTime += item.workingTime;
+          }
+        }
+      }
+    }
+    const hours = Math.floor(totalWokingTime);
+    const minutes = Math.round((totalWokingTime - hours) * 60);
+
+    formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+    return formattedTime;
+  }
+
+  getWorkingTime(index: any) {
+    let itemList = this.getNotesPerDay(index)?.lst;
+    if (itemList !== undefined) {
+      let totalHours = 0;
+      for (let item of itemList) {
+        if (item.workingTime !== undefined) {
+          totalHours += item.workingTime;
+        }
+      }
+
+      const hours = Math.floor(totalHours);
+      const minutes = Math.round((totalHours - hours) * 60);
+
+      const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+      return formattedTime;
+    }
+    return '00:00';
+  }
+
+  checkComment(index: any) {
+    let itemResultList = this.getNotesPerDay(index)?.lst;
+
+    if (itemResultList) {
+      for (let itemResult of itemResultList) {
+        if (itemResult.read === false) return false;
+      }
+    }
+
+    return true;
   }
 
   getNotesPerDay(index: any) {
@@ -193,6 +245,10 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
       }
     }
     return null;
+  }
+
+  formatDate(dateList: number[]) {
+    return dateList[2] + ' - ' + dateList[1] + ' - ' + dateList[0];
   }
 
   getSelectedDayIndex(): number {
@@ -329,8 +385,8 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
     });
   }
 
-  showComment(item: NoteViewDto | undefined) {
-    this.hidden = !this.hidden;
+  showComment(item: NoteViewDto) {
+    console.log(item);
     const dialogRef = this.dialog.open(CommentDialogComponent, {
       data: { note: item },
     });
