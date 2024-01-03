@@ -8,7 +8,6 @@ import {
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { el, tr } from 'date-fns/locale';
 import { EmployeeViews } from 'src/app/model/EmployeeViews';
 import { ProjectDetailDto } from 'src/app/model/project-view-detail';
 import { EmployeeService } from 'src/app/service/employee/employee.service';

@@ -21,6 +21,7 @@ import { ManagementBonusComponent } from './management-bonus/management-bonus.co
 import { ManagementMonitoringComponent } from './management-monitoring/management-monitoring.component';
 import { MyCheckinComponent } from './my-checkin/my-checkin.component';
 import { ManageCheckinComponent } from './manage-checkin/manage-checkin.component';
+import { RegisterImagesCheckinComponent } from './register-images-checkin/register-images-checkin.component';
 
 const routes: Routes = [
   { path: '', redirectTo: "/login", pathMatch: "full"},
@@ -40,7 +41,8 @@ const routes: Routes = [
       { path: 'manage_Tardiness', component: ManagementTardinessComponent, canActivate: [AuthGuard], data: { roles: ["PM, HR"] }, },
       { path: 'admin_bonus', component: ManagementBonusComponent, canActivate: [AuthGuard], data: { roles: ["PM"] }, },
       { path: 'my_checkin', component: MyCheckinComponent, canActivate: [AuthGuard], data: { roles: ["PM"] }, },
-      { path: 'manage_checkin', component: ManageCheckinComponent, canActivate: [AuthGuard], data: { roles: ["PM"] }, },    
+      { path: 'manage_checkin', component: ManageCheckinComponent, canActivate: [AuthGuard], data: { roles: ["PM"] }, },   
+      { path: 'register_image', component: RegisterImagesCheckinComponent, canActivate: [AuthGuard], data: { roles: ["PM"] }, },
     ]
   },
   { path: 'forbidden', component: ForbiddenComponent }

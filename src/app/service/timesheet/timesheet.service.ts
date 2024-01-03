@@ -119,7 +119,8 @@ export class TimesheetService {
     status: string,
     month: number,
     year: number,
-    isComplain: Boolean | null
+    isComplain: Boolean | null,
+    isManage: string
   ): Observable<any> {
     let params: HttpParams = new HttpParams();
     params = params.append('pageNum', pageNumber);
@@ -130,7 +131,7 @@ export class TimesheetService {
     params = params.append('status', status);
     params = params.append('month', month + 1);
     params = params.append('year', year),
-    params = params.append('isManage', 'false');
+    params = params.append('isManage', isManage);
     if (isComplain !== null) {
       params = params.append('isComplain', isComplain.toString());
     }

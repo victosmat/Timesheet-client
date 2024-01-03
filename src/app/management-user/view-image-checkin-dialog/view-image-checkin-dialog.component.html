@@ -1,0 +1,40 @@
+<div class="content">
+    <mat-card-header style="border-bottom: 1px solid silver;">
+        <mat-card-title style="font-size: 30px"> Images checkin / checkout for {{data.fullName}}
+        </mat-card-title>
+    </mat-card-header>
+    <div style="display: flex; margin-top: 20px; justify-content: center;">
+        <mat-form-field class="example-full-width" appearance="outline" style="padding-left: 10px; padding-right: 10px;">
+            <mat-label>month</mat-label>
+            <mat-select [(value)]="month" (valueChange)="findMonth()">
+                <mat-option *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="i">{{i}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline" style="padding-left: 10px; padding-right: 10px;">
+            <mat-label>Year</mat-label>
+            <mat-select [(value)]="year" (valueChange)="findYear()">
+                <mat-option *ngFor="let i of [2018,2019, 2020,2021,2022,2023,2024]" [value]="i">{{i}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <mat-card style="overflow-y: auto; height: 570px;">
+        <mat-grid-list cols="5">
+            <mat-grid-tile *ngFor="let imageCheckinDto of imageCheckinDtoList">
+                <div class="item-image">
+                    <div>
+                        <img [src]="'data:image/jpeg;base64,' + imageCheckinDto.imageBase64" alt="Image"
+                            style="width: 100%; height: 100%;">
+                        <button mat-fab color="primary" style="position: absolute; top: 0px; right: 0px;" (click)="deleteImage(imageCheckinDto)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                    <b class="time-image">{{formatDate(imageCheckinDto.nameFile)}}</b>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-card>
+    <div mat-dialog-actions style="float: right;">
+        <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
+        <button mat-raised-button type="submit" color="primary" cdkFocusInitial>Ok</button>
+    </div>
+</div>

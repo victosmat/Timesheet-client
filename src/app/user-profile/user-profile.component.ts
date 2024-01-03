@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmployeeDetailDto } from '../model/employee-detail-dto';
 import { UpdatePasswordDialogComponent } from './update-password-dialog/update-password-dialog.component';
-import { el } from 'date-fns/locale';
+import { ViewBonusDialogComponent } from './view-bonus-dialog/view-bonus-dialog.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -129,5 +129,12 @@ export class UserProfileComponent implements OnInit {
 
   notify() {
     this.snackBar.open('This field is readonly and cannot be changed.', 'OK');
+  }
+
+  viewBonus() {
+    this.dialog.open(ViewBonusDialogComponent, {
+      width: '1000px',
+      data: this.employeeDetailDto,
+    });
   }
 }

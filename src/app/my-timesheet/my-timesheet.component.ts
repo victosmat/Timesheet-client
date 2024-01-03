@@ -22,7 +22,6 @@ import { NoteViewDto } from '../model/note-view-dto';
 import { CommentDialogComponent } from './comment-dialog/comment-dialog.component';
 import { CheckinPunishmentDto } from '../model/checkin-punishment-dto';
 import { ComplainDialogComponent } from './complain-dialog/complain-dialog.component';
-import { tr } from 'date-fns/locale';
 
 const MY_DATE_FORMAT = {
   parse: {
@@ -430,7 +429,7 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
     const year = this.yearPunishment;
     const employeeId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
     this.timesheetService
-      .getCheckinOfEmployeeAndPunishment(1, 300, 'id', 'asc', employeeId, status, month, year, null)
+      .getCheckinOfEmployeeAndPunishment(1, 300, 'id', 'asc', employeeId, status, month, year, null, 'false')
       .subscribe({
         next: (response) => {
           console.log(response.content);
@@ -551,14 +550,20 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
       .subscribe({
         next: (response) => {
           if (response === true) {
-            this.snackBar.open('Checkpoint sucessfully!', 'OK');
+            this.snackBar.open('Checkpoint sucessfully!', 'OK', {
+              duration: 2000,
+            });
           } else {
-            this.snackBar.open('Checkpoint failed!', 'OK');
+            this.snackBar.open('Checkpoint failed!', 'OK', {
+              duration: 2000,
+            });
           }
           this.getCheckinOfEmployeeAndPunishment();
         },
         error: (error) => {
-          this.snackBar.open('Checkpoint failed!', 'OK');
+          this.snackBar.open('Checkpoint failed!', 'OK', {
+            duration: 2000,
+          });
         },
       });
 

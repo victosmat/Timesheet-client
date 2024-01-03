@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -18,6 +18,25 @@ export class CheckinService {
   public saveImage(data: any): any {
     return this.httpClient
       .post<any>(this.base_url + 'save_image', data)
+      .pipe();
+  }
+
+  public getAllImageByEmployeeId(employeeId: number): any {
+    const requestJson = {
+      employeeId: employeeId.toString()
+    };
+    return this.httpClient
+      .post<any>(this.base_url + 'get_images_base64', requestJson)
+      .pipe();
+  }
+
+  public deleteImage(nameFile: string, employeeId: number): any {
+    const requestJson = {
+      employeeId: employeeId.toString(),
+      nameFile: nameFile
+    };
+    return this.httpClient
+      .post<any>(this.base_url + 'delete_image', requestJson)
       .pipe();
   }
 }

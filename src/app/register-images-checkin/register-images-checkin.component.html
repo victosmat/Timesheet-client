@@ -1,0 +1,56 @@
+<div class="content">
+    <mat-card-header style="border-bottom: 1px solid silver; justify-content: space-between; display: flex;">
+        <mat-card-title style="font-size: 30px"> Register images checkin / checkout
+            <b style="text-align: center;">{{ currentTime | date: 'HH:mm:ss dd/MM/yyyy' }}</b>
+        </mat-card-title>
+        <div class="button-group">
+            <button mat-raised-button color="primary" (click)="checkPermissions()">
+                <mat-icon>videocam</mat-icon>
+            </button>
+        </div>
+    </mat-card-header>
+
+    <div class="container">
+        <div class="left-panel">
+            <mat-card class="image-card">
+                <video #videoElement autoplay class="image"></video>
+                <button [disabled]="imageBase64List.length > 3" mat-raised-button color="warn" (click)="capture()">
+                    Capture the image </button>
+            </mat-card>
+        </div>
+        <div class="right-panel" style="overflow-y: auto; height: 700px;">
+            <mat-stepper [linear]="true" #stepper>
+                <mat-step [stepControl]="firstFormGroup">
+                    <form [formGroup]="firstFormGroup">
+                        <ng-template matStepLabel>Fill in email information</ng-template>
+                        <mat-form-field>
+                            <mat-label>Email</mat-label>
+                            <input matInput placeholder="@ncc.asia" formControlName="firstCtrl" required>
+                        </mat-form-field>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="secondFormGroup" label="Take a photo">
+                    <mat-grid-list cols="2">
+                        <mat-grid-tile *ngFor="let image of imageBase64List; let i = index">
+                            <div class="item-image">
+                                <div>
+                                    <img [src]="image" class="captured-image" alt="Captured Image">
+                                    <button mat-fab color="primary" style="position: absolute; top: 0px; right: 0px;"
+                                        (click)="deleteImage(i)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                    <div class="button-group">
+                        <button mat-raised-button color="primary" (click)="registerImages()"
+                            [disabled]="imageBase64List.length !== 4">
+                            Register Images
+                        </button>
+                    </div>
+                </mat-step>
+            </mat-stepper>
+        </div>
+    </div>
+</div>

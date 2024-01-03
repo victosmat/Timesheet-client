@@ -69,6 +69,10 @@ import { ConfirmCheckinDialogComponent } from './my-checkin/confirm-checkin-dial
 import { EditBonusDialogComponent } from './management-user/edit-bonus-dialog/edit-bonus-dialog.component';
 import { SaveBonusToUserDialogComponent } from './management-user/edit-bonus-dialog/save-bonus-to-user-dialog/save-bonus-to-user-dialog.component';
 import { DeleteBonusToUserDialogComponent } from './management-user/edit-bonus-dialog/delete-bonus-to-user-dialog/delete-bonus-to-user-dialog.component';
+import { ViewBonusDialogComponent } from './user-profile/view-bonus-dialog/view-bonus-dialog.component';
+import { ViewImageCheckinDialogComponent } from './management-user/view-image-checkin-dialog/view-image-checkin-dialog.component';
+import { DeleteImageCheckinDialogComponent } from './management-user/view-image-checkin-dialog/delete-image-checkin-dialog/delete-image-checkin-dialog.component';
+import { RegisterImagesCheckinComponent } from './register-images-checkin/register-images-checkin.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -128,7 +132,11 @@ import { DeleteBonusToUserDialogComponent } from './management-user/edit-bonus-d
     ConfirmCheckinDialogComponent,
     EditBonusDialogComponent,
     SaveBonusToUserDialogComponent,
-    DeleteBonusToUserDialogComponent
+    DeleteBonusToUserDialogComponent,
+    ViewBonusDialogComponent,
+    ViewImageCheckinDialogComponent,
+    DeleteImageCheckinDialogComponent,
+    RegisterImagesCheckinComponent
   ],
   imports: [
     BrowserModule,

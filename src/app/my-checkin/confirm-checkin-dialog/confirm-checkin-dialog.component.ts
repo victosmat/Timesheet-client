@@ -36,7 +36,9 @@ export class ConfirmCheckinDialogComponent implements OnInit {
       .subscribe({
         next: (response) => {
           if (response === true) {
-            this.snackBar.open('Checkpoint sucessfully!', 'OK');
+            this.snackBar.open('Checkpoint successfully!', 'OK', {
+              duration: 2000
+            });
             const data = {
               employeeId: this.employeeId
             };
@@ -49,12 +51,16 @@ export class ConfirmCheckinDialogComponent implements OnInit {
               },
             });
           } else {
-            this.snackBar.open('Checkpoint failed!', 'OK');
+            this.snackBar.open('Checkpoint failed!', 'OK', {
+              duration: 2000
+            });
           }
         },
         error: (error) => {
           console.log(error);
-          this.snackBar.open('Checkpoint failed!', 'OK');
+          this.snackBar.open('Checkpoint failed!', 'OK', {
+            duration: 2000
+          });
         },
       });
     this.dialogRef.close();

@@ -117,7 +117,6 @@ export class ViewAbsenceComponent implements OnInit {
               duration: 2000,
               panelClass: ['error-snackbar'],
             });
-            this.dialogRef.close();
             return;
           }
           this.checkinPunishmentDto = response.content;

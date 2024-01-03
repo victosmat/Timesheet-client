@@ -40,19 +40,20 @@ export class ViewPunishmentComponent implements OnInit {
     'isDeleted'
   ];
 
+  selectedDate = new Date();
   dataSource: any;
   dataSourceDetail: any;
   buddyId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
   pageNumber = 0;
-  pageSize = 10;
+  pageSize = 5;
   sortField = 'id';
   sortOrder = 'asc';
   totalElements = 0;
   keyword: string = '';
   isCheckboxDisabled = true;
   date = new Date();
-  monthPer: number = this.date.getMonth() + 1;
-  yearPer: number = this.date.getFullYear();
+  monthPer: number;
+  yearPer: number ;
   branchUser: string = 'ALL';
   statusPunishment: string = 'ALL';
   complainPunishment: string = 'ALL';
@@ -73,7 +74,11 @@ export class ViewPunishmentComponent implements OnInit {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private timesheetService: TimesheetService
-  ) { }
+  ) {
+    const currentMonth = this.selectedDate.getMonth() + 1;
+    this.monthPer = (this.selectedDate.getMonth() === 0) ? 12 : this.selectedDate.getMonth() + 1;
+    this.yearPer = (currentMonth === 1) ? this.selectedDate.getFullYear() - 1 : this.selectedDate.getFullYear();
+   }
 
   findMonthPer() {
     console.log(this.monthPer);
@@ -83,12 +88,6 @@ export class ViewPunishmentComponent implements OnInit {
   ngOnInit() {
     console.log(this.data);
     this.viewCheckInDetail();
-  }
-
-  loadPage($event: PageEvent) {
-    console.log($event.pageSize);
-    this.pageNumber = $event.pageIndex;
-    this.pageSize = $event.pageSize;
   }
 
   sortData($event: Sort) {
@@ -123,7 +122,7 @@ export class ViewPunishmentComponent implements OnInit {
       .getCheckinOfEmployeeAndPunishment(this.pageNumber + 1,
         this.pageSize,
         this.sortField,
-        this.sortOrder, employeeId, status, month, year, isComplain)
+        this.sortOrder, employeeId, status, month, year, isComplain, 'true')
       .subscribe({
         next: (response) => {
           this.checkinPunishmentDto = response;
@@ -152,5 +151,12 @@ export class ViewPunishmentComponent implements OnInit {
   }
   findComplain() {
     this.getCheckinOfEmployeeAndPunishment();
+  }
+
+  loadPage($event: PageEvent) {
+    console.log($event.pageSize);
+    this.pageSize = $event.pageSize;
+    this.pageNumber = $event.pageIndex;
+    this.viewCheckInDetail();
   }
 }

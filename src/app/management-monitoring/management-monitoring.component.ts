@@ -10,6 +10,7 @@ import { ViewPunishmentComponent } from './view-punishment/view-punishment.compo
 import { ViewAbsenceComponent } from './view-absence/view-absence.component';
 import { Observable } from 'rxjs';
 import { CustomDataSource } from '../shared/custom-datasource';
+import { th } from 'date-fns/locale';
 @Component({
   selector: 'app-management-monitoring',
   templateUrl: './management-monitoring.component.html',
@@ -41,14 +42,18 @@ export class ManagementMonitoringComponent implements OnInit {
   levelUser: string = 'ALL';
   paymentStatusUser: string = 'ALL';
   branchUser: string = 'ALL';
-  month: number = this.selectedDate.getMonth();
-  year: number = this.selectedDate.getFullYear();
+  month: number;
+  year: number;
   constructor(
     private employeeService: EmployeeService,
     private cookieService: CookieService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) { }
+  ) {
+    const currentMonth = this.selectedDate.getMonth() + 1;
+    this.month = (this.selectedDate.getMonth() === 0) ? 12 : this.selectedDate.getMonth() + 1;
+    this.year = (currentMonth === 1) ? this.selectedDate.getFullYear() - 1 : this.selectedDate.getFullYear();
+  }
 
   ngOnInit() {
     this.renderPage();
@@ -80,7 +85,7 @@ export class ManagementMonitoringComponent implements OnInit {
   }
 
   formatDate(dateList: any) {
-    return dateList[0] + '-' + dateList[1] + '-' + dateList[2];
+    return dateList[2] + '-' + dateList[1] + '-' + dateList[0];
   }
 
   getAllUser() {
@@ -145,7 +150,7 @@ export class ManagementMonitoringComponent implements OnInit {
     this.getAllUser();
   }
 
-  updateStatus(element: any, status: boolean) { 
+  updateStatus(element: any, status: boolean) {
     console.log(element);
     this.employeeService.updateStatusPaySlip(element.id, status).subscribe({
       next: (response: any) => {
@@ -164,7 +169,7 @@ export class ManagementMonitoringComponent implements OnInit {
   viewPunishmentCheckin(element: any) {
     this.dialog.open(ViewPunishmentComponent, {
       data: {
-        id: element.id,
+        id: element.employeeId,
         fullName: element.fullName,
         email: element.email,
         departmentName: element.departmentName,

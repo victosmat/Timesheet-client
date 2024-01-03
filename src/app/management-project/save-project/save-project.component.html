@@ -137,7 +137,7 @@
                             </mat-expansion-panel>
                         </mat-accordion>
                         <mat-accordion *ngIf="this.checkAddMember === true" class="mat-accordion"
-                            style="width: 45%; max-height: 600px;">
+                            style="width: 45%;">
                             <mat-expansion-panel (opened)="panelTeamMember = true" (closed)="panelTeamMember = false">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title> Select team member </mat-panel-title>
@@ -153,7 +153,7 @@
                                         <mat-icon>filter_list</mat-icon>
                                     </button>
                                 </div>
-                                <div>
+                                <div class="list">
                                     <ul *ngFor="let employee of employeeView">
                                         <mat-card style="display: flex; justify-content: space-between">
                                             <div style="display: block;">
