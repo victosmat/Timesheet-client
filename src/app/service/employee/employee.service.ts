@@ -7,6 +7,7 @@ import { DepartmentDto } from 'src/app/model/department-dto';
 import { RoleDto } from 'src/app/model/role-dto';
 import { ro } from 'date-fns/locale';
 import { BonusDto } from 'src/app/model/bonus-dto';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,10 @@ import { BonusDto } from 'src/app/model/bonus-dto';
 export class EmployeeService {
   private base_url = 'http://localhost:8081/Timesheet/app/';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient,
+    private cookieService: CookieService
+  ) { }
 
   public getStaffPage(
     buddyId: number,
@@ -33,6 +37,17 @@ export class EmployeeService {
     params = params.append('sortOrder', sortOrder);
     return this.httpClient
       .get(this.base_url + 'employees/view_staff', { params: params })
+      .pipe();
+  }
+
+  public checkPasswordSystemAuth(password: string): Observable<any> {
+    const employeeId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
+    const jsonData = {
+      employeeId: employeeId,
+      password: password
+    };
+    return this.httpClient
+      .post<any>(this.base_url + 'check_system_auth', jsonData)
       .pipe();
   }
 

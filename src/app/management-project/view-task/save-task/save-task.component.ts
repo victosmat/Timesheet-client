@@ -30,7 +30,7 @@ export class SaveTaskComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<SaveTaskComponent>,
     private projectService: ProjectService,
-    @Inject(MAT_DIALOG_DATA) public data: TaskDetailDto,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
     private cookieService: CookieService,
     private snackBar: MatSnackBar
@@ -48,20 +48,45 @@ export class SaveTaskComponent implements OnInit {
     });
 
     this.taskForm.patchValue({
-      name: this.data.name,
-      description: this.data.description,
-      taskType: this.data.taskType,
-      taskStatus: this.data.taskStatus,
-      priorityType: this.data.priorityType,
+      name: this.data.task.name,
+      description: this.data.task.description,
+      taskType: this.data.task.taskType,
+      taskStatus: this.data.task.taskStatus,
+      priorityType: this.data.task.priorityType,
     });
   }
 
 
-  submitFrom() {}
-  changePassword() {
-    this.submitFrom();
+  submitFrom() {
+    if (this.taskForm.invalid) {
+      this.snackBar.open('Please fill out all the required fields !','OK', {
+        duration: 2000,
+        panelClass: ['matSnackBar-error'],
+      });
+      return;
+    }
+
+    const taskSaveSto = {
+      id: this.data.task.id,
+      name: this.taskForm.value.name,
+      description: this.taskForm.value.description,
+      taskType: this.taskForm.value.taskType,
+      taskStatus: this.taskForm.value.taskStatus,
+      priorityType: this.taskForm.value.priorityType,
+      projectId: this.data.projectId,
+    };
+
+    this.projectService
+      .saveTask(taskSaveSto)
+      .subscribe((response: any) => {
+        console.log(response);
+        this.dialogRef.close();
+        this.snackBar.open('Save task successfull !','OK', {
+          duration: 2000,
+          panelClass: ['matSnackBar-success'],
+        });
+      });
   }
-  changeInfo() {}
 
   onNoClick(): void {
     this.dialogRef.close();

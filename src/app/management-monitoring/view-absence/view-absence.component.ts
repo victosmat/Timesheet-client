@@ -28,20 +28,19 @@ export class ViewAbsenceComponent implements OnInit {
     'punishmentStatus'
   ];
 
+  selectedDate = new Date();
   data$: any = Observable<any[]>;
   dataSource: any;
   dataSourceDetail: any = new MatTableDataSource();
   buddyId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
   pageNumber = 0;
-  pageSize = 5;
+  pageSize = 10;
   sortField = 'id';
   sortOrder = 'asc';
   totalElements = 0;
   keyword: string = '';
   isCheckboxDisabled = true;
   date = new Date();
-  month: number = this.date.getMonth() + 1;
-  year: number = this.date.getFullYear();
   monthPer: number = this.date.getMonth() + 1;
   yearPer: number = this.date.getFullYear();
   branchUser: string = 'ALL';
@@ -60,13 +59,20 @@ export class ViewAbsenceComponent implements OnInit {
     public dialogRef: MatDialogRef<ViewAbsenceComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private cookieService: CookieService,
-    private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private absenceService: AbsenceService
-  ) { }
+  ) {
+    const currentMonth = this.selectedDate.getMonth() + 1;
+    this.monthPer = (this.selectedDate.getMonth() === 0) ? 12 : this.selectedDate.getMonth() + 1;
+    this.yearPer = (currentMonth === 1) ? this.selectedDate.getFullYear() - 1 : this.selectedDate.getFullYear();
+  }
 
-  findMonthPer() { }
-  findYear() { }
+  findMonthPer() {
+    this.getAbsenceDaysListOfParticularMonth();
+  }
+  findYear() {
+    this.getAbsenceDaysListOfParticularMonth();
+  }
   ngOnInit() {
     this.viewCheckInDetail();
   }
@@ -93,8 +99,8 @@ export class ViewAbsenceComponent implements OnInit {
 
   getAbsenceDaysListOfParticularMonth() {
     const status = this.statusPunishment === 'ALL' ? '' : this.statusPunishment;
-    const month = this.month;
-    const year = this.year;
+    const month = this.monthPer;
+    const year = this.yearPer;
     const employeeId = this.employeeIdInViewDetail;
     this.employeeIdInViewDetail = employeeId;
     let isComplain = null;
@@ -108,7 +114,7 @@ export class ViewAbsenceComponent implements OnInit {
       .listAllAbsenceRequestInMonthAndYearOfEmployee(this.pageNumber + 1,
         this.pageSize,
         this.sortField,
-        this.sortOrder, month, year, employeeId)
+        this.sortOrder, month, year, status, employeeId)
       .subscribe({
         next: (response) => {
           console.log(response);
@@ -117,11 +123,10 @@ export class ViewAbsenceComponent implements OnInit {
               duration: 2000,
               panelClass: ['error-snackbar'],
             });
-            return;
           }
           this.checkinPunishmentDto = response.content;
           this.data$ = response.content;
-          this.dataSource = new CustomDataSource(this.data$);
+          this.dataSourceDetail = new CustomDataSource(this.data$);
           this.pageSize = response.pageable.pageSize;
           this.pageNumber = response.pageable.pageNumber;
           this.totalElements = response.totalElements;
@@ -134,18 +139,14 @@ export class ViewAbsenceComponent implements OnInit {
       });
   }
 
+  formatDate(dateList: any) {
+    return dateList[2] + '-' + dateList[1] + '-' + dateList[0];
+  }
+
   backToView() {
     this.dialogRef.close();
   }
-
-  showDialogNotComment(item: any) { }
-
-  updateReject(item: any) { }
-  updateCheckPoint(item: any) { }
   findStatus() {
-    this.getAbsenceDaysListOfParticularMonth();
-  }
-  findComplain() {
     this.getAbsenceDaysListOfParticularMonth();
   }
 }

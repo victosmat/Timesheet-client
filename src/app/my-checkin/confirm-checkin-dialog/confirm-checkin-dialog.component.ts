@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EmployeeDetailDto } from 'src/app/model/employee-detail-dto';
 import { CheckinService } from 'src/app/service/checkin.service';
 import { TimesheetService } from 'src/app/service/timesheet/timesheet.service';
 
@@ -19,9 +20,9 @@ export class ConfirmCheckinDialogComponent implements OnInit {
     private snackBar: MatSnackBar
   ) { }
 
-  employeeId: number = this.data.employeeId;
   probability: number = this.data.probability;
   isExactly: boolean = this.data.isSave;
+  employeeDetailDto: EmployeeDetailDto = this.data.employee;
 
   checkProbability() {
     return this.probability > 70 ? true : false;
@@ -30,9 +31,10 @@ export class ConfirmCheckinDialogComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.data);
   }
+
   checkin() {
     this.timesheetService
-      .saveCheckpointTime(this.employeeId)
+      .saveCheckpointTime(this.employeeDetailDto.id)
       .subscribe({
         next: (response) => {
           if (response === true) {
@@ -40,7 +42,7 @@ export class ConfirmCheckinDialogComponent implements OnInit {
               duration: 2000
             });
             const data = {
-              employeeId: this.employeeId
+              employeeId: this.employeeDetailDto.id,
             };
             this.checkinService.saveImage(data).subscribe({
               next: (response: any) => {
@@ -73,7 +75,7 @@ export class ConfirmCheckinDialogComponent implements OnInit {
   onNoClickSucces(): void {
     this.dialogRef.close();
     this.timesheetService
-      .saveCheckpointTime(this.employeeId)
+      .saveCheckpointTime(this.employeeDetailDto.id)
       .subscribe({
         next: (response) => {
           console.log(response);

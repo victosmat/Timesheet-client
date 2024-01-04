@@ -2,8 +2,6 @@
     <mat-card-header>
         <mat-card-title style="font-size: 30px;"> {{selectedDate | date: "dd-MM-yyyy"}} </mat-card-title>
         <div>
-            <button mat-raised-button style="margin-right: 15px; height: 55px;" (click)="saveCheckpointTime()">Check
-                In/Out</button>
             <button mat-raised-button color="primary" style="margin-right: 15px; height: 55px;"
                 (click)="refresh()">Refresh</button>
             <button mat-raised-button style="margin-right: 15px; background-color: green; color: white; height: 55px;"
@@ -119,7 +117,7 @@
             <mat-form-field>
                 <span>Status</span>
                 <mat-select [(value)]="statusSummary" (valueChange)="findSummary('STATUS')">
-                    <mat-option *ngFor="let i of ['ALL', 'New', 'Pending', 'Approved', 'Rejected']"
+                    <mat-option *ngFor="let i of ['ALL', 'NEW', 'PENDING', 'APPROVED']"
                         [value]="i">{{i}}</mat-option>
                 </mat-select>
             </mat-form-field>

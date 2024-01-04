@@ -11,6 +11,7 @@ import { ViewAbsenceComponent } from './view-absence/view-absence.component';
 import { Observable } from 'rxjs';
 import { CustomDataSource } from '../shared/custom-datasource';
 import { th } from 'date-fns/locale';
+import { ViewBonusComponent } from './view-bonus/view-bonus.component';
 @Component({
   selector: 'app-management-monitoring',
   templateUrl: './management-monitoring.component.html',
@@ -188,7 +189,7 @@ export class ManagementMonitoringComponent implements OnInit {
   viewAbsence(element: any) {
     this.dialog.open(ViewAbsenceComponent, {
       data: {
-        id: element.id,
+        id: element.employeeId,
         fullName: element.fullName,
         email: element.email,
         departmentName: element.departmentName,
@@ -204,5 +205,10 @@ export class ManagementMonitoringComponent implements OnInit {
       },
     });
   }
-  viewBonus(element: any) { }
+  viewBonus(element: any) {
+    this.dialog.open(ViewBonusComponent, {
+      width: '1000px',
+      data: element,
+    });
+  }
 }

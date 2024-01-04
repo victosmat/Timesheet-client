@@ -66,7 +66,7 @@ export class ManagementTimesheetComponent implements OnInit {
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private cookieService: CookieService
-  ) {}
+  ) { }
 
   searchEmailKeyword() {
     this.ngOnInit();
@@ -82,7 +82,11 @@ export class ManagementTimesheetComponent implements OnInit {
     }
     let statusResult = null;
     if (status !== 'ALL') statusResult = status;
-    this.timesheetService.getAllNote(statusResult, null, null, this.emailKeyword).subscribe({
+
+    const startDate = this.range.controls['start'].value;
+    const endDate = this.range.controls['end'].value;
+
+    this.timesheetService.getAllNote(statusResult, startDate, endDate, this.emailKeyword).subscribe({
       next: (response: any) => {
         this.noteDetailDtoList = response;
         this.noteDetailDtoList.forEach((noteDetailDto) => {
@@ -105,7 +109,7 @@ export class ManagementTimesheetComponent implements OnInit {
           panelClass: ['error-snackbar'],
         });
       },
-      complete: () => {},
+      complete: () => { },
     });
   }
 
@@ -124,11 +128,15 @@ export class ManagementTimesheetComponent implements OnInit {
 
     const status = null;
     if (this.status !== 'ALL') status === this.status;
-    this.timesheetService.getAllNote(status, null, null, this.emailKeyword).subscribe({
+
+    const startDate = this.range.controls['start'].value;
+    const endDate = this.range.controls['end'].value;
+
+    this.timesheetService.getAllNote(status, startDate, endDate, this.emailKeyword).subscribe({
       next: (response: any) => {
         console.log(response);
         this.noteDetailDtoList = response;
-        if(response.length === 0) {
+        if (response.length === 0) {
           this.snackBar.open('No data', 'Close', {
             duration: 2000,
             panelClass: ['error-snackbar'],
@@ -157,7 +165,7 @@ export class ManagementTimesheetComponent implements OnInit {
           panelClass: ['error-snackbar'],
         });
       },
-      complete: () => {},
+      complete: () => { },
     });
   }
 
@@ -290,7 +298,7 @@ export class ManagementTimesheetComponent implements OnInit {
     }
   }
 
-  onProjectViewClick(projectId: number | undefined) {}
+  onProjectViewClick(projectId: number | undefined) { }
 
   updateAllComplete() {
     this.allComplete =
@@ -314,9 +322,9 @@ export class ManagementTimesheetComponent implements OnInit {
     });
   }
 
-  submitForm() {}
+  submitForm() { }
 
-  refresh() {}
+  refresh() { }
 
   approve() {
     let noteDetailViewDtoList: NoteDetailViewDto[] = [];
@@ -338,25 +346,69 @@ export class ManagementTimesheetComponent implements OnInit {
 
     const noteIdsString = noteIds.join(',');
     this.timesheetService
-              .updateTimesheetStatus(noteIdsString, TimeSheetStatus.APPROVED)
-              .subscribe({
-                next: (response: any) => {
-                  this.snackBar.open('Approve success', 'Close', {
-                    duration: 2000,
-                    panelClass: ['success-snackbar'],
-                  });
-                  this.ngOnInit();
-                },
-                error: (error: any) => {
-                  this.snackBar.open('Approve fail', 'Close', {
-                    duration: 2000,
-                    panelClass: ['error-snackbar'],
-                  });
-                },
-              });
+      .updateTimesheetStatus(noteIdsString, TimeSheetStatus.APPROVED)
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.snackBar.open('Approve success', 'Close', {
+            duration: 2000,
+            panelClass: ['success-snackbar'],
+          });
+          this.ngOnInit();
+        },
+        error: (error: any) => {
+          console.log(error);
+          this.snackBar.open('Approve fail', 'Close', {
+            duration: 2000,
+            panelClass: ['error-snackbar'],
+          });
+        },
+      });
   }
 
-  reject() {}
+  reject() {
+    const startDate = this.range.controls['start'].value;
+    const endDate = this.range.controls['end'].value;
+    console.log(startDate);
+    console.log(endDate);
+
+    let noteDetailViewDtoList: NoteDetailViewDto[] = [];
+    let noteIds: number[] = [];
+    this.noteDetailDtoList.forEach((noteDetailDto) => {
+      noteDetailDto.employeeDtoList?.forEach((employeeDto) => {
+        employeeDto.noteDetailViewDtos?.forEach((noteDetailViewDto) => {
+          if (
+            noteDetailViewDto.completed &&
+            noteDetailViewDto.status === TimeSheetStatus.PENDING) {
+            noteDetailViewDtoList.push(noteDetailViewDto);
+            const noteId = noteDetailViewDto.noteId as number;
+            noteIds.push(noteId);
+          }
+        });
+      });
+    });
+
+    const noteIdsString = noteIds.join(',');
+    this.timesheetService
+      .updateTimesheetStatus(noteIdsString, TimeSheetStatus.REJECT)
+      .subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.snackBar.open('Reject success', 'Close', {
+            duration: 2000,
+            panelClass: ['success-snackbar'],
+          });
+          this.ngOnInit();
+        },
+        error: (error: any) => {
+          console.log(error);
+          this.snackBar.open('Reject fail', 'Close', {
+            duration: 2000,
+            panelClass: ['error-snackbar'],
+          });
+        },
+      });
+  }
 
   showDialogComment(noteView: NoteDetailViewDto) {
     if (
@@ -382,5 +434,5 @@ export class ManagementTimesheetComponent implements OnInit {
     }
   }
 
-  updateTaskStatus(noteView: NoteDetailViewDto) {}
+  updateTaskStatus(noteView: NoteDetailViewDto) { }
 }

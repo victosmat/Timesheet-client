@@ -14,10 +14,10 @@
         </div>
         <ng-template #content>
             <div>
-                <video #videoElement autoplay class="image"></video>
+                <video style="transform: scaleX(-1);" #videoElement autoplay class="image"></video>
             </div>
             <div style="display: flex; justify-content: center;">
-                <button mat-raised-button color="warn" (click)="capture()"> Capture the image </button>
+                <button mat-raised-button color="warn" (click)="capture()"> Checkin / checkout </button>
             </div>
         </ng-template>
     </mat-card-content>

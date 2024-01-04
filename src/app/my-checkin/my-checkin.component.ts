@@ -2,6 +2,9 @@ import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angula
 import { CheckinService } from '../service/checkin.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmCheckinDialogComponent } from './confirm-checkin-dialog/confirm-checkin-dialog.component';
+import { EmployeeService } from '../service/employee/employee.service';
+import { EmployeeDetailDto } from '../model/employee-detail-dto';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-my-checkin',
@@ -14,7 +17,9 @@ export class MyCheckinComponent implements AfterViewInit {
 
   constructor(
     private checkinService: CheckinService,
-    private dialog: MatDialog
+    private employeeService: EmployeeService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) { }
 
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
@@ -25,7 +30,7 @@ export class MyCheckinComponent implements AfterViewInit {
   ngOnInit() {
     setInterval(() => {
       this.updateTime();
-    }, 1000); 
+    }, 1000);
   }
 
   updateTime() {
@@ -63,22 +68,41 @@ export class MyCheckinComponent implements AfterViewInit {
       next: (response: any) => {
         this.loading = false;
         console.log(response);
-        this.dialog.open(ConfirmCheckinDialogComponent, {
-          data: {
-            employeeId: response.employeeId,
-            probability: response.probability,
-            isSave: response.isSave
+    
+        let employeeDetailDto: EmployeeDetailDto; 
+    
+        this.employeeService.getProfile(response.employeeId).subscribe({
+          next: (profileResponse: any) => {
+            employeeDetailDto = profileResponse;
+    
+            this.dialog.open(ConfirmCheckinDialogComponent, {
+              data: {
+                employee: employeeDetailDto, 
+                probability: response.probability,
+                isSave: response.isSave
+              }
+            }).afterClosed().subscribe(result => {
+              console.log(result);
+              this.checkPermissions();
+            });
+          },
+          error: (profileError: any) => {
+            console.log(profileError);
+            this.snackBar.open('Failed to retrieve employee profile!', 'OK', {
+              duration: 2000
+            });
           }
-        }).afterClosed().subscribe(result => {
-          console.log(result);
-          this.checkPermissions();
         });
       },
       error: (error: any) => {
         this.loading = false;
         console.log(error);
+        this.snackBar.open('Checkpoint failed!', 'OK', {
+          duration: 2000
+        });
       }
     });
+    
 
   }
 }

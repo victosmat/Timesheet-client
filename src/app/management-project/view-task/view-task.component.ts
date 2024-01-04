@@ -57,6 +57,7 @@ export class ViewTaskComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.data);
     this.renderPage();
   }
 
@@ -120,11 +121,12 @@ export class ViewTaskComponent implements OnInit {
   editTask(element: any) {
     this.dialog
       .open(SaveTaskComponent, {
-        data: element,
+        data: {
+          task: element,
+          projectId: this.data.id,
+        },
         width: '500px',
-      })
-      .afterClosed()
-      .subscribe({
+      }).afterClosed().subscribe({
         next: () => {
           this.renderPage();
         },
@@ -136,8 +138,7 @@ export class ViewTaskComponent implements OnInit {
         data: element,
         width: '350px',
       })
-      .afterClosed()
-      .subscribe({
+      .afterClosed().subscribe({
         next: () => {
           this.renderPage();
         },

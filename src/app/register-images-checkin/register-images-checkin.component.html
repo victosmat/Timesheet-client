@@ -3,54 +3,110 @@
         <mat-card-title style="font-size: 30px"> Register images checkin / checkout
             <b style="text-align: center;">{{ currentTime | date: 'HH:mm:ss dd/MM/yyyy' }}</b>
         </mat-card-title>
-        <div class="button-group">
-            <button mat-raised-button color="primary" (click)="checkPermissions()">
+        <div class="button-group" *ngIf="checkAuthen">
+            <button style="border-bottom: 10px;" mat-raised-button color="primary" (click)="checkPermissions()">
                 <mat-icon>videocam</mat-icon>
             </button>
         </div>
     </mat-card-header>
 
-    <div class="container">
-        <div class="left-panel">
-            <mat-card class="image-card">
-                <video #videoElement autoplay class="image"></video>
-                <button [disabled]="imageBase64List.length > 3" mat-raised-button color="warn" (click)="capture()">
-                    Capture the image </button>
-            </mat-card>
+    <mat-card-content>
+        <div *ngIf="loading; else content">
+            <mat-spinner class="centered-spinner"></mat-spinner>
         </div>
-        <div class="right-panel" style="overflow-y: auto; height: 700px;">
-            <mat-stepper [linear]="true" #stepper>
-                <mat-step [stepControl]="firstFormGroup">
-                    <form [formGroup]="firstFormGroup">
-                        <ng-template matStepLabel>Fill in email information</ng-template>
-                        <mat-form-field>
-                            <mat-label>Email</mat-label>
-                            <input matInput placeholder="@ncc.asia" formControlName="firstCtrl" required>
+        <ng-template #content>
+            <div class="container-auth" *ngIf="!checkAuthen">
+                <mat-card class="mat-card-auth" style="display: flex; width: 350px;">
+                    <b style="font-size: 20px;">System authentication !</b>
+                    <form [formGroup]="formAuth">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label for="password">Password</mat-label>
+                            <input type="password" matInput placeholder="Password" formControlName="password" required>
                         </mat-form-field>
                     </form>
-                </mat-step>
-                <mat-step [stepControl]="secondFormGroup" label="Take a photo">
-                    <mat-grid-list cols="2">
-                        <mat-grid-tile *ngFor="let image of imageBase64List; let i = index">
-                            <div class="item-image">
-                                <div>
-                                    <img [src]="image" class="captured-image" alt="Captured Image">
-                                    <button mat-fab color="primary" style="position: absolute; top: 0px; right: 0px;"
-                                        (click)="deleteImage(i)">
-                                        <mat-icon>delete</mat-icon>
+                    <button type="submit" mat-raised-button color="accent" (click)="ConfirmAuthen()">Confirm</button>
+                </mat-card>
+            </div>
+
+            <div class="container" *ngIf="checkAuthen">
+                <div class="left-panel">
+                    <mat-card class="image-card">
+                        <video style="transform: scaleX(-1);" #videoElement autoplay class="image"></video>
+                        <button [disabled]="imageBase64List.length > 3" mat-raised-button color="warn"
+                            (click)="capture()">
+                            Capture the image </button>
+                    </mat-card>
+                </div>
+                <div class="right-panel" style="overflow-y: auto; height: 800px;">
+                    <mat-stepper [linear]="true" #stepper>
+                        <mat-step label="Choose one employee">
+                            <mat-card style="margin-top: 10px;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <mat-form-field class="example-full-width" appearance="outline"
+                                        style="width: 100%;">
+                                        <mat-icon style="color: #9e9e9e" matPrefix>search</mat-icon>
+                                        <mat-label>Search by keyword</mat-label>
+                                        <input matInput [(ngModel)]="keyword" (input)="searchOrFilter()" />
+                                    </mat-form-field>
+                                    <button type="button" style="margin-top: 10px; margin-left: 10px;" mat-icon-button
+                                        mat-raised-button color="primary" (click)="filter()">
+                                        <mat-icon>filter_list</mat-icon>
                                     </button>
                                 </div>
+                                <div class="list">
+                                    <ul *ngFor="let employee of employeeView">
+                                        <mat-card style="display: flex; justify-content: space-between">
+                                            <div style="display: block;">
+                                                <div style="font-weight: bold;">{{ employee.fullName }} -
+                                                    {{employee.roles}} </div>
+                                                <div>{{ employee.email }}</div>
+                                            </div>
+                                            <button type="button" mat-icon-button mat-raised-button color="primary"
+                                                (click)="chooseEmployee(employee)">
+                                                <mat-icon>touch_app</mat-icon>
+                                            </button>
+                                        </mat-card>
+                                    </ul>
+                                </div>
+                            </mat-card>
+                            <div style="margin-top: 10px; text-align: center;">
+                                <mat-card *ngIf="selectedEmployeeCheck">
+                                    <b style="color: darkcyan; font-size: 20px;">Selected employee </b>
+                                    <div style="font-weight: bold; margin-top: 20px;">{{ employeeSelected?.fullName }} -
+                                        {{
+                                        employeeSelected?.roles}} </div>
+                                    <div>{{ employeeSelected?.email }}</div>
+                                </mat-card>
+                                <mat-card *ngIf="!selectedEmployeeCheck">
+                                    Please choose an employee.
+                                </mat-card>
                             </div>
-                        </mat-grid-tile>
-                    </mat-grid-list>
-                    <div class="button-group">
-                        <button mat-raised-button color="primary" (click)="registerImages()"
-                            [disabled]="imageBase64List.length !== 4">
-                            Register Images
-                        </button>
-                    </div>
-                </mat-step>
-            </mat-stepper>
-        </div>
-    </div>
+                        </mat-step>
+                        <mat-step label="Take a photo">
+                            <mat-grid-list cols="2">
+                                <mat-grid-tile *ngFor="let image of imageBase64List; let i = index">
+                                    <div class="item-image">
+                                        <div>
+                                            <img [src]="image" class="captured-image" alt="Captured Image">
+                                            <button mat-fab color="primary"
+                                                style="position: absolute; top: 0px; right: 0px;"
+                                                (click)="deleteImage(i)">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <div class="button-group">
+                                <button mat-raised-button color="primary" (click)="registerImages()"
+                                    [disabled]="imageBase64List.length !== 4">
+                                    Register Images
+                                </button>
+                            </div>
+                        </mat-step>
+                    </mat-stepper>
+                </div>
+            </div>
+        </ng-template>
+    </mat-card-content>
 </div>

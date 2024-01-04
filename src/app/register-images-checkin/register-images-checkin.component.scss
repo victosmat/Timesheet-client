@@ -3,8 +3,25 @@
   min-height: 200px;
   height: 100vh;
   margin: 16px;
-  margin-left: 32px;
   padding: 30px;
+}
+
+.example-full-width {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.mat-card-auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.container-auth {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
 }
 
 .content table {
@@ -29,7 +46,7 @@ img {
   height: 100%;
   display: block;
   margin: 0 auto;
-  padding: 40px 40px 40px 40px;
+  padding: 20px 20px 20px 20px;
   justify-content: center;
 }
 
@@ -44,7 +61,7 @@ img {
 .button-group {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .button-group button {
@@ -55,12 +72,18 @@ img {
   display: flex;
 }
 
+.image-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .left-panel {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .right-panel {
   flex: 1;
@@ -78,4 +101,25 @@ img {
 .right-panel {
   overflow-y: auto;
   height: 500px;
+}
+
+.list {
+  overflow-y: auto;
+  max-height: 400px; /* Điều chỉnh chiều cao tối đa của danh sách */
+  width: 100%;
+}
+
+.list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.list li:last-child {
+  border-bottom: none;
 }

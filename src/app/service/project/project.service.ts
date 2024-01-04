@@ -24,6 +24,10 @@ export class ProjectService {
     return this.httpClient.get<ProjectViewManageDto[]>(this.base_url + 'projects/get_all', { params: params }).pipe();
   }
 
+  public saveTask(task: any): Observable<any> {
+    return this.httpClient.post<any>(this.base_url + 'tasks/save_by_project', task).pipe();
+  }
+
   public deleteTask(id: number): Observable<any> {
     let params: HttpParams = new HttpParams();
     params = params.append('id', id);

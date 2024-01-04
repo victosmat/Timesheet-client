@@ -1,7 +1,11 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { CheckinService } from '../service/checkin.service';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, Validators } from '@angular/forms';
+import { EmployeeViews } from '../model/EmployeeViews';
+import { ProjectDetailDto } from '../model/project-view-detail';
+import { EmployeeService } from '../service/employee/employee.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register-images-checkin',
@@ -13,31 +17,77 @@ export class RegisterImagesCheckinComponent implements OnInit {
   loading = false;
   currentTime: Date = new Date();
   imageBase64List: any[] = [];
-
-  firstFormGroup = this._formBuilder.group({
-    firstCtrl: ['', Validators.required],
-  });
-  secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
-  });
+  keyword = '';
+  employeeSelected: any;
+  pageNumber = 1;
+  pageSize = 100;
+  sortField = 'id';
+  sortOrder = 'asc';
+  totalElements = 0;
+  employeeView: EmployeeViews[] = [];
+  projectDetailDto: ProjectDetailDto = {};
+  selectedEmployee: EmployeeViews | undefined;
   isLinear = false;
-  filteredOptions: any[] = [];
+  selectedEmployeeCheck = false;
+  checkAuthen = false;
+
+  formAuth: FormGroup = new FormGroup({
+    password: new FormControl('', Validators.required),
+  });
 
   constructor(
     private checkinService: CheckinService,
     private dialog: MatDialog,
-    private _formBuilder: FormBuilder
+    private snackBar: MatSnackBar,
+    private employeeService: EmployeeService,
   ) { }
 
   @ViewChild('videoElement') videoElement!: ElementRef<HTMLVideoElement>;
   ngAfterViewInit() {
-    this.checkPermissions();
+    if (this.videoElement) this.checkPermissions();
   }
 
   ngOnInit() {
     setInterval(() => {
       this.updateTime();
     }, 1000);
+  }
+
+  filter() {
+    console.log("sscsccs");
+    this.pageNumber = 1;
+    this.pageSize = 100;
+    this.sortField = 'id';
+    this.sortOrder = 'asc';
+    this.employeeService
+      .getEmployees(
+        this.pageNumber,
+        this.pageSize,
+        this.sortField,
+        this.sortOrder,
+        this.keyword,
+        '',
+        '',
+        '',
+        ''
+      )
+      .subscribe({
+        next: (response: any) => {
+          this.employeeView = response.content;
+          this.pageSize = response.pageable.pageSize;
+          this.pageNumber = response.pageable.pageNumber;
+          this.totalElements = response.totalElements;
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+  }
+
+  chooseEmployee(employee: any) {
+    this.employeeSelected = employee;
+    console.log(this.employeeSelected);
+    this.selectedEmployeeCheck = true;
   }
 
   updateTime() {
@@ -56,6 +106,10 @@ export class RegisterImagesCheckinComponent implements OnInit {
     } catch (err) {
       console.error("Error accessing webcam: ", err);
     }
+  }
+
+  searchOrFilter() {
+    this.filter();
   }
 
   capture() {
@@ -79,9 +133,101 @@ export class RegisterImagesCheckinComponent implements OnInit {
     }
   }
 
-  registerImages() { }
+  registerImages() {
+    if (this.employeeSelected === undefined) {
+      this.snackBar.open('Please choose employee', 'Close', {
+        duration: 2000,
+        panelClass: ['red-snackbar'],
+      });
+      return;
+    }
+
+    console.log(this.employeeSelected.id);
+    console.log(this.imageBase64List);
+
+    this.checkinService.registerImages(this.employeeSelected.id, this.imageBase64List).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.snackBar.open('Register images successfully!', 'Close', {
+          duration: 2000,
+          panelClass: ['green-snackbar'],
+        });
+        this.imageBase64List = [];
+        this.employeeSelected = undefined;
+        this.selectedEmployeeCheck = false;
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.snackBar.open('Register images failed!', 'Close', {
+          duration: 2000,
+          panelClass: ['red-snackbar'],
+        });
+      },
+      complete: () => { },
+    });
+  }
 
   deleteImage(index: number) {
     this.imageBase64List.splice(index, 1);
+  }
+
+  ConfirmAuthen() {
+    if (this.formAuth.invalid) {
+      this.snackBar.open('Please enter password', 'Close', {
+        duration: 2000,
+        panelClass: ['red-snackbar'],
+      });
+    }
+
+    const password = this.formAuth.value.password;
+    this.employeeService.checkPasswordSystemAuth(password).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.checkAuthen = true;
+        this.snackBar.open('System authentication successful!', 'Close', {
+          duration: 2000,
+          panelClass: ['green-snackbar'],
+        });
+
+        this.pageNumber = 1;
+        this.pageSize = 100;
+        this.keyword = '';
+        this.sortField = 'id';
+        this.sortOrder = 'asc';
+        this.employeeService
+          .getEmployees(
+            this.pageNumber,
+            this.pageSize,
+            this.sortField,
+            this.sortOrder,
+            this.keyword,
+            '',
+            '',
+            '',
+            ''
+          )
+          .subscribe({
+            next: (response: any) => {
+              this.employeeView = response.content;
+              this.pageSize = response.pageable.pageSize;
+              this.pageNumber = response.pageable.pageNumber;
+              this.totalElements = response.totalElements;
+            },
+            error: (error) => {
+              console.log(error);
+            },
+          });
+
+          this.checkPermissions();
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.snackBar.open('Verify system failure!', 'Close', {
+          duration: 2000,
+          panelClass: ['red-snackbar'],
+        });
+      },
+      complete: () => { },
+    });
   }
 }

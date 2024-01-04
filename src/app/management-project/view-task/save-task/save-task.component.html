@@ -1,5 +1,6 @@
 <form [formGroup]="taskForm" (submit)="submitFrom()" class="example-form">
-    <mat-card-title style="font-size: 30px"> Add task </mat-card-title>
+    <mat-card-title *ngIf="this.data.id === undefined" style="font-size: 30px"> Add task </mat-card-title>
+    <mat-card-title *ngIf="this.data.id !== undefined" style="font-size: 30px"> Edit task </mat-card-title>
     <div style="margin-top: 20px;">
         <mat-card class="content mat-elevation-z4" style="width: 100%">
             &nbsp; &nbsp; &nbsp;

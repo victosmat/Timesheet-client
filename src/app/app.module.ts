@@ -64,7 +64,6 @@ import { ViewPunishmentComponent } from './management-monitoring/view-punishment
 import { ViewAbsenceComponent } from './management-monitoring/view-absence/view-absence.component';
 import { UpdateStatusPunismentComponent } from './management-absence/update-status-punisment/update-status-punisment.component';
 import { MyCheckinComponent } from './my-checkin/my-checkin.component';
-import { ManageCheckinComponent } from './manage-checkin/manage-checkin.component';
 import { ConfirmCheckinDialogComponent } from './my-checkin/confirm-checkin-dialog/confirm-checkin-dialog.component';
 import { EditBonusDialogComponent } from './management-user/edit-bonus-dialog/edit-bonus-dialog.component';
 import { SaveBonusToUserDialogComponent } from './management-user/edit-bonus-dialog/save-bonus-to-user-dialog/save-bonus-to-user-dialog.component';
@@ -73,6 +72,8 @@ import { ViewBonusDialogComponent } from './user-profile/view-bonus-dialog/view-
 import { ViewImageCheckinDialogComponent } from './management-user/view-image-checkin-dialog/view-image-checkin-dialog.component';
 import { DeleteImageCheckinDialogComponent } from './management-user/view-image-checkin-dialog/delete-image-checkin-dialog/delete-image-checkin-dialog.component';
 import { RegisterImagesCheckinComponent } from './register-images-checkin/register-images-checkin.component';
+import { ViewBonusComponent } from './management-monitoring/view-bonus/view-bonus.component';
+import { UpdateStatusDialogComponent } from './management-timesheet/update-status-dialog/update-status-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -128,7 +129,6 @@ import { RegisterImagesCheckinComponent } from './register-images-checkin/regist
     ViewAbsenceComponent,
     UpdateStatusPunismentComponent,
     MyCheckinComponent,
-    ManageCheckinComponent,
     ConfirmCheckinDialogComponent,
     EditBonusDialogComponent,
     SaveBonusToUserDialogComponent,
@@ -136,7 +136,9 @@ import { RegisterImagesCheckinComponent } from './register-images-checkin/regist
     ViewBonusDialogComponent,
     ViewImageCheckinDialogComponent,
     DeleteImageCheckinDialogComponent,
-    RegisterImagesCheckinComponent
+    RegisterImagesCheckinComponent,
+    ViewBonusComponent,
+    UpdateStatusDialogComponent
   ],
   imports: [
     BrowserModule,

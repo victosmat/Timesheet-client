@@ -162,7 +162,6 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
       TimeSheetStatus.APPROVED,
       TimeSheetStatus.NEW,
       TimeSheetStatus.PENDING,
-      TimeSheetStatus.REJECT,
     ];
     this.findSummary(undefined);
   }
@@ -186,7 +185,7 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
       let itemList = this.getNotesPerDay(i)?.lst;
       if (itemList !== undefined) {
         for (let item of itemList) {
-          if (item.workingTime !== undefined) {
+          if (item.workingTime !== undefined && item.status !== 'REJECT') {
             totalWokingTime += item.workingTime;
           }
         }
@@ -204,7 +203,7 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
     if (itemList !== undefined) {
       let totalHours = 0;
       for (let item of itemList) {
-        if (item.workingTime !== undefined) {
+        if (item.workingTime !== undefined && item.status !== 'REJECT') {
           totalHours += item.workingTime;
         }
       }
@@ -447,36 +446,31 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
     this.totalOpentalks = 0;
     if (type === 'STATUS') {
       switch (this.statusSummary) {
-        case 'All': {
+        case 'ALL': {
           this.noteSummaryRequestDto.statuses = [
             TimeSheetStatus.APPROVED,
             TimeSheetStatus.NEW,
             TimeSheetStatus.PENDING,
-            TimeSheetStatus.REJECT,
           ];
           break;
         }
-        case 'New': {
+        case 'NEW': {
           this.noteSummaryRequestDto.statuses = [TimeSheetStatus.NEW];
           break;
         }
-        case 'Pending or Approved': {
+        case 'PENDING or APPROVED': {
           this.noteSummaryRequestDto.statuses = [
             TimeSheetStatus.APPROVED,
             TimeSheetStatus.PENDING,
           ];
           break;
         }
-        case 'Pending': {
+        case 'PENDING': {
           this.noteSummaryRequestDto.statuses = [TimeSheetStatus.PENDING];
           break;
         }
-        case 'Approved': {
+        case 'APPROVED': {
           this.noteSummaryRequestDto.statuses = [TimeSheetStatus.APPROVED];
-          break;
-        }
-        case 'Rejected': {
-          this.noteSummaryRequestDto.statuses = [TimeSheetStatus.REJECT];
           break;
         }
       }

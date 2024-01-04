@@ -9,7 +9,6 @@ import { CheckinPunishmentDto } from 'src/app/model/checkin-punishment-dto';
 import { EmployeeService } from 'src/app/service/employee/employee.service';
 import { TimesheetService } from 'src/app/service/timesheet/timesheet.service';
 import { CustomDataSource } from 'src/app/shared/custom-datasource';
-import { Observable } from 'rxjs';
 @Component({
   selector: 'app-view-punishment',
   templateUrl: './view-punishment.component.html',
@@ -45,7 +44,7 @@ export class ViewPunishmentComponent implements OnInit {
   dataSourceDetail: any;
   buddyId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
   pageNumber = 0;
-  pageSize = 5;
+  pageSize = 10;
   sortField = 'id';
   sortOrder = 'asc';
   totalElements = 0;
@@ -69,10 +68,7 @@ export class ViewPunishmentComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ViewPunishmentComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private employeeService: EmployeeService,
     private cookieService: CookieService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
     private timesheetService: TimesheetService
   ) {
     const currentMonth = this.selectedDate.getMonth() + 1;

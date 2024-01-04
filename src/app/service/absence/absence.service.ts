@@ -17,7 +17,7 @@ export class AbsenceService {
   public listAllAbsenceRequestInMonthAndYearOfEmployee(pageNumber: number,
     pageSize: number,
     sortField: string,
-    sortOrder: string, month: number, year: number, employeeId: number): Observable<any> {
+    sortOrder: string, month: number, year: number, status: string, employeeId: number): Observable<any> {
     let params: HttpParams = new HttpParams();
     params = params.append('pageNum', pageNumber);
     params = params.append('pageSize', pageSize);
@@ -25,6 +25,7 @@ export class AbsenceService {
     params = params.append('sortDir', sortOrder);
     params = params.append("month", month);
     params = params.append("year", year);
+    params = params.append("status", status);
     params = params.append("employeeId", employeeId);
     return this.httpClient.get(this.base_url + "absence/get_absence_of_month", { params: params }).pipe();
   }

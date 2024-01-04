@@ -39,4 +39,14 @@ export class CheckinService {
       .post<any>(this.base_url + 'delete_image', requestJson)
       .pipe();
   }
+
+  public registerImages(employeeId: number, images: any): any {
+    const requestJson = {
+      employeeId: employeeId.toString(),
+      images: images
+    };
+    return this.httpClient
+      .post<any>(this.base_url + 'save_list_images', requestJson)
+      .pipe();
+  }
 }
