@@ -4,32 +4,30 @@ import { CookieService } from 'ngx-cookie-service';
 import jwt_decode from "jwt-decode";
 import { AuthRequest } from 'src/app/model/auth-request.model';
 import { RefreshTokenDto } from 'src/app/model/refresh-token-dto.model';
+import { BaseServiceService } from '../base-service/base-service.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
-
-  private base_url = "http://localhost:8081/Timesheet/app/";
-
+export class AuthService extends BaseServiceService {
   loginHeader = new HttpHeaders(
-    {"No-Auth": "True"}
+    { "No-Auth": "True" }
   );
 
   constructor(
-    private cookieService : CookieService,
-    private httpClient : HttpClient
-  ) { }
+    private cookieService: CookieService,
+    private httpClient: HttpClient
+  ) { super() }
 
-  public roleMatch(allowedRoles : string[]) : boolean {
+  public roleMatch(allowedRoles: string[]): boolean {
     const userRoles = this.getRoles();
-    if(userRoles !== null && userRoles.length > 0) {
+    if (userRoles !== null && userRoles.length > 0) {
       return userRoles.some(element => allowedRoles.includes(element));
     }
     return false;
   }
 
   public getRoles() {
-    let roles : string | any = this.getToken().roles;
+    let roles: string | any = this.getToken().roles;
     roles = roles.replace("[", "");
     roles = roles.replace("]", "");
     roles = roles.replaceAll(" ", "");
@@ -37,7 +35,7 @@ export class AuthService {
     return rolesArray;
   }
 
-  public getToken() : string | any {
+  public getToken(): string | any {
     return jwt_decode(this.cookieService.get("TimesheetAppToken"));
   }
 

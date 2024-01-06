@@ -1,18 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { EmployeeService } from '../service/employee/employee.service';
 import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { ProjectService } from '../service/project/project.service';
-import { DataSource } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SaveProjectComponent } from './save-project/save-project.component';
 import { ViewTaskComponent } from './view-task/view-task.component';
 import { Observable } from 'rxjs';
 import { CustomDataSource } from '../shared/custom-datasource';
+import { DeleteProjectComponent } from './delete-project/delete-project.component';
 
 @Component({
   selector: 'app-management-project',
@@ -65,7 +62,6 @@ export class ManagementProjectComponent implements OnInit {
       .open(SaveProjectComponent, {
         data: element,
         width: '1400px',
-        maxHeight: '600px',
       })
       .afterClosed()
       .subscribe({
@@ -96,7 +92,17 @@ export class ManagementProjectComponent implements OnInit {
     });
   }
 
-  delete(element: any) { }
+  delete(element: any) {
+    this.dialog.open(DeleteProjectComponent, {
+      data: element,
+      width: '500px',
+    }).afterOpened().subscribe({
+      next: () => {
+        this.renderPage();
+      }
+    });
+  }
+
   viewTask(element: any) {
     this.dialog
       .open(ViewTaskComponent, {
@@ -167,7 +173,7 @@ export class ManagementProjectComponent implements OnInit {
     this.getAllProject();
   }
 
-  updateStatusProject(element: any, status:string) {
+  updateStatusProject(element: any, status: string) {
     this.projectService.updateStatusProject(element.id, status).subscribe({
       next: (response: any) => {
         console.log(response);

@@ -9,6 +9,7 @@ import { EmployeeDto } from '../model/EmployeeDto';
 import { NoteDetailViewDto } from '../model/NoteDetailViewDto';
 import { MatDialog } from '@angular/material/dialog';
 import { CommentNoteComponent } from './comment-note/comment-note.component';
+import { UpdateStatusDialogComponent } from './update-status-dialog/update-status-dialog.component';
 
 @Component({
   selector: 'app-management-timesheet',
@@ -298,7 +299,6 @@ export class ManagementTimesheetComponent implements OnInit {
     }
   }
 
-  onProjectViewClick(projectId: number | undefined) { }
 
   updateAllComplete() {
     this.allComplete =
@@ -321,11 +321,6 @@ export class ManagementTimesheetComponent implements OnInit {
       });
     });
   }
-
-  submitForm() { }
-
-  refresh() { }
-
   approve() {
     let noteDetailViewDtoList: NoteDetailViewDto[] = [];
     let noteIds: number[] = [];
@@ -434,5 +429,14 @@ export class ManagementTimesheetComponent implements OnInit {
     }
   }
 
-  updateTaskStatus(noteView: NoteDetailViewDto) { }
+  updateTaskStatus(noteView: NoteDetailViewDto) {
+    this.dialog.open(UpdateStatusDialogComponent, {
+      data: noteView,
+      width: '400px',
+    }).afterClosed().subscribe({
+      next: () => {
+        this.ngOnInit();
+      },
+    });
+   }
 }

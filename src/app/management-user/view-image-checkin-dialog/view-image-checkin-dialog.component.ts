@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { fi } from 'date-fns/locale';
 import { CookieService } from 'ngx-cookie-service';
 import { ImageCheckinDto } from 'src/app/model/image-checkin-dto';
-import { CheckinService } from 'src/app/service/checkin.service';
+import { CheckinService } from 'src/app/service/checkin/checkin.service';
 import { DeleteImageCheckinDialogComponent } from './delete-image-checkin-dialog/delete-image-checkin-dialog.component';
 
 @Component({

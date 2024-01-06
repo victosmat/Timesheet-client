@@ -74,6 +74,7 @@ import { DeleteImageCheckinDialogComponent } from './management-user/view-image-
 import { RegisterImagesCheckinComponent } from './register-images-checkin/register-images-checkin.component';
 import { ViewBonusComponent } from './management-monitoring/view-bonus/view-bonus.component';
 import { UpdateStatusDialogComponent } from './management-timesheet/update-status-dialog/update-status-dialog.component';
+import { DeleteProjectComponent } from './management-project/delete-project/delete-project.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -138,7 +139,8 @@ import { UpdateStatusDialogComponent } from './management-timesheet/update-statu
     DeleteImageCheckinDialogComponent,
     RegisterImagesCheckinComponent,
     ViewBonusComponent,
-    UpdateStatusDialogComponent
+    UpdateStatusDialogComponent,
+    DeleteProjectComponent
   ],
   imports: [
     BrowserModule,

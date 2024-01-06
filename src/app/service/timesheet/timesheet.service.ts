@@ -2,30 +2,28 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
-import { CheckInDto } from 'src/app/model/check-in-dto';
 import { CheckInRequestDto } from 'src/app/model/check-in-request-dto';
 import { CheckinPunishmentDto } from 'src/app/model/checkin-punishment-dto';
 import { NoteCommentViewDto } from 'src/app/model/note-comment-view-dto';
 import { NoteDetailDto } from 'src/app/model/note-detail-dto';
 import { NoteFormDto } from 'src/app/model/note-form-dto';
 import { NoteSummaryRequestDto } from 'src/app/model/note-summary-request-dto';
-import { NotesPerDayDto } from 'src/app/model/notes-per-day-dto';
 import { ProjectSelectDto } from 'src/app/model/project-select-dto';
 import { PunishmentDto } from 'src/app/model/punishment-dto';
 import { TaskSelectDto } from 'src/app/model/task-select-dto';
 import { TimeSheetStatus } from 'src/app/my-timesheet/timesheet-dialog/timesheet-dialog.component';
+import { BaseServiceService } from '../base-service/base-service.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TimesheetService {
+export class TimesheetService extends BaseServiceService {
   UpdateIsDeletedComponent(id: any) {
     throw new Error('Method not implemented.');
   }
-  private base_url = 'http://localhost:8081/Timesheet/app/';
 
   constructor(private httpClient: HttpClient,
-    private cookieService: CookieService) { }
+    private cookieService: CookieService) { super(); }
 
   public getTimesheetByWeek(
     employeeId: number,
@@ -131,7 +129,7 @@ export class TimesheetService {
     params = params.append('status', status);
     params = params.append('month', month + 1);
     params = params.append('year', year),
-    params = params.append('isManage', isManage);
+      params = params.append('isManage', isManage);
     if (isComplain !== null) {
       params = params.append('isComplain', isComplain.toString());
     }

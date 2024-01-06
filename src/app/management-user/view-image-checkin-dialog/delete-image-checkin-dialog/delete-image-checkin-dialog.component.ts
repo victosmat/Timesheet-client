@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CheckinService } from 'src/app/service/checkin.service';
+import { CheckinService } from 'src/app/service/checkin/checkin.service';
 @Component({
   selector: 'app-delete-image-checkin-dialog',
   templateUrl: './delete-image-checkin-dialog.component.html',

@@ -9,5 +9,5 @@ export interface ProjectDetailDto{
     projectStatus?: string,
     startDate?: string,
     endDate?: string,
-    employeeProjectDetailDto?: EmployeeProjectDetailDto[],
+    projectEmployeeSaveDtos?: EmployeeProjectDetailDto[],
 }

@@ -5,20 +5,18 @@ import { EmployeeDetailDto } from 'src/app/model/employee-detail-dto';
 import { PmDto } from 'src/app/model/pm-dto';
 import { DepartmentDto } from 'src/app/model/department-dto';
 import { RoleDto } from 'src/app/model/role-dto';
-import { ro } from 'date-fns/locale';
-import { BonusDto } from 'src/app/model/bonus-dto';
 import { CookieService } from 'ngx-cookie-service';
+import { BaseServiceService } from '../base-service/base-service.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EmployeeService {
-  private base_url = 'http://localhost:8081/Timesheet/app/';
+export class EmployeeService extends BaseServiceService{
 
   constructor(
     private httpClient: HttpClient,
     private cookieService: CookieService
-  ) { }
+  ) {super(); }
 
   public getStaffPage(
     buddyId: number,

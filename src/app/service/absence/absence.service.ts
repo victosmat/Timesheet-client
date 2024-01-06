@@ -2,17 +2,15 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AbsenceDto, AbsenceStatus } from 'src/app/model/absence-dto';
+import { BaseServiceService } from '../base-service/base-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AbsenceService {
-
-  private base_url = "http://localhost:8081/Timesheet/app/";
-
+export class AbsenceService extends BaseServiceService {
   constructor(
     private httpClient: HttpClient
-  ) { }
+  ) { super() }
 
   public listAllAbsenceRequestInMonthAndYearOfEmployee(pageNumber: number,
     pageSize: number,

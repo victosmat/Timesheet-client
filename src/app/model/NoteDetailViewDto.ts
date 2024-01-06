@@ -5,6 +5,7 @@ export interface NoteDetailViewDto {
     dateSubmit?: Date;
     dateModify?: Date;
     workingTime?: number;
+    taskId?: number;
     taskCode?: string;
     taskStatus?: string;
     workingType?: string;

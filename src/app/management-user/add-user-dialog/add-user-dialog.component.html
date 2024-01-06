@@ -25,7 +25,7 @@
                         <div>
                             <mat-form-field class="example-full-width" appearance="outline">
                                 <mat-label for="email">Email</mat-label>
-                                <input matInput formControlName="email" />
+                                <input matInput formControlName="email" placeholder="@example.com" />
                             </mat-form-field>
                         </div>
                         <div>
@@ -121,7 +121,7 @@
                     <div>
                         <mat-form-field class="example-full-width" appearance="outline">
                             <mat-label for="username">Username</mat-label>
-                            <input matInput formControlName="username" />
+                            <input matInput placeholder="@ncc.asia" formControlName="username" (input)="changUsername()" />
                         </mat-form-field>
                     </div>
                     <div>

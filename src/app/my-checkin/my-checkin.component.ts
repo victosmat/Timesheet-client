@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
-import { CheckinService } from '../service/checkin.service';
+import { CheckinService } from '../service/checkin/checkin.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmCheckinDialogComponent } from './confirm-checkin-dialog/confirm-checkin-dialog.component';
 import { EmployeeService } from '../service/employee/employee.service';

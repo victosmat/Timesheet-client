@@ -9,6 +9,7 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EmployeeViews } from 'src/app/model/EmployeeViews';
+import { EmployeeProjectDetailDto } from 'src/app/model/employee-project-detail-dto';
 import { ProjectDetailDto } from 'src/app/model/project-view-detail';
 import { EmployeeService } from 'src/app/service/employee/employee.service';
 import { ProjectService } from 'src/app/service/project/project.service';
@@ -77,7 +78,7 @@ export class SaveProjectComponent implements OnInit {
           response.projectEmployeeSaveDtos?.forEach((element: any) => {
             this.employeeSelectedList.push(
               this.formBuilder.group({
-                id: new FormControl(null),
+                id: new FormControl(element.id),
                 employeeId: new FormControl(
                   element.employeeId,
                   Validators.required
@@ -94,7 +95,9 @@ export class SaveProjectComponent implements OnInit {
                   { value: element.email, disabled: true },
                   Validators.required
                 ),
-                roleProjectType: new FormControl('MEMBER', Validators.required),
+                roleProjectType: new FormControl(
+                  { value: element.roleProjectType, disabled: false }
+                  , Validators.required),
               })
             );
           });
@@ -139,6 +142,8 @@ export class SaveProjectComponent implements OnInit {
     console.log(employee.value);
     console.log(employee);
     console.log(i);
+
+    console.log(this.employeeSelectedList);
   }
 
   // addSelectedEmployee() {
@@ -166,21 +171,70 @@ export class SaveProjectComponent implements OnInit {
   onNoClick() {
     this.dialogRef.close();
   }
+
   submitFrom() {
-    console.log("miglee");
     if (this.projectFrom.valid) {
       let check = false;
-      this.employeeSelectedList.controls.forEach((element: any) => {
-        if (element.value.employeeId == this.data.id) {
-          if (element.value.roleProjectType == 'PM') check = true;
+      let countPM = 0;
+      this.employeeSelectedList.value.forEach((element: any) => {
+        if (element.roleProjectType == 'PM') {
+          check = true;
+          countPM++;
         }
       });
-      if (!check) { 
+      if (!check) {
         this.snackBar.open('Please add PM and members', 'Close', {
           duration: 2000,
         });
         return;
       }
+
+      if (countPM > 1) {
+        this.snackBar.open('Please add only one PM', 'Close', {
+          duration: 2000,
+        });
+        return;
+      }
+
+      this.projectDetailDto.id = this.data.id;
+      this.projectDetailDto.code = this.projectFrom.value.code;
+      this.projectDetailDto.name = this.projectFrom.value.name;
+      this.projectDetailDto.description = this.projectFrom.value.description;
+      this.projectDetailDto.projectType = this.projectFrom.value.projectType;
+      this.projectDetailDto.projectStatus = this.projectFrom.value.projectStatus;
+      this.projectDetailDto.startDate = this.projectFrom.value.start;
+      this.projectDetailDto.endDate = this.projectFrom.value.end;
+
+      console.log(this.projectFrom.value.employeeSelectedList);
+      let employeeProjectDetailDto: EmployeeProjectDetailDto[] = [];
+      this.projectFrom.value.employeeSelectedList.forEach((element: any) => {
+        console.log(element);
+        employeeProjectDetailDto.push({
+          id: element.id,
+          employeeId: element.employeeId,
+          roleProjectType: element.roleProjectType,
+        });
+      });
+
+      this.projectDetailDto.projectEmployeeSaveDtos = employeeProjectDetailDto;
+
+      console.log(this.projectDetailDto);
+
+      this.projectService.saveProject(this.projectDetailDto).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.snackBar.open('Save successfully', 'Close', {
+            duration: 2000,
+          });
+          this.dialogRef.close();
+        },
+        error: (error: any) => {
+          console.log(error);
+          this.snackBar.open('Save failed', 'Close', {
+            duration: 2000,
+          });
+        },
+      });
     }
     else {
       this.snackBar.open('Please fill in all required fields', 'Close', {

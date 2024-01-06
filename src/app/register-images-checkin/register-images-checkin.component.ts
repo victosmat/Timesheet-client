@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
-import { CheckinService } from '../service/checkin.service';
+import { CheckinService } from '../service/checkin/checkin.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EmployeeViews } from '../model/EmployeeViews';
 import { ProjectDetailDto } from '../model/project-view-detail';

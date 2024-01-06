@@ -1,14 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ProjectDetailDto } from 'src/app/model/project-view-detail';
 import { ProjectViewManageDto } from 'src/app/model/project-view-manage-dto';
+import { BaseServiceService } from '../base-service/base-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectService {
-  private base_url = 'http://localhost:8081/Timesheet/app/';
-  constructor(private httpClient: HttpClient) { }
+export class ProjectService   extends BaseServiceService{
+  constructor(private httpClient: HttpClient) { super()}
 
   public getAllProject(pageNumber: number,
     pageSize: number,
@@ -63,5 +64,22 @@ export class ProjectService {
     params = params.append('priority', priority);
 
     return this.httpClient.get<any>(this.base_url + 'tasks/get_task_detail_by_project', { params: params }).pipe();
+  }
+
+  public saveProject(projectDetailDto: ProjectDetailDto): Observable<any> {
+    return this.httpClient.post<any>(this.base_url + 'projects/save', projectDetailDto).pipe();
+  }
+
+  public deleteProject(id: number): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append('projectId', id);
+    return this.httpClient.delete<any>(this.base_url + 'projects/delete', { params: params }).pipe();
+  }
+
+  public updateTaskStatus(id: number, status: string): Observable<any> {
+    let params: HttpParams = new HttpParams();
+    params = params.append('taskId', id);
+    params = params.append('status', status);
+    return this.httpClient.put<any>(this.base_url + 'tasks/update_status', null, { params: params }).pipe();
   }
 }

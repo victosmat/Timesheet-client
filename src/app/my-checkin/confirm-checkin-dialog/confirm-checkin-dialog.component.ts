@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EmployeeDetailDto } from 'src/app/model/employee-detail-dto';
-import { CheckinService } from 'src/app/service/checkin.service';
+import { CheckinService } from 'src/app/service/checkin/checkin.service';
 import { TimesheetService } from 'src/app/service/timesheet/timesheet.service';
 
 @Component({

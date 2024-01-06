@@ -6,9 +6,7 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CookieService } from 'ngx-cookie-service';
 import { DepartmentDto } from 'src/app/model/department-dto';
-import { EmployeeDetailDto } from 'src/app/model/employee-detail-dto';
 import { PmDto } from 'src/app/model/pm-dto';
 import { RoleDto } from 'src/app/model/role-dto';
 import { EmployeeService } from 'src/app/service/employee/employee.service';
@@ -20,7 +18,6 @@ import { EmployeeService } from 'src/app/service/employee/employee.service';
 })
 export class AddUserDialogComponent implements OnInit {
   profileFrom!: FormGroup;
-  employeeDetailDto!: EmployeeDetailDto;
   pmDto!: PmDto[];
   departments!: DepartmentDto[];
   roles!: RoleDto[];
@@ -30,7 +27,6 @@ export class AddUserDialogComponent implements OnInit {
     private employeeService: EmployeeService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
-    private cookieService: CookieService,
     private snackBar: MatSnackBar
   ) {
   }
@@ -53,19 +49,6 @@ export class AddUserDialogComponent implements OnInit {
       level: new FormControl(null, Validators.required),
     });
 
-    const usernameControl = this.profileFrom.value.username;
-    const passwordControl = this.profileFrom.value.password;
-
-    if (usernameControl && passwordControl) {
-      usernameControl.valueChanges.subscribe((value: string) => {
-        if (value.includes('@')) {
-          passwordControl.disable();
-        } else {
-          passwordControl.enable();
-        }
-      });
-    }
-
     this.getPms();
     this.getDepartments();
     this.getRoles();
@@ -75,6 +58,10 @@ export class AddUserDialogComponent implements OnInit {
     this.employeeService.getPms().subscribe({
       next: (response: any) => {
         this.pmDto = response;
+        this.pmDto.push({
+          id: 0,
+          name: 'None',
+        });
         console.log(this.pmDto);
       },
       error: (error: any) => {
@@ -82,6 +69,13 @@ export class AddUserDialogComponent implements OnInit {
       },
       complete: () => { },
     });
+  }
+
+  changUsername() {
+    const usernameControl = this.profileFrom.value.username;
+    if (usernameControl) {
+      this.profileFrom.patchValue({ password: usernameControl.split('@')[0], });
+    }
   }
 
   getDepartments() {
@@ -110,29 +104,71 @@ export class AddUserDialogComponent implements OnInit {
     });
   }
 
-  submitFrom() { 
-    this.employeeDetailDto = this.profileFrom.value;
-    console.log(this.employeeDetailDto);
-    if(this.profileFrom.valid) {
-      this.employeeService.addEmployee(this.employeeDetailDto).subscribe({
-        next: (response: any) => {
-          this.snackBar.open('Add user successfully!', 'Close', {
-            duration: 3000,
-            horizontalPosition: 'right',
-            verticalPosition: 'bottom',
-          });
-          this.dialogRef.close();
-        },
-        error: (error: any) => {
-          console.log(error.status);
-        },
-        complete: () => { },
-      });
-    }else{
+  isValidEmail(email: string): boolean {
+    const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  submitFrom() {
+    if (!this.profileFrom.valid) {
       this.snackBar.open('Please fill in all required fields!', 'Close', {
-        duration: 3000,
+        duration: 2000,
       });
+      return;
     }
+
+    const email = this.profileFrom.value.email;
+    const username = this.profileFrom.value.username;
+    if (!this.isValidEmail(email) || !this.isValidEmail(username)) {
+      this.snackBar.open('Invalid email or username!', 'Close', {
+        duration: 2000,
+      });
+      return;
+    }
+
+    if (username.split('@')[1] !== 'ncc.asia') {
+      this.snackBar.open('The username must have the @ncc.asia extension!', 'Close', {
+        duration: 2000,
+      });
+      return;
+    }
+
+    const employeeDto = {
+      id: null,
+      firstName: this.profileFrom.value.firstName,
+      gender: this.profileFrom.value.gender,
+      birthDate: this.profileFrom.value.birthday,
+      email: this.profileFrom.value.email,
+      lastName: this.profileFrom.value.lastName,
+      bankName: this.profileFrom.value.bankName,
+      bankNumber: this.profileFrom.value.bankNumber,
+      hiringDate: this.profileFrom.value.hiringDate,
+      buddyId: this.profileFrom.value.buddyId,
+      departmentId: this.profileFrom.value.departmentId,
+      username: this.profileFrom.value.username,
+      password: this.profileFrom.value.password,
+      jobDepartmentId: this.profileFrom.value.jobDepartmentId,
+      level: this.profileFrom.value.level,
+    }
+    console.log(employeeDto);
+
+
+    this.employeeService.addEmployee(employeeDto).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.snackBar.open('Add user successfully!', 'Close', {
+          duration: 2000,
+        });
+        this.dialogRef.close();
+      },
+      error: (error: any) => {
+        console.log(error.status);
+        this.snackBar.open('Add user failed!', 'Close', {
+          duration: 2000,
+        });
+      },
+      complete: () => { },
+    });
   }
   changePassword() {
     this.submitFrom();

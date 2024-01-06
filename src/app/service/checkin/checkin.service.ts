@@ -1,13 +1,15 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BaseServiceService } from '../base-service/base-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CheckinService {
-  private base_url = 'http://127.0.0.1:5000/';
+export class CheckinService extends BaseServiceService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) { 
+    super();
+  }
 
   public recognizeFace(image: any): any {
     return this.httpClient
