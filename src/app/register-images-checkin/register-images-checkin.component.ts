@@ -148,13 +148,20 @@ export class RegisterImagesCheckinComponent implements OnInit {
     this.checkinService.registerImages(this.employeeSelected.id, this.imageBase64List).subscribe({
       next: (response: any) => {
         console.log(response);
-        this.snackBar.open('Register images successfully!', 'Close', {
-          duration: 2000,
-          panelClass: ['green-snackbar'],
-        });
-        this.imageBase64List = [];
-        this.employeeSelected = undefined;
-        this.selectedEmployeeCheck = false;
+        if (response === true) {
+          this.snackBar.open('Register images successfully!', 'Close', {
+            duration: 2000,
+            panelClass: ['green-snackbar'],
+          });
+          this.imageBase64List = [];
+          this.employeeSelected = undefined;
+          this.selectedEmployeeCheck = false;
+        } else {
+          this.snackBar.open('User already exists!', 'Close', {
+            duration: 2000,
+            panelClass: ['red-snackbar'],
+          });
+        }
       },
       error: (error: any) => {
         console.log(error);
@@ -218,7 +225,7 @@ export class RegisterImagesCheckinComponent implements OnInit {
             },
           });
 
-          this.checkPermissions();
+        this.checkPermissions();
       },
       error: (error: any) => {
         console.log(error);

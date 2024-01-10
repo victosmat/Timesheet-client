@@ -1,7 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { fi } from 'date-fns/locale';
-import { CookieService } from 'ngx-cookie-service';
 import { ImageCheckinDto } from 'src/app/model/image-checkin-dto';
 import { CheckinService } from 'src/app/service/checkin/checkin.service';
 import { DeleteImageCheckinDialogComponent } from './delete-image-checkin-dialog/delete-image-checkin-dialog.component';
@@ -22,17 +20,16 @@ export class ViewImageCheckinDialogComponent implements OnInit {
     private checkinService: CheckinService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
-    private cookieService: CookieService
   ) { }
 
   ngOnInit(): void {
     console.log(this.data);
-    this.checkinService.getAllImageByEmployeeId(this.data.id).subscribe({
+    this.checkinService.getAllImageByEmployeeId(this.data.id, this.month, this.year).subscribe({
       next: (response: any) => {
+        console.log(response);
         this.imageCheckinDtoList = response.images_base64;
         this.imageCheckinDtoListCheck = response.images_base64;
         console.log(this.imageCheckinDtoList);
-        this.filterDate();
       },
       error: (error: any) => {
         console.log(error);

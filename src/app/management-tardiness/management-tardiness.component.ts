@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeService } from '../service/employee/employee.service';
 import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { de, is } from 'date-fns/locale';
 import { CheckinPunishmentDto } from '../model/checkin-punishment-dto';
 import { TimesheetService } from '../service/timesheet/timesheet.service';
 import { ReplyCommentComponent } from './reply-complain/reply-comment.component';
 import { UpdateIsDeletedComponent } from './update-is-deleted/update-is-deleted.component';
-import { Observable } from 'rxjs';
 import { CustomDataSource } from '../shared/custom-datasource';
+import { UpdateStatusComponent } from './update-status/update-status.component';
+import { is } from 'date-fns/locale';
 
 @Component({
   selector: 'app-management-tardiness',
@@ -72,6 +70,7 @@ export class ManagementTardinessComponent implements OnInit {
   checkViewDeital: boolean = false;
   checkinPunishmentDto: CheckinPunishmentDto[] = [];
   employeeIdInViewDetail: number = 0;
+  isPunishment: string = 'ALL';
 
   constructor(
     private employeeService: EmployeeService,
@@ -147,7 +146,7 @@ export class ManagementTardinessComponent implements OnInit {
     this.renderPage();
   }
 
-  searchOrFilter() {this.getAllCheckinAndPunishment() }
+  searchOrFilter() { this.getAllCheckinAndPunishment() }
   viewCheckInDetail(element: any) {
     this.checkViewDeital = true;
     this.fullNameViewDetail = element.fullName;
@@ -171,8 +170,16 @@ export class ManagementTardinessComponent implements OnInit {
     if (this.complainPunishment === 'NOT COMPLAIN') {
       isComplain = false;
     }
+
+    let isPunishment = null;
+    if (this.isPunishment === 'PUNISHMENT') {
+      isPunishment = true;
+    }
+    if (this.isPunishment === 'NOT PUNISHMENT') {
+      isPunishment = false;
+    }
     this.timesheetService
-      .getCheckinOfEmployeeAndPunishment(this.pageNumber + 1, this.pageSize, this.sortField, this.sortOrder, employeeId, status, month, year, isComplain, 'true')
+      .getCheckinOfEmployeeAndPunishment(this.pageNumber + 1, this.pageSize, this.sortField, this.sortOrder, employeeId, status, month, year, isComplain, isPunishment)
       .subscribe({
         next: (response) => {
           if (response.content.length === 0) {
@@ -230,12 +237,31 @@ export class ManagementTardinessComponent implements OnInit {
       },
     });
   }
-  updateReject(item: any) { }
-  updateCheckPoint(item: any) { }
+  updateReject(item: any) {
+    this.dialog.open(UpdateStatusComponent, {
+      data: item
+    }).afterClosed().subscribe({
+      complete: () => {
+        this.getCheckinOfEmployeeAndPunishment();
+      },
+    });
+  }
+  updateCheckPoint(item: any) {
+    this.dialog.open(UpdateStatusComponent, {
+      data: item
+    }).afterClosed().subscribe({
+      complete: () => {
+        this.getCheckinOfEmployeeAndPunishment();
+      },
+    });
+  }
   findStatus() {
     this.getCheckinOfEmployeeAndPunishment();
   }
   findComplain() {
+    this.getCheckinOfEmployeeAndPunishment();
+  }
+  findPunishment() {
     this.getCheckinOfEmployeeAndPunishment();
   }
 }

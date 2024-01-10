@@ -10,8 +10,11 @@
     <div class="profile">
       <div class="profile-content">
         <div class="avatar">
-          <img src="https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"
+          <img *ngIf="employeeId === 43"
+            src="https://cdn-icons-png.flaticon.com/512/771/771203.png"
             alt="avatar" style="width: 60px;" class="rounded-circle">
+          <img *ngIf="employeeId !== 43" [src]="'data:image/jpeg;base64,' + image" alt="avatar" style="width: 60px;"
+            class="rounded-circle">
         </div>
         &nbsp;
         &nbsp;
@@ -80,7 +83,7 @@
         </mat-nav-list>
       </mat-expansion-panel>
     </mat-accordion>
-    <mat-accordion *ngIf="this.authService.roleMatch(['PM'])">
+    <mat-accordion *ngIf="this.authService.roleMatch(['TIMESHEET'])">
       <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
         <mat-expansion-panel-header>
           <mat-panel-title>

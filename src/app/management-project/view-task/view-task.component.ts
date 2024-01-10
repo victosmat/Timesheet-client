@@ -104,7 +104,6 @@ export class ViewTaskComponent implements OnInit {
               duration: 2000,
               panelClass: ['error-snackbar'],
             });
-            this.dialogRef.close();
           }
           this.data$ = response.content;
           this.dataSource = new CustomDataSource(this.data$);

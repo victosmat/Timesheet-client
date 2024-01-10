@@ -37,7 +37,9 @@ export class LoginComponent implements OnInit {
     this.authService.doLogin(this.auth).subscribe(
       (response: any) => {
         if(response === 'UNAUTHORIZED') {
-          alert("Login failed. Please check your username and password. Or are you not registered yet");
+          this.snackBar.open('Login failed. Please check your username and password. Or are you not registered yet', 'OK', {
+            duration: 2000,
+          });
           return;
         } else {
         this.cookieService.set("TimesheetAppToken", response.accessToken);
@@ -47,7 +49,11 @@ export class LoginComponent implements OnInit {
         this.snackBar.open('Login successfully with employee id = ' + this.cookieService.get("TimesheetAppEmployeeId"), 'OK', {
           duration: 2000,
         }); 
-        this.router.navigate(["/home/timesheet"]);
+        console.log(response);
+        if (Number(response.employeeId) === 43) {
+          this.router.navigate(["/home/my_checkin"]);
+        }
+        else this.router.navigate(["/home/timesheet"]);
         }
       }
     );

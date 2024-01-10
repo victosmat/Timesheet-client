@@ -127,6 +127,12 @@
                     <mat-option *ngFor="let i of ['ALL', 'COMPLAIN', 'NOT COMPLAIN']" [value]="i">{{i}}</mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Punishment</mat-label>
+                <mat-select [(value)]="isPunishment" (valueChange)="findPunishment()">
+                    <mat-option *ngFor="let i of ['ALL', 'PUNISHMENT', 'NOT PUNISHMENT']" [value]="i">{{i}}</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
         &nbsp; &nbsp; &nbsp;
         <mat-card-content>

@@ -22,6 +22,7 @@ import { NoteViewDto } from '../model/note-view-dto';
 import { CommentDialogComponent } from './comment-dialog/comment-dialog.component';
 import { CheckinPunishmentDto } from '../model/checkin-punishment-dto';
 import { ComplainDialogComponent } from './complain-dialog/complain-dialog.component';
+import { getISOWeek } from 'date-fns';
 
 const MY_DATE_FORMAT = {
   parse: {
@@ -271,14 +272,19 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
     return date.getFullYear();
   }
 
-  getWeekNumberOfSelectedDate(date: Date) {
-    let startDate = new Date(date.getFullYear(), 0, 1);
-    var days = Math.floor(
-      (date.valueOf() - startDate.valueOf()) / (24 * 60 * 60 * 1000)
-    );
-    var weekNumber = Math.ceil(days / 7);
-    return weekNumber;
+  getWeekNumberOfSelectedDate(date: any) {
+    return getISOWeek(date);
   }
+
+  // getWeekNumberOfSelectedDate(date: Date) {
+  //   console.log(date);
+  //   let startDate = new Date(date.getFullYear(), 0, 1);
+  //   var days = Math.floor(
+  //     (date.valueOf() - startDate.valueOf()) / (24 * 60 * 60 * 1000)
+  //   );
+  //   var weekNumber = Math.ceil(days / 7);
+  //   return weekNumber;
+  // }
 
   getWeekNumberAndUpdateDay(date: any) {
     this.selectedDate = date.toDate();
@@ -428,7 +434,7 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
     const year = this.yearPunishment;
     const employeeId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
     this.timesheetService
-      .getCheckinOfEmployeeAndPunishment(1, 300, 'id', 'asc', employeeId, status, month, year, null, 'false')
+      .getCheckinOfEmployeeAndPunishment(1, 300, 'id', 'asc', employeeId, status, month, year, null, null)
       .subscribe({
         next: (response) => {
           console.log(response.content);

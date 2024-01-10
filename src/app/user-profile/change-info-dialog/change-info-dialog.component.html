@@ -1,1 +1,9 @@
-<p>change-info-dialog works!</p>
+<h1 mat-dialog-title>Change infomation</h1>
+<div mat-dialog-content>
+    <p>Are you sure to change the information?</p>
+</div>
+<div mat-dialog-actions style="float: right;">
+    <button mat-raised-button type="reset" color="warn" (click)="onNoClick()">Cancel</button>
+    <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="" cdkFocusInitial
+        (click)="changeInfo()">Ok</button>
+</div>

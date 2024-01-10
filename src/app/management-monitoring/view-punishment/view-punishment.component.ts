@@ -118,7 +118,7 @@ export class ViewPunishmentComponent implements OnInit {
       .getCheckinOfEmployeeAndPunishment(this.pageNumber + 1,
         this.pageSize,
         this.sortField,
-        this.sortOrder, employeeId, status, month, year, isComplain, 'true')
+        this.sortOrder, employeeId, status, month, year, isComplain, true)
       .subscribe({
         next: (response) => {
           this.checkinPunishmentDto = response;

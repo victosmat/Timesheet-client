@@ -13,28 +13,29 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
     private cookieService: CookieService,
     private router: Router,
     private authService: AuthService
-  ){}
+  ) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      if(this.cookieService.check("TimesheetAppToken") === true) {
-        let rolesToken = route.data["roles"];
-        const roles: string[] = String(rolesToken).split(", ");
-        if(roles) {
-          const match = this.authService.roleMatch(roles);
+    if (this.cookieService.check("TimesheetAppToken") === true) {
+      let rolesToken = route.data["roles"];
+      console.log(rolesToken);
+      const roles: string[] = String(rolesToken).split(", ");
+      if (roles) {
+        const match = this.authService.roleMatch(roles);
 
-          if(match) {
-            return true;
-          } else {
-            this.router.navigate(['/forbidden']);
-            return false;
-          }
+        if (match) {
+          return true;
+        } else {
+          this.router.navigate(['/forbidden']);
+          return false;
         }
       }
-      
-      this.router.navigate(['/login']);
-      return false;
+    }
+
+    this.router.navigate(['/login']);
+    return false;
   }
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
@@ -48,5 +49,5 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
     nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return true;
   }
-  
+
 }

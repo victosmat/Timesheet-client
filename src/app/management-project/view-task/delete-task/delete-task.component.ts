@@ -26,7 +26,6 @@ export class DeleteTaskComponent implements OnInit {
         console.log(response);
         this.snackBar.open('Delete task successfully', 'Close', {
           duration: 2000,
-          panelClass: ['success-snackbar'],
         });
         this.dialogRef.close();
       },
@@ -34,7 +33,6 @@ export class DeleteTaskComponent implements OnInit {
         console.log(error);
         this.snackBar.open('Delete task failed', 'Close', {
           duration: 2000,
-          panelClass: ['error-snackbar'],
         });
       },
     });

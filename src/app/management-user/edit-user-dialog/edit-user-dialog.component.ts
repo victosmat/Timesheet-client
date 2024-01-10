@@ -27,6 +27,8 @@ export class EditUserDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.data);
+
     let buddyId: number = 0;
     let departmentId: number = 0;
 
@@ -79,7 +81,41 @@ export class EditUserDialogComponent implements OnInit {
   }
 
   submitForm() {
+    const employeeSaveDto = {
+      id: this.data.id,
+      hiringDate: this.profileFrom.value.hiringDate,
+      buddyId: this.profileFrom.value.buddyId,
+      departmentId: this.profileFrom.value.departmentId,
+      level: this.profileFrom.value.level,
+    };
+
+    this.employeeService.addEmployee(employeeSaveDto).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        if (response === true) {
+          this.snackBar.open("Edit user successfully!", "Close", {
+            duration: 2000,
+            panelClass: ['green-snackbar']
+          });
+        }
+        else {
+          this.snackBar.open("Edit user failed!", "Close", {
+            duration: 2000,
+            panelClass: ['red-snackbar']
+          });
+        }
+        this.dialogRef.close();
+      },
+      error: (error: any) => {
+        console.log(error.status);
+        this.snackBar.open("Edit user failed!", "Close", {
+          duration: 2000,
+          panelClass: ['red-snackbar']
+        });
+      },
+    });
   }
+
   onNoClick(): void {
     this.dialogRef.close();
   }

@@ -1,14 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MyTimesheetComponent } from './my-timesheet/my-timesheet.component';
-import { MyProfileComponent } from './my-profile/my-profile.component';
 import { MyAbsenceDayComponent } from './my-absence-day/my-absence-day.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './auth/auth.guard';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
-import { ManageAbsenceComponent } from './manage-home/manage-absence/manage-absence.component';
-import { ManageHomeComponent } from './manage-home/manage-home.component';
 import { ManagementTimesheetComponent } from './management-timesheet/management-timesheet.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ManagementUserComponent } from './management-user/management-user.component';
@@ -39,8 +36,8 @@ const routes: Routes = [
       { path: 'manage_absence', component: ManagementAbsenceComponent, canActivate: [AuthGuard], data: { roles: ["PM, HR"] }, },
       { path: 'manage_Tardiness', component: ManagementTardinessComponent, canActivate: [AuthGuard], data: { roles: ["PM, HR"] }, },
       { path: 'admin_bonus', component: ManagementBonusComponent, canActivate: [AuthGuard], data: { roles: ["PM"] }, },
-      { path: 'my_checkin', component: MyCheckinComponent, canActivate: [AuthGuard], data: { roles: ["PM"] }, },
-      { path: 'register_image', component: RegisterImagesCheckinComponent, canActivate: [AuthGuard], data: { roles: ["PM"] }, },
+      { path: 'my_checkin', component: MyCheckinComponent, canActivate: [AuthGuard], data: { roles: ["TIMESHEET"] }, },
+      { path: 'register_image', component: RegisterImagesCheckinComponent, canActivate: [AuthGuard], data: { roles: ["TIMESHEET"] }, },
     ]
   },
   { path: 'forbidden', component: ForbiddenComponent }

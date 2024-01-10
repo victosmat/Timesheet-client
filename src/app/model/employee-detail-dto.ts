@@ -5,6 +5,7 @@ export interface EmployeeDetailDto {
     gender: String; 
     birthDate: Date; 
     email: string;
+    bankId: number;
     bankName: string;
     bankNumber: string;
     photo: string;

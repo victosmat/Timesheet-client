@@ -13,22 +13,24 @@ export class CheckinService extends BaseServiceService {
 
   public recognizeFace(image: any): any {
     return this.httpClient
-      .post<any>(this.base_url + 'recognize_face', image)
+      .post<any>(this.base_url + 'checkin_image/recognize_face', image)
       .pipe();
   }
 
   public saveImage(data: any): any {
     return this.httpClient
-      .post<any>(this.base_url + 'save_image', data)
+      .post<any>(this.base_url + 'checkin_image/save_image', data)
       .pipe();
   }
 
-  public getAllImageByEmployeeId(employeeId: number): any {
+  public getAllImageByEmployeeId(employeeId: number, month: number, year: number): any {
     const requestJson = {
-      employeeId: employeeId.toString()
+      employeeId: employeeId.toString(),
+      month: month.toString(),
+      year: year.toString()
     };
     return this.httpClient
-      .post<any>(this.base_url + 'get_images_base64', requestJson)
+      .post<any>(this.base_url + 'checkin_image/get_images_base64', requestJson)
       .pipe();
   }
 
@@ -38,7 +40,7 @@ export class CheckinService extends BaseServiceService {
       nameFile: nameFile
     };
     return this.httpClient
-      .post<any>(this.base_url + 'delete_image', requestJson)
+      .post<any>(this.base_url + 'checkin_image/delete_image', requestJson)
       .pipe();
   }
 
@@ -48,7 +50,16 @@ export class CheckinService extends BaseServiceService {
       images: images
     };
     return this.httpClient
-      .post<any>(this.base_url + 'save_list_images', requestJson)
+      .post<any>(this.base_url + 'checkin_image/save_list_images', requestJson)
+      .pipe();
+  }
+
+  public getAvatar(employeeId: number): any {
+    const requestJson = {
+      employeeId: employeeId.toString()
+    };
+    return this.httpClient
+      .post<any>(this.base_url + 'checkin_image/get_avatar', requestJson)
       .pipe();
   }
 }

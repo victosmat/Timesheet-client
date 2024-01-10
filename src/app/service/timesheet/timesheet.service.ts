@@ -118,7 +118,7 @@ export class TimesheetService extends BaseServiceService {
     month: number,
     year: number,
     isComplain: Boolean | null,
-    isManage: string
+    isManage: Boolean | null
   ): Observable<any> {
     let params: HttpParams = new HttpParams();
     params = params.append('pageNum', pageNumber);
@@ -128,10 +128,13 @@ export class TimesheetService extends BaseServiceService {
     params = params.append('employeeId', employeeId);
     params = params.append('status', status);
     params = params.append('month', month + 1);
-    params = params.append('year', year),
-      params = params.append('isManage', isManage);
+    params = params.append('year', year);
     if (isComplain !== null) {
       params = params.append('isComplain', isComplain.toString());
+    }
+
+    if (isManage !== null) {
+      params = params.append('isManage', isManage.toString());
     }
 
     return this.httpClient
@@ -288,6 +291,18 @@ export class TimesheetService extends BaseServiceService {
     params = params.append('status', status);
     return this.httpClient
       .put(this.base_url + 'notes/update_staff_timesheet_status', null, {
+        params: params,
+      })
+      .pipe();
+  }
+
+  public updateStatusCheckin(checkinId: number, status: string) {
+    console.log(checkinId);
+    let params: HttpParams = new HttpParams();
+    params = params.append('id', checkinId);
+    params = params.append('status', status);
+    return this.httpClient
+      .put(this.base_url + 'checkin/update_status', null, {
         params: params,
       })
       .pipe();

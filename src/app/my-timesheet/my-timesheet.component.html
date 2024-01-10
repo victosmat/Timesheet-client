@@ -190,7 +190,7 @@
         <mat-form-field>
             <span>Status</span>
             <mat-select [(value)]="statusPunishment" (valueChange)="findPunishment('STATUS')">
-                <mat-option *ngFor="let i of ['ALL', 'PENDING', 'APPROVED', 'REJECTED']" [value]="i">{{i}}</mat-option>
+                <mat-option *ngFor="let i of ['ALL', 'CHECK_POINT', 'REJECTED']" [value]="i">{{i}}</mat-option>
             </mat-select>
         </mat-form-field>
         &nbsp;

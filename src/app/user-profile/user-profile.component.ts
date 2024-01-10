@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { EmployeeDetailDto } from '../model/employee-detail-dto';
 import { UpdatePasswordDialogComponent } from './update-password-dialog/update-password-dialog.component';
 import { ViewBonusDialogComponent } from './view-bonus-dialog/view-bonus-dialog.component';
+import { ChangeInfoDialogComponent } from './change-info-dialog/change-info-dialog.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -21,7 +22,7 @@ export class UserProfileComponent implements OnInit {
     private employeeService: EmployeeService,
     public dialog: MatDialog,
     private cookieService: CookieService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) { }
 
   getProfile() {
@@ -122,13 +123,35 @@ export class UserProfileComponent implements OnInit {
     } else {
       this.snackBar.open('Please fill in all required fields', 'Close', {
         duration: 2000,
-        panelClass: ['error-snackbar'],
       });
     }
+
+    const employeeId = Number(this.cookieService.get('TimesheetAppEmployeeId'));
+    const saveEmployeeDto = {
+      id: employeeId,
+      firstName: this.profileFrom.value.firstName,
+      lastName: this.profileFrom.value.lastName,
+      bankName: this.profileFrom.value.bankName,
+      bankNumber: this.profileFrom.value.bankNumber,
+      birthDate: this.profileFrom.value.birthday,
+      email: this.profileFrom.value.email,
+      gender: this.profileFrom.value.gender
+    }
+
+    this.dialog.open(ChangeInfoDialogComponent, {
+      data: saveEmployeeDto,
+      width: '500px',
+    }).afterClosed().subscribe({
+      next: () => {
+        this.getProfile();
+      },
+    });
   }
 
   notify() {
-    this.snackBar.open('This field is readonly and cannot be changed.', 'OK');
+    this.snackBar.open('This field is readonly and cannot be changed.', 'OK', {
+      duration: 2000,
+    });
   }
 
   viewBonus() {
