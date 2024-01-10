@@ -168,10 +168,14 @@ export class AbsenceFormDialogComponent implements OnInit {
     this.absenceService.saveAbsenceRequest(this.absenceRequest).subscribe({
       next: (response) => {
         if (response === true) {
-          this.snackBar.open("Save request successfully!", "OK");
+          this.snackBar.open("Save request successfully!", "OK", {
+            duration: 2000,
+          });
           this.dialogRef.close(this.absenceRequest.dateRequest);
         } else {
-          this.snackBar.open("Error when saving request!", "OK");
+          this.snackBar.open("Error when saving request!", "OK", {
+            duration: 2000,
+          });
           this.dialogRef.close(this.absenceRequest.dateRequest);
         }
       },

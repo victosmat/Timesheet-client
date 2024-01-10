@@ -19,14 +19,7 @@
         <ng-container *ngFor="let item of absenceViewDto; let i = index">
           <tr>
             <th scope="row">{{i + 1}}</th>
-            <td scope="row">
-              <span>{{item.absenceType}}</span>
-              &nbsp;
-              <span
-                *ngIf="item.typeTimeOff !== 'COME_LATE' && item.typeTimeOff !== 'WENT_SOON'">{{item.typeTimeOff}}</span>
-              <span
-                *ngIf="item.typeTimeOff === 'COME_LATE' || item.typeTimeOff === 'WENT_SOON'">{{item.typeTimeOff}}</span>
-            </td>
+            <td scope="row">{{item.typeTimeOff}}</td>
             <td scope="row">{{item.reason}}</td>
             <td scope="row">{{item.timeOff}}</td>
             <td scope="row">{{item.status}}</td>
@@ -44,7 +37,7 @@
                       <mat-icon>menu</mat-icon>
                   </button>
                   <mat-menu #menu="matMenu">
-                      <button mat-menu-item (click)="editAbsenceRequest(item.id, item.absenceType)">
+                      <button mat-menu-item (click)="editAbsenceRequest(item.id, item.typeTimeOff)">
                           <mat-icon>edit</mat-icon>
                           <span>Edit</span>
                       </button>

@@ -1,7 +1,7 @@
 <div style="width: 400px; justify-content: center;">
     <div mat-dialog-title>Request {{this.data.type}}</div>
     <mat-dialog-content>
-        <form [formGroup]="absenceForm" (click)="submitForm()">
+        <form [formGroup]="absenceForm" (ngSubmit)="submitForm()">
             <div>
                 <mat-form-field class="example-full-width" appearance="outline">
                     <mat-label>Reason</mat-label>
