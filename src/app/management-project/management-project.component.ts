@@ -154,7 +154,6 @@ export class ManagementProjectComponent implements OnInit {
             duration: 2000,
             panelClass: ['error-snackbar'],
           });
-          return;
         }
         console.log(response.content);
         this.data$ = response.content;

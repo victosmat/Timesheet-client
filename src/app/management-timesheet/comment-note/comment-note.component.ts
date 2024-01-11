@@ -25,7 +25,9 @@ export class CommentNoteComponent implements OnInit {
     private timesheetService: TimesheetService,
     private snackBar: MatSnackBar,
     private cookieService: CookieService
-  ) {}
+  ) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     console.log(this.data);

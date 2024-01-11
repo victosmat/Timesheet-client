@@ -14,7 +14,9 @@ export class DeleteProjectComponent implements OnInit {
     private projectService: ProjectService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackBar: MatSnackBar
-  ) { }
+  ) { 
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     console.log(this.data);

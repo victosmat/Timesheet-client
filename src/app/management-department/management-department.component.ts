@@ -33,7 +33,7 @@ export class ManagementDepartmentComponent implements OnInit {
   nameSearch = '';
   sortField = 'id';
   sortOrder = 'asc';
-  departmentDto!: DepartmentDto;
+  departmentDto: DepartmentDto = {};
 
   constructor(
     private employeeService: EmployeeService,

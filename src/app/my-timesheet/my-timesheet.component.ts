@@ -403,12 +403,24 @@ export class MyTimesheetComponent implements OnInit, OnChanges {
   }
 
   submitWeekForApproved() {
+    if (this.notesPerDayDtos === undefined || this.notesPerDayDtos.length === 0) {
+      this.snackBar.open('You have not filled in any timesheet!', 'OK', {
+        duration: 2000,
+      });
+      return;
+    }
     this.timesheetService.submitWeekForApproved(this.weekNumber).subscribe({
       next: (response) => {
         console.log(response);
+        this.snackBar.open('Submit week successfully!', 'OK', {
+          duration: 2000,
+        });
       },
       error: (error) => {
         console.log(error);
+        this.snackBar.open('Submit week failed!', 'OK', {
+          duration: 2000,
+        });
       },
       complete: () => {
         this.ngOnInit();

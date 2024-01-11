@@ -25,7 +25,9 @@ export class SaveDepartmentComponent implements OnInit {
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private snalBar: MatSnackBar
-  ) {}
+  ) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     console.log(this.data.id);

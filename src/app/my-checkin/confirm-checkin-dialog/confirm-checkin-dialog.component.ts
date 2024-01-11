@@ -18,7 +18,9 @@ export class ConfirmCheckinDialogComponent implements OnInit {
     private timesheetService: TimesheetService,
     private checkinService: CheckinService,
     private snackBar: MatSnackBar
-  ) { }
+  ) { 
+    dialogRef.disableClose = true;
+  }
 
   probability: number = this.data.probability;
   isExactly: boolean = this.data.isSave;

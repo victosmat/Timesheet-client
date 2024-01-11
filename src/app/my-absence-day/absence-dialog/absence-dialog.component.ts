@@ -30,7 +30,9 @@ export class AbsenceDialogComponent implements OnInit {
     private absenceService: AbsenceService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     const date = this.data.date as Date;

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ImageCheckinDto } from 'src/app/model/image-checkin-dto';
 import { CheckinService } from 'src/app/service/checkin/checkin.service';
 import { DeleteImageCheckinDialogComponent } from './delete-image-checkin-dialog/delete-image-checkin-dialog.component';
@@ -17,10 +17,13 @@ export class ViewImageCheckinDialogComponent implements OnInit {
   month: number = this.selectedDate.getMonth() + 1;
   year: number = this.selectedDate.getFullYear();
   constructor(
+    public dialogRef: MatDialogRef<ViewImageCheckinDialogComponent>,
     private checkinService: CheckinService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog: MatDialog,
-  ) { }
+  ) { 
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     console.log(this.data);

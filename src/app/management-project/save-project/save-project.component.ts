@@ -31,7 +31,7 @@ export class SaveProjectComponent implements OnInit {
   keyword = '';
   employeeSelected: any;
   pageNumber = 1;
-  pageSize = 10;
+  pageSize = 100;
   sortField = 'id';
   sortOrder = 'asc';
   totalElements = 0;
@@ -45,7 +45,9 @@ export class SaveProjectComponent implements OnInit {
     private projectService: ProjectService,
     private employeeService: EmployeeService,
     private snackBar: MatSnackBar
-  ) { }
+  ) { 
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     this.projectFrom = this.formBuilder.group({
@@ -109,7 +111,7 @@ export class SaveProjectComponent implements OnInit {
     }
 
     this.pageNumber = 1;
-    this.pageSize = 10;
+    this.pageSize = 100;
     this.keyword = '';
     this.sortField = 'id';
     this.sortOrder = 'asc';

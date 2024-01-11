@@ -28,7 +28,9 @@ export class SaveBonusToUserDialogComponent implements OnInit {
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
     private employeeService: EmployeeService
-  ) { }
+  ) { 
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     console.log(this.data);

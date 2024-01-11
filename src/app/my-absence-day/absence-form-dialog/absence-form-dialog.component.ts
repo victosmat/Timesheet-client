@@ -43,7 +43,9 @@ export class AbsenceFormDialogComponent implements OnInit {
     private absenceService: AbsenceService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar
-  ) { }
+  ) {
+    dialogRef.disableClose = true;
+   }
 
   ngOnInit(): void {
 
@@ -142,6 +144,15 @@ export class AbsenceFormDialogComponent implements OnInit {
   patchValueFromFormToDto() {
     this.absenceRequest.id = this.absenceForm.controls["id"].value;
     this.absenceRequest.dateRequest = this.absenceForm.controls["dateRequest"].value;
+
+    // nếu ngày request trước ngày hiện tại thì không cho submit
+    if (this.absenceRequest.dateRequest && this.absenceRequest.dateRequest < new Date()) {
+      this.snackBar.open("Date request must be after today!", "OK", {
+        duration: 2000,
+      });
+      return;
+    }
+
     this.absenceRequest.employeeId = Number(this.cookieService.get("TimesheetAppEmployeeId"));
     this.absenceRequest.dateSubmit = new Date();
     this.absenceRequest.reason = this.absenceForm.controls["reason"].value;

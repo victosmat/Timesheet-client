@@ -15,7 +15,9 @@ export class UpdateIsDeletedComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private timesheetService: TimesheetService,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     console.log(this.data);

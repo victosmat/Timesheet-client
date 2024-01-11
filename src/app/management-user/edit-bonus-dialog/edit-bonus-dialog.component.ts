@@ -37,7 +37,9 @@ export class EditBonusDialogComponent implements OnInit {
     private employeeService: EmployeeService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) { }
+  ) {
+    dialogRef.disableClose = true;
+   }
 
   ngOnInit() {
     console.log(this.data);

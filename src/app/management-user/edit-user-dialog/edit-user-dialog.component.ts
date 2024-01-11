@@ -24,7 +24,9 @@ export class EditUserDialogComponent implements OnInit {
     public dialog: MatDialog,
     private cookieService: CookieService,
     private snackBar: MatSnackBar
-  ) { }
+  ) {
+    dialogRef.disableClose = true;
+   }
 
   ngOnInit(): void {
     console.log(this.data);
@@ -55,7 +57,7 @@ export class EditUserDialogComponent implements OnInit {
             console.log(this.departments);
             this.departments.forEach(department => {
               if (department.name === this.data.departmentName) {
-                departmentId = department.id;
+                departmentId = department.id as number;
                 return;
               }
             });

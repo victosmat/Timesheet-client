@@ -15,7 +15,9 @@ export class AbsenceConfirmDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private absenceService: AbsenceService,
     private snackBar: MatSnackBar,
-  ) { }
+  ) { 
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {    
   }
@@ -35,4 +37,7 @@ export class AbsenceConfirmDialogComponent implements OnInit {
     });
   }
 
+  onNoClick() {
+    this.dialogRef.close();
+  }
 }

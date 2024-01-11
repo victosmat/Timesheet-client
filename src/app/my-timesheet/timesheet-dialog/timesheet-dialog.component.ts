@@ -49,7 +49,9 @@ export class TimesheetDialogComponent implements OnInit {
     private timesheetService: TimesheetService,
     private cookieService: CookieService,
     private snackBar: MatSnackBar
-  ) { }
+  ) { 
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     const employeeId = Number(this.cookieService.get("TimesheetAppEmployeeId"));

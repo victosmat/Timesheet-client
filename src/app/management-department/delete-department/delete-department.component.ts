@@ -15,7 +15,9 @@ export class DeleteDepartmentComponent implements OnInit {
     private employeeService: EmployeeService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackBar: MatSnackBar
-  ) { }
+  ) { 
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
   }

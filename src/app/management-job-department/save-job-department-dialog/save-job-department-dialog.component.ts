@@ -23,7 +23,9 @@ export class SaveJobDepartmentDialogComponent implements OnInit {
     private employeeService: EmployeeService,
     private cookieService: CookieService,
     private snalBar: MatSnackBar
-  ) { }
+  ) {
+    dialogRef.disableClose = true;
+   }
 
   ngOnInit(): void {
 

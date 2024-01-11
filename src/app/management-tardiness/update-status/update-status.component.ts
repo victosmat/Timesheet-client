@@ -14,7 +14,9 @@ export class UpdateStatusComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private timesheetService: TimesheetService,
     private snackBar: MatSnackBar
-  ) { }
+  ) { 
+    dialogRef.disableClose = true;
+  }
 
   statusResult = (this.data.status === 'CHECK_POINT') ? 'REJECTED' : 'CHECK_POINT';
 

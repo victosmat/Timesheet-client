@@ -54,7 +54,9 @@ export class ViewTaskComponent implements OnInit {
     private cookieService: CookieService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) { }
+  ) { 
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit() {
     console.log(this.data);
@@ -160,7 +162,10 @@ export class ViewTaskComponent implements OnInit {
   addTask() {
     this.dialog
       .open(SaveTaskComponent, {
-        data: this.taskDetailDto,
+        data: {
+          task: this.taskDetailDto,
+          projectId: this.data.id,
+        },
         width: '500px',
       })
       .afterClosed()

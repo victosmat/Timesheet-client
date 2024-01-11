@@ -95,7 +95,7 @@ export class MyAbsenceDayComponent implements OnInit {
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (events === undefined || events.length === 0) {
-      this.snackBar.open("You can't request absence on this day", 'Close', {
+      this.snackBar.open("There are no applications for leave on this day!", 'Close', {
         duration: 2000,
       });
       return;

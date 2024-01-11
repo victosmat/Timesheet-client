@@ -19,7 +19,9 @@ export class UpdateStatusPunismentComponent implements OnInit {
     private absenceService: AbsenceService,
     private cookieService: CookieService,
     private snackBar: MatSnackBar
-  ) { }
+  ) {
+    dialogRef.disableClose = true;
+   }
 
   ngOnInit(): void {
     console.log(this.data);

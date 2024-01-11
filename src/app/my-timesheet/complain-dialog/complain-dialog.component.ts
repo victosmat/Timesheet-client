@@ -23,7 +23,9 @@ export class ComplainDialogComponent implements OnInit {
     private timesheetService: TimesheetService,
     private cookieService: CookieService,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     console.log(this.data.note.complain);

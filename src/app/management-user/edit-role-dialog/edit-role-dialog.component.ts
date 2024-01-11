@@ -17,7 +17,9 @@ export class EditRoleDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
     private cookieService: CookieService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar) {
+    dialogRef.disableClose = true;
+  }
 
   roles!: RoleDto[];
   ngOnInit(): void {

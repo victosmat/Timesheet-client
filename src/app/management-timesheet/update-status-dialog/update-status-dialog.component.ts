@@ -30,7 +30,9 @@ export class UpdateStatusDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: NoteDetailViewDto,
     public dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) { }
+  ) { 
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     console.log(this.data);

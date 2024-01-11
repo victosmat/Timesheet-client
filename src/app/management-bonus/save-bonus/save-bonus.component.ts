@@ -23,7 +23,9 @@ export class SaveBonusComponent implements OnInit {
     private employeeService: EmployeeService,
     private cookieService: CookieService,
     private snalBar: MatSnackBar
-  ) { }
+  ) { 
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     console.log(this.data);

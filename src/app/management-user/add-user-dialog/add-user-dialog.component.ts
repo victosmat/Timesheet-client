@@ -29,6 +29,7 @@ export class AddUserDialogComponent implements OnInit {
     public dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {
+    dialogRef.disableClose = true;
   }
 
   ngOnInit(): void {

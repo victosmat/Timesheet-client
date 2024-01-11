@@ -13,7 +13,9 @@ export class ConfirmDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private timesheetService: TimesheetService,
-  ) { }
+  ) {
+    dialogRef.disableClose = true;
+   }
 
   ngOnInit(): void {
     console.log(this.data.noteId);

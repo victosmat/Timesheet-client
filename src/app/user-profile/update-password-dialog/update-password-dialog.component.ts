@@ -20,7 +20,9 @@ export class UpdatePasswordDialogComponent implements OnInit {
     private snackBar: MatSnackBar,
     private employeeService: EmployeeService,
     private cookieService: CookieService
-  ) {}
+  ) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit(): void {
     this.passwordFrom = this.formBuilder.group({

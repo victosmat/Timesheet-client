@@ -62,6 +62,7 @@ export class ViewAbsenceComponent implements OnInit {
     private snackBar: MatSnackBar,
     private absenceService: AbsenceService
   ) {
+    dialogRef.disableClose = true;
     const currentMonth = this.selectedDate.getMonth() + 1;
     this.monthPer = (this.selectedDate.getMonth() === 0) ? 12 : this.selectedDate.getMonth() + 1;
     this.yearPer = (currentMonth === 1) ? this.selectedDate.getFullYear() - 1 : this.selectedDate.getFullYear();
