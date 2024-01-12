@@ -31,8 +31,12 @@ export class AuthInterceptor implements HttpInterceptor {
     if (request.headers.get("No-Auth") === "True") {
       return next.handle(request.clone());
     }
+
     const token = "Bearer " + this.authService.getOriginalToken();
-    const headers = new HttpHeaders().set('Authorization', token);
+    const headers = new HttpHeaders({
+      'Authorization': token,
+      'ngrok-skip-browser-warning': 'true'
+    });
     const AuthRequest = request.clone({ headers: headers });
     return next.handle(AuthRequest).pipe(
       catchError(
