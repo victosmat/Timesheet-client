@@ -18,6 +18,7 @@ import { ManagementBonusComponent } from './management-bonus/management-bonus.co
 import { ManagementMonitoringComponent } from './management-monitoring/management-monitoring.component';
 import { MyCheckinComponent } from './my-checkin/my-checkin.component';
 import { RegisterImagesCheckinComponent } from './register-images-checkin/register-images-checkin.component';
+import { MyMessengerComponent } from './my-messenger/my-messenger.component';
 
 const routes: Routes = [
   { path: '', redirectTo: "/login", pathMatch: "full"},
@@ -38,6 +39,7 @@ const routes: Routes = [
       { path: 'admin_bonus', component: ManagementBonusComponent, canActivate: [AuthGuard], data: { roles: ["PM"] }, },
       { path: 'my_checkin', component: MyCheckinComponent, canActivate: [AuthGuard], data: { roles: ["TIMESHEET"] }, },
       { path: 'register_image', component: RegisterImagesCheckinComponent, canActivate: [AuthGuard], data: { roles: ["TIMESHEET"] }, },
+      { path: 'messenger', component: MyMessengerComponent, canActivate: [AuthGuard], data: { roles: ["STAFF, INTERN"] }, },
     ]
   },
   { path: 'forbidden', component: ForbiddenComponent }

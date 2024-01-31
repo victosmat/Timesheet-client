@@ -142,7 +142,6 @@ export class ManagementTimesheetComponent implements OnInit {
             duration: 2000,
             panelClass: ['error-snackbar'],
           });
-          return;
         }
         this.noteDetailDtoList.forEach((noteDetailDto) => {
           noteDetailDto.completed = true;
@@ -321,6 +320,7 @@ export class ManagementTimesheetComponent implements OnInit {
       });
     });
   }
+
   approve() {
     let noteDetailViewDtoList: NoteDetailViewDto[] = [];
     let noteIds: number[] = [];

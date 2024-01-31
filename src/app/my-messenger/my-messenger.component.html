@@ -1,0 +1,36 @@
+<div class="content">
+    <div id="chat-page">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>General chat room</h2>
+            </div>
+            <mat-card style="margin: 10px;">
+                <div class="connecting" *ngIf="isConnected === false">
+                    Connecting...
+                </div>
+                <ul class="messageArea">
+                    <li *ngFor="let message of messages">
+                        <div class="title-chat" *ngIf="message.type === 'JOIN' || message.type === 'LEAVE'">
+                            {{message.content}}</div>
+                        <div class="content-chat" *ngIf="message.type === 'CHAT' && message.isOwner === true">
+                            <div class="owner">{{message.content}}: <b>{{message.sender}}</b></div>
+                        </div>
+                        <div class="content-chat" *ngIf="message.type === 'CHAT' && message.isOwner === false">
+                            <div class="guest"><b>{{message.sender}}</b>: {{message.content}}</div>
+                        </div>
+                    </li>
+                </ul>
+            </mat-card>
+            <form id="messageForm" name="messageForm" [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+                <div class="form-group">
+                    <input type="text" id="message" formControlName="messageInput" placeholder="Type a message..."
+                        autocomplete="off" class="form-control" />
+                    <button type="submit" mat-raised-button style="background-color: green; color: white; height: 55px;"
+                        (click)="sendMessage()">
+                        Send
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -10,9 +10,8 @@
     <div class="profile">
       <div class="profile-content">
         <div class="avatar">
-          <img *ngIf="employeeId === 43"
-            src="https://cdn-icons-png.flaticon.com/512/771/771203.png"
-            alt="avatar" style="width: 60px;" class="rounded-circle">
+          <img *ngIf="employeeId === 43" src="https://cdn-icons-png.flaticon.com/512/771/771203.png" alt="avatar"
+            style="width: 60px;" class="rounded-circle">
           <img *ngIf="employeeId !== 43" [src]="'data:image/jpeg;base64,' + image" alt="avatar" style="width: 60px;"
             class="rounded-circle">
         </div>
@@ -39,6 +38,8 @@
               aria-label="Timesheet" fontIcon="icon">alarm</mat-icon>&nbsp;My Timesheets</a>
           <a style="font-size: 15px;" mat-list-item routerLink="absence"><mat-icon aria-hidden="false"
               aria-label="Absence Day" fontIcon="icon">event_busy</mat-icon>&nbsp;My Request off/Remote/Onsite</a>
+          <a style="font-size: 15px;" mat-list-item routerLink="messenger"><mat-icon aria-hidden="false"
+              aria-label="Messenger" fontIcon="icon">event_busy</mat-icon>&nbsp;My messenger</a>
         </mat-nav-list>
       </mat-expansion-panel>
     </mat-accordion>

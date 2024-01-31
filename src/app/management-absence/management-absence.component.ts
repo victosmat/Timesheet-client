@@ -1,47 +1,25 @@
 import {
   Component,
   OnInit,
-  ChangeDetectionStrategy,
-  NgModule,
 } from '@angular/core';
-import {
-  startOfDay,
-  endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
-  isSameDay,
-  isSameMonth,
-  addHours,
-} from 'date-fns';
+
 import { BehaviorSubject, Observable, Subject, map, of, tap } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   CalendarEvent,
-  CalendarEventAction,
-  CalendarEventTimesChangedEvent,
-  CalendarMonthViewBeforeRenderEvent,
-  CalendarMonthViewEventTimesChangedEvent,
   CalendarView,
   DateAdapter,
 } from 'angular-calendar';
-import { EventColor } from 'calendar-utils';
-import { NgIf } from '@angular/common';
 import {
-  MatDialogModule,
-  MAT_DIALOG_DATA,
   MatDialog,
 } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { AbsenceService } from '../service/absence/absence.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { Form, FormControl, FormControlName, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ManagementAbsenceDialogComponent } from './management-absence-dialog/management-absence-dialog.component';
-import { da } from 'date-fns/locale';
 
 const MY_DATE_FORMAT = {
   parse: {
@@ -204,7 +182,7 @@ export class ManagementAbsenceComponent implements OnInit {
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (events === undefined || events.length === 0) {
-      this.snackBar.open("You can't request absence on this day", 'Close', {
+      this.snackBar.open("There are no applications for leave on this day!", 'Close', {
         duration: 2000,
       });
       return;

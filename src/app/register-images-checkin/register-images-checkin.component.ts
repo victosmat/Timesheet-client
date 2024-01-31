@@ -148,7 +148,7 @@ export class RegisterImagesCheckinComponent implements OnInit {
     this.checkinService.registerImages(this.employeeSelected.id, this.imageBase64List).subscribe({
       next: (response: any) => {
         console.log(response);
-        if (response === true) {
+        if (response.data === true) {
           this.snackBar.open('Register images successfully!', 'Close', {
             duration: 2000,
             panelClass: ['green-snackbar'],
