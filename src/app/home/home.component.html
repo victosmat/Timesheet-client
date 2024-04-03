@@ -59,43 +59,8 @@
               aria-label="Admin" fontIcon="icon">apartment</mat-icon>&nbsp;Departments</a>
           <a style="font-size: 15px;" mat-list-item routerLink="admin_job_department"><mat-icon aria-hidden="false"
               aria-label="Admin" fontIcon="icon">description</mat-icon>&nbsp;Job department</a>
-          <a style="font-size: 15px;" mat-list-item routerLink="admin_bonus"><mat-icon aria-hidden="false"
-              aria-label="Admin" fontIcon="icon">attach_money</mat-icon>&nbsp;Bonus</a>
-        </mat-nav-list>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-accordion *ngIf="this.authService.roleMatch(['PM', 'HR'])">
-      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Management
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-nav-list>
-          <a style="font-size: 15px;" mat-list-item routerLink="manage_absence"><mat-icon aria-hidden="false"
-              aria-label="Absence Day" fontIcon="icon">rule</mat-icon>&nbsp;Request off/Remote/Onsite</a>
-          <a style="font-size: 15px;" mat-list-item routerLink="manage_timesheet"><mat-icon aria-hidden="false"
-              aria-label="Manage Employee Timesheet" fontIcon="icon">alarm</mat-icon>&nbsp;Timesheet</a>
-          <a style="font-size: 15px;" mat-list-item routerLink="manage_monitoring"><mat-icon aria-hidden="false"
-              aria-label="Manage Employee Timesheet" fontIcon="icon">supervised_user_circle</mat-icon>&nbsp;Timesheet
-            monitoring</a>
-          <a style="font-size: 15px;" mat-list-item routerLink="manage_Tardiness"><mat-icon aria-hidden="false"
-              aria-label="Manage Employee Timesheet" fontIcon="icon">wysiwyg</mat-icon>&nbsp;Tardiness</a>
-        </mat-nav-list>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-accordion *ngIf="this.authService.roleMatch(['TIMESHEET'])">
-      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Checkin/Checkout
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-nav-list>
-          <a style="font-size: 15px;" mat-list-item routerLink="my_checkin"><mat-icon aria-hidden="false"
-              aria-label="Absence Day" fontIcon="icon">add_a_photo</mat-icon>&nbsp;General</a>
-          <a style="font-size: 15px;" mat-list-item routerLink="register_image"><mat-icon aria-hidden="false"
-              aria-label="Absence Day" fontIcon="icon">add_photo_alternate</mat-icon>&nbsp;Register photos</a>
+              <a style="font-size: 15px;" mat-list-item routerLink="manage_timesheet"><mat-icon aria-hidden="false"
+                aria-label="Manage Employee Timesheet" fontIcon="icon">alarm</mat-icon>&nbsp;Timesheet</a>
         </mat-nav-list>
       </mat-expansion-panel>
     </mat-accordion>
